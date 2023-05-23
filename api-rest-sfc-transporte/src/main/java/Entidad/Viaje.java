@@ -9,22 +9,23 @@ public class Viaje implements Serializable {
     private String PAIS;
     private String CODIGO_COMPANIA;
     private String NOMBRE_COMPANIA;
-    private Integer CODIGO_PLANTA;
+    private Long CODIGO_PLANTA;
     private String NOMBRE_PLANTA;
-    private Integer NO_VIAJE;
+    private Long NO_VIAJE;
     private String FECHA_VIAJE;
     private String CODIGO_ESTADO_VIAJE;
     private String ESTADO_VIAJE;
     private String VEHICULO;
-    private Integer CODIGO_TRANSPORTISTA;
+    private Long CODIGO_TRANSPORTISTA;
     private String NOMBRE_TRANSPORTISTA;
-    private String ORDEN_VENTA;
-    private Integer CODIGO_CLIENTE;
+    private String TIPO_ORDEN_VENTA;
+    private Long NO_ORDEN_VENTA;
+    private Long CODIGO_CLIENTE;
     private String NOMBRE_CLIENTE;
-    private Integer CODIGO_CLIENTE_DESTINO;
+    private Long CODIGO_CLIENTE_DESTINO;
     private String NOMBRE_CLIENTE_DESTINO;
 
-    public Viaje(String PAIS, String CODIGO_COMPANIA, String NOMBRE_COMPANIA, Integer CODIGO_PLANTA, String NOMBRE_PLANTA, Integer NO_VIAJE, String FECHA_VIAJE, String CODIGO_ESTADO_VIAJE, String ESTADO_VIAJE, String VEHICULO, Integer CODIGO_TRANSPORTISTA, String NOMBRE_TRANSPORTISTA, String ORDEN_VENTA, Integer CODIGO_CLIENTE, String NOMBRE_CLIENTE, Integer CODIGO_CLIENTE_DESTINO, String NOMBRE_CLIENTE_DESTINO) {
+    public Viaje(String PAIS, String CODIGO_COMPANIA, String NOMBRE_COMPANIA, Long CODIGO_PLANTA, String NOMBRE_PLANTA, Long NO_VIAJE, String FECHA_VIAJE, String CODIGO_ESTADO_VIAJE, String ESTADO_VIAJE, String VEHICULO, Long CODIGO_TRANSPORTISTA, String NOMBRE_TRANSPORTISTA, String TIPO_ORDEN_VENTA, Long NO_ORDEN_VENTA, Long CODIGO_CLIENTE, String NOMBRE_CLIENTE, Long CODIGO_CLIENTE_DESTINO, String NOMBRE_CLIENTE_DESTINO) {
         this.PAIS = PAIS;
         this.CODIGO_COMPANIA = CODIGO_COMPANIA;
         this.NOMBRE_COMPANIA = NOMBRE_COMPANIA;
@@ -37,7 +38,8 @@ public class Viaje implements Serializable {
         this.VEHICULO = VEHICULO;
         this.CODIGO_TRANSPORTISTA = CODIGO_TRANSPORTISTA;
         this.NOMBRE_TRANSPORTISTA = NOMBRE_TRANSPORTISTA;
-        this.ORDEN_VENTA = ORDEN_VENTA;
+        this.TIPO_ORDEN_VENTA = TIPO_ORDEN_VENTA;
+        this.NO_ORDEN_VENTA = NO_ORDEN_VENTA;
         this.CODIGO_CLIENTE = CODIGO_CLIENTE;
         this.NOMBRE_CLIENTE = NOMBRE_CLIENTE;
         this.CODIGO_CLIENTE_DESTINO = CODIGO_CLIENTE_DESTINO;
@@ -71,11 +73,11 @@ public class Viaje implements Serializable {
         this.NOMBRE_COMPANIA = NOMBRE_COMPANIA;
     }
 
-    public Integer getCODIGO_PLANTA() {
+    public Long getCODIGO_PLANTA() {
         return CODIGO_PLANTA;
     }
 
-    public void setCODIGO_PLANTA(Integer CODIGO_PLANTA) {
+    public void setCODIGO_PLANTA(Long CODIGO_PLANTA) {
         this.CODIGO_PLANTA = CODIGO_PLANTA;
     }
 
@@ -87,11 +89,11 @@ public class Viaje implements Serializable {
         this.NOMBRE_PLANTA = NOMBRE_PLANTA;
     }
 
-    public Integer getNO_VIAJE() {
+    public Long getNO_VIAJE() {
         return NO_VIAJE;
     }
 
-    public void setNO_VIAJE(Integer NO_VIAJE) {
+    public void setNO_VIAJE(Long NO_VIAJE) {
         this.NO_VIAJE = NO_VIAJE;
     }
 
@@ -127,11 +129,11 @@ public class Viaje implements Serializable {
         this.VEHICULO = VEHICULO;
     }
 
-    public Integer getCODIGO_TRANSPORTISTA() {
+    public Long getCODIGO_TRANSPORTISTA() {
         return CODIGO_TRANSPORTISTA;
     }
 
-    public void setCODIGO_TRANSPORTISTA(Integer CODIGO_TRANSPORTISTA) {
+    public void setCODIGO_TRANSPORTISTA(Long CODIGO_TRANSPORTISTA) {
         this.CODIGO_TRANSPORTISTA = CODIGO_TRANSPORTISTA;
     }
 
@@ -143,19 +145,27 @@ public class Viaje implements Serializable {
         this.NOMBRE_TRANSPORTISTA = NOMBRE_TRANSPORTISTA;
     }
 
-    public String getORDEN_VENTA() {
-        return ORDEN_VENTA;
+    public String getTIPO_ORDEN_VENTA() {
+        return TIPO_ORDEN_VENTA;
     }
 
-    public void setORDEN_VENTA(String ORDEN_VENTA) {
-        this.ORDEN_VENTA = ORDEN_VENTA;
+    public void setTIPO_ORDEN_VENTA(String TIPO_ORDEN_VENTA) {
+        this.TIPO_ORDEN_VENTA = TIPO_ORDEN_VENTA;
     }
 
-    public Integer getCODIGO_CLIENTE() {
+    public Long getNO_ORDEN_VENTA() {
+        return NO_ORDEN_VENTA;
+    }
+
+    public void setNO_ORDEN_VENTA(Long NO_ORDEN_VENTA) {
+        this.NO_ORDEN_VENTA = NO_ORDEN_VENTA;
+    }
+
+    public Long getCODIGO_CLIENTE() {
         return CODIGO_CLIENTE;
     }
 
-    public void setCODIGO_CLIENTE(Integer CODIGO_CLIENTE) {
+    public void setCODIGO_CLIENTE(Long CODIGO_CLIENTE) {
         this.CODIGO_CLIENTE = CODIGO_CLIENTE;
     }
 
@@ -167,11 +177,11 @@ public class Viaje implements Serializable {
         this.NOMBRE_CLIENTE = NOMBRE_CLIENTE;
     }
 
-    public Integer getCODIGO_CLIENTE_DESTINO() {
+    public Long getCODIGO_CLIENTE_DESTINO() {
         return CODIGO_CLIENTE_DESTINO;
     }
 
-    public void setCODIGO_CLIENTE_DESTINO(Integer CODIGO_CLIENTE_DESTINO) {
+    public void setCODIGO_CLIENTE_DESTINO(Long CODIGO_CLIENTE_DESTINO) {
         this.CODIGO_CLIENTE_DESTINO = CODIGO_CLIENTE_DESTINO;
     }
 
@@ -185,7 +195,7 @@ public class Viaje implements Serializable {
 
     @Override
     public String toString() {
-        return "Viaje{" + "PAIS=" + PAIS + ", CODIGO_COMPANIA=" + CODIGO_COMPANIA + ", NOMBRE_COMPANIA=" + NOMBRE_COMPANIA + ", CODIGO_PLANTA=" + CODIGO_PLANTA + ", NOMBRE_PLANTA=" + NOMBRE_PLANTA + ", NO_VIAJE=" + NO_VIAJE + ", FECHA_VIAJE=" + FECHA_VIAJE + ", CODIGO_ESTADO_VIAJE=" + CODIGO_ESTADO_VIAJE + ", ESTADO_VIAJE=" + ESTADO_VIAJE + ", VEHICULO=" + VEHICULO + ", CODIGO_TRANSPORTISTA=" + CODIGO_TRANSPORTISTA + ", NOMBRE_TRANSPORTISTA=" + NOMBRE_TRANSPORTISTA + ", ORDEN_VENTA=" + ORDEN_VENTA + ", CODIGO_CLIENTE=" + CODIGO_CLIENTE + ", NOMBRE_CLIENTE=" + NOMBRE_CLIENTE + ", CODIGO_CLIENTE_DESTINO=" + CODIGO_CLIENTE_DESTINO + ", NOMBRE_CLIENTE_DESTINO=" + NOMBRE_CLIENTE_DESTINO + '}';
+        return "Viaje{" + "PAIS=" + PAIS + ", CODIGO_COMPANIA=" + CODIGO_COMPANIA + ", NOMBRE_COMPANIA=" + NOMBRE_COMPANIA + ", CODIGO_PLANTA=" + CODIGO_PLANTA + ", NOMBRE_PLANTA=" + NOMBRE_PLANTA + ", NO_VIAJE=" + NO_VIAJE + ", FECHA_VIAJE=" + FECHA_VIAJE + ", CODIGO_ESTADO_VIAJE=" + CODIGO_ESTADO_VIAJE + ", ESTADO_VIAJE=" + ESTADO_VIAJE + ", VEHICULO=" + VEHICULO + ", CODIGO_TRANSPORTISTA=" + CODIGO_TRANSPORTISTA + ", NOMBRE_TRANSPORTISTA=" + NOMBRE_TRANSPORTISTA + ", TIPO_ORDEN_VENTA=" + TIPO_ORDEN_VENTA + ", NO_ORDEN_VENTA=" + NO_ORDEN_VENTA + ", CODIGO_CLIENTE=" + CODIGO_CLIENTE + ", NOMBRE_CLIENTE=" + NOMBRE_CLIENTE + ", CODIGO_CLIENTE_DESTINO=" + CODIGO_CLIENTE_DESTINO + ", NOMBRE_CLIENTE_DESTINO=" + NOMBRE_CLIENTE_DESTINO + '}';
     }
-
+    
 }

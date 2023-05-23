@@ -39,7 +39,8 @@ public class Ctrl_Transportes_JDE implements Serializable {
                     + "TRIM(A.TMPVEH) VEHICULO, "
                     + "A.TMCARS CODIGO_TRANSPORTISTA, "
                     + "(SELECT TRIM(B.ABALPH) FROM PRODDTA.F0101 B WHERE B.ABAN8=A.TMCARS) NOMBRE_TRANSPORTISTA, "
-                    + "C.TODCTO || '-' || C.TODOCO ORDEN_VENTA, "
+                    + "C.TODCTO TIPO_ORDEN_VENTA, "
+                    + "C.TODOCO NO_ORDEN_VENTA, "
                     + "(SELECT DISTINCT SO.SDAN8 FROM (SELECT B.SDKCOO, B.SDDCTO, B.SDDOCO, SDAN8 FROM PRODDTA.F4211 B UNION ALL SELECT B.SDKCOO, B.SDDCTO, B.SDDOCO, SDAN8 FROM PRODDTA.F42119 B) SO WHERE SO.SDDCTO=C.TODCTO AND SO.SDDOCO=C.TODOCO) CODIGO_CLIENTE, "
                     + "(SELECT TRIM(B.ABALPH) FROM PRODDTA.F0101 B WHERE B.ABAN8=(SELECT DISTINCT SO.SDAN8 FROM (SELECT B.SDKCOO, B.SDDCTO, B.SDDOCO, SDAN8 FROM PRODDTA.F4211 B UNION ALL SELECT B.SDKCOO, B.SDDCTO, B.SDDOCO, SDAN8 FROM PRODDTA.F42119 B) SO WHERE SO.SDDCTO=C.TODCTO AND SO.SDDOCO=C.TODOCO)) NOMBRE_CLIENTE, "
                     + "(SELECT DISTINCT SO.SDSHAN FROM (SELECT B.SDKCOO, B.SDDCTO, B.SDDOCO, SDSHAN FROM PRODDTA.F4211 B UNION ALL SELECT B.SDKCOO, B.SDDCTO, B.SDDOCO, SDSHAN FROM PRODDTA.F42119 B) SO WHERE SO.SDDCTO=C.TODCTO AND SO.SDDOCO=C.TODOCO) CODIGO_CLIENTE_DESTINO, "
@@ -55,20 +56,21 @@ public class Ctrl_Transportes_JDE implements Serializable {
                 viaje.setPAIS(rs.getString(1));
                 viaje.setCODIGO_COMPANIA(rs.getString(2));
                 viaje.setNOMBRE_COMPANIA(rs.getString(3));
-                viaje.setCODIGO_PLANTA(rs.getInt(4));
+                viaje.setCODIGO_PLANTA(rs.getLong(4));
                 viaje.setNOMBRE_PLANTA(rs.getString(5));
-                viaje.setNO_VIAJE(rs.getInt(6));
+                viaje.setNO_VIAJE(rs.getLong(6));
                 viaje.setFECHA_VIAJE(rs.getString(7));
                 viaje.setCODIGO_ESTADO_VIAJE(rs.getString(8));
                 viaje.setESTADO_VIAJE(rs.getString(9));
                 viaje.setVEHICULO(rs.getString(10));
-                viaje.setCODIGO_TRANSPORTISTA(rs.getInt(11));
+                viaje.setCODIGO_TRANSPORTISTA(rs.getLong(11));
                 viaje.setNOMBRE_TRANSPORTISTA(rs.getString(12));
-                viaje.setORDEN_VENTA(rs.getString(13));
-                viaje.setCODIGO_CLIENTE(rs.getInt(14));
-                viaje.setNOMBRE_CLIENTE(rs.getString(15));
-                viaje.setCODIGO_CLIENTE_DESTINO(rs.getInt(16));
-                viaje.setNOMBRE_CLIENTE_DESTINO(rs.getString(17));
+                viaje.setTIPO_ORDEN_VENTA(rs.getString(13));
+                viaje.setNO_ORDEN_VENTA(rs.getLong(14));
+                viaje.setCODIGO_CLIENTE(rs.getLong(15));
+                viaje.setNOMBRE_CLIENTE(rs.getString(16));
+                viaje.setCODIGO_CLIENTE_DESTINO(rs.getLong(17));
+                viaje.setNOMBRE_CLIENTE_DESTINO(rs.getString(18));
                 lista_viajes.add(viaje);
             }
             rs.close();
