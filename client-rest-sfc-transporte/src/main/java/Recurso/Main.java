@@ -11,7 +11,7 @@ public class Main implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public static final String BASE_URI = "http://localhost:8080/";
+    public static final String BASE_URI = "http://0.0.0.0:8018/";
 
     public static HttpServer startServer() {
         final ResourceConfig rc = new ResourceConfig().packages("Recurso");
