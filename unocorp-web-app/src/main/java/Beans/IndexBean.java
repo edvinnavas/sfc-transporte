@@ -42,6 +42,7 @@ public class IndexBean implements Serializable {
         try {
             ClienteRestApi cliente_rest_api = new ClienteRestApi();
             String json_result = cliente_rest_api.autenticar(this.txt_usuario, this.pass_contrasena);
+            System.out.println("JSON-RESULT: " + json_result);
             if (!json_result.equals("Usuario no autenticado.")) {
                 Type usuario_type = new TypeToken<Entidades.Usuario>() {
                 }.getType();
@@ -51,21 +52,12 @@ public class IndexBean implements Serializable {
                 this.usuario_sesion.setNombre_usuario(usuario.getNombre_usuario());
                 this.usuario_sesion.setNombre_sesion_usuario(usuario.getNombre_completo());
                 this.usuario_sesion.setContrasena_usuario(usuario.getContrasena());
-
                 List<String> lista_opcion_menu = new ArrayList<>();
-                lista_opcion_menu.add("menu-Archivo");
-                lista_opcion_menu.add("menuItem-Inicio");
-                lista_opcion_menu.add("menuItem-Roles");
-                lista_opcion_menu.add("menuItem-Usuarios");
-                lista_opcion_menu.add("menu-Inventario");
-                lista_opcion_menu.add("menuItem-Almacenes");
-                lista_opcion_menu.add("menuItem-Articulos");
-                lista_opcion_menu.add("menuItem-Almacen-Articulo");
-                lista_opcion_menu.add("menuItem-Entrada-Inventario");
-                lista_opcion_menu.add("menuItem-Salida-Inventario");
-                lista_opcion_menu.add("menuItem-Reconciliacion-Inventario");
-                lista_opcion_menu.add("menuItem-Reporte-Inventario");
+                for(Integer i=0; i < usuario.getRol().getLista_menu().size(); i++) {
+                    lista_opcion_menu.add(usuario.getRol().getLista_menu().get(i).getNombre());
+                }
                 this.usuario_sesion.setLista_opcion_menu(lista_opcion_menu);
+                
                 resultado = "inicio.xhtml";
             } else {
                 resultado = "index.xhtml";

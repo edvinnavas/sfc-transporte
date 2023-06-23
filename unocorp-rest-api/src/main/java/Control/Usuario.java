@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Usuario implements Serializable {
 
@@ -20,19 +23,18 @@ public class Usuario implements Serializable {
         Connection conn = null;
 
         try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+
             Base_Datos ctrl_base_datos = new Base_Datos();
             conn = ctrl_base_datos.obtener_conexion_mysql();
 
             conn.setAutoCommit(false);
 
+            Long id_usuario = Long.valueOf("0");
+            Long id_rol = Long.valueOf("0");
             String cadenasql = "SELECT "
                     + "U.ID_USUARIO, "
-                    + "U.NOMBRE_COMPLETO, "
-                    + "U.NOMBRE_USUARIO, "
-                    + "'SECRETO' CONTRASENA, "
-                    + "U.CORREO_ELECTRONICO, "
-                    + "U.ACTIVO, "
-                    + "U.DESCRIPCION "
+                    + "U.ID_ROL "
                     + "FROM "
                     + "USUARIO U "
                     + "WHERE "
@@ -40,6 +42,70 @@ public class Usuario implements Serializable {
                     + "TRIM(CONVERT(U.CONTRASENA USING UTF8MB4))=TRIM(SHA2('" + contrasena + "',512))";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
+            while (rs.next()) {
+                id_usuario = rs.getLong(1);
+                id_rol = rs.getLong(2);
+            }
+            rs.close();
+            stmt.close();
+
+            List<Entidad.Menu> lista_menu = new ArrayList<>();
+            cadenasql = "SELECT "
+                    + "RM.ID_ROL, "
+                    + "M.ID_MENU, "
+                    + "M.NOMBRE "
+                    + "FROM "
+                    + "ROL_MENU RM LEFT JOIN MENU M ON (RM.ID_MENU=M.ID_MENU) "
+                    + "WHERE "
+                    + "RM.ID_ROL=" + id_rol;
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(cadenasql);
+            while (rs.next()) {
+                Entidad.Menu entidad_menu = new Entidad.Menu();
+                entidad_menu.setId_menu(rs.getLong(2));
+                entidad_menu.setNombre(rs.getString(3));
+                lista_menu.add(entidad_menu);
+            }
+            rs.close();
+            stmt.close();
+
+            Entidad.Rol entidad_rol = new Entidad.Rol();
+            cadenasql = "SELECT "
+                    + "R.ID_ROL, "
+                    + "R.NOMBRE, "
+                    + "R.ACTIVO, "
+                    + "R.FECHA_HORA "
+                    + "FROM "
+                    + "ROL R "
+                    + "WHERE "
+                    + "R.ID_ROL=" + id_rol;
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(cadenasql);
+            while (rs.next()) {
+                entidad_rol.setId_rol(rs.getLong(1));
+                entidad_rol.setNombre(rs.getString(2));
+                entidad_rol.setActivo(rs.getInt(3));
+                entidad_rol.setFecha_hora(dateFormat.format(rs.getDate(4)));
+            }
+            rs.close();
+            stmt.close();
+            entidad_rol.setLista_menu(lista_menu);
+
+            cadenasql = "SELECT "
+                    + "U.ID_USUARIO, "
+                    + "U.NOMBRE_COMPLETO, "
+                    + "U.NOMBRE_USUARIO, "
+                    + "'SECRETO' CONTRASENA, "
+                    + "U.CORREO_ELECTRONICO, "
+                    + "U.ACTIVO, "
+                    + "U.DESCRIPCION, "
+                    + "U.FECHA_HORA "
+                    + "FROM "
+                    + "USUARIO U "
+                    + "WHERE "
+                    + "U.ID_USUARIO=" + id_usuario;
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(cadenasql);
             Entidad.Usuario entidad_usuario = null;
             while (rs.next()) {
                 entidad_usuario = new Entidad.Usuario();
@@ -50,6 +116,8 @@ public class Usuario implements Serializable {
                 entidad_usuario.setCorreo_electronico(rs.getString(5));
                 entidad_usuario.setActivo(rs.getInt(6));
                 entidad_usuario.setDescripcion(rs.getString(7));
+                entidad_usuario.setFecha_hora(dateFormat.format(rs.getDate(8)));
+                entidad_usuario.setRol(entidad_rol);
             }
             rs.close();
             stmt.close();
