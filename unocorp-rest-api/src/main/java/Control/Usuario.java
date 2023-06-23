@@ -26,18 +26,18 @@ public class Usuario implements Serializable {
             conn.setAutoCommit(false);
 
             String cadenasql = "SELECT "
-                    + "u.id_usuario, "
-                    + "u.nombre_completo, "
-                    + "u.nombre_usuario, "
-                    + "'secreto' contrasena, "
-                    + "u.correo_electronico, "
-                    + "u.activo, "
-                    + "u.descripcion "
+                    + "U.ID_USUARIO, "
+                    + "U.NOMBRE_COMPLETO, "
+                    + "U.NOMBRE_USUARIO, "
+                    + "'SECRETO' CONTRASENA, "
+                    + "U.CORREO_ELECTRONICO, "
+                    + "U.ACTIVO, "
+                    + "U.DESCRIPCION "
                     + "FROM "
-                    + "usuario u "
+                    + "USUARIO U "
                     + "WHERE "
-                    + "u.nombre_usuario='" + usuario + "' AND "
-                    + "TRIM(CONVERT(u.contrasena USING UTF8MB4))=TRIM(SHA2('" + contrasena + "',512))";
+                    + "U.NOMBRE_USUARIO='" + usuario + "' AND "
+                    + "TRIM(CONVERT(U.CONTRASENA USING UTF8MB4))=TRIM(SHA2('" + contrasena + "',512))";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
             Entidad.Usuario entidad_usuario = null;
