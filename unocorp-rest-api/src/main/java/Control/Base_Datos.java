@@ -8,33 +8,32 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Control_Base_Datos implements Serializable {
+public class Base_Datos implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    final String host_mysql_db = "UNOCORP-MYSQL";
-    
-    public Control_Base_Datos() {
+    public Base_Datos() {
     }
-
+    
     public Connection obtener_conexion_mysql() {
         Connection resultado;
 
         try {
+            String host_mysql_db = "UNOCORP-MYSQL";
             String usuario_db = "user_transportes";
             String contrasena_db = "TransGPS2023";
 
-            Class.forName("com.mysql.jdbc.Driver");
-            resultado = DriverManager.getConnection("jdbc:mysql://" + this.host_mysql_db + ":3306/db_transportes", usuario_db, contrasena_db);
-            System.out.println("Conexión satisfactoria: " + usuario_db);
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            resultado = DriverManager.getConnection("jdbc:mysql://" + host_mysql_db + ":3306/db_transportes", usuario_db, contrasena_db);
+            // System.out.println("Conexión satisfactoria: " + usuario_db);
         } catch (Exception ex) {
             resultado = null;
-            System.out.println("PROYECTO:client-rest-sfc-transporte|CLASE:" + this.getClass().getName() + "|METODO:obtener_conexion_mysql()|ERROR:" + ex.toString());
+            System.out.println("PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: obtener_conexion_mysql(), ERRROR: " + ex.toString());
         }
 
         return resultado;
     }
-
+    
     public String ObtenerString(String cadenasql, Connection conn) {
         String resultado = null;
 
@@ -47,8 +46,8 @@ public class Control_Base_Datos implements Serializable {
             rs.close();
             stmt.close();
         } catch (Exception ex) {
-            resultado = "PROYECTO:client-rest-sfc-transporte|CLASE:" + this.getClass().getName() + "|METODO:ObtenerString()|ERROR:" + ex.toString();
-            System.out.println("PROYECTO:client-rest-sfc-transporte|CLASE:" + this.getClass().getName() + "|METODO:ObtenerString()|ERROR:" + ex.toString());
+            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: ObtenerString(), ERRROR: " + ex.toString();
+            System.out.println("PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: ObtenerString(), ERRROR: " + ex.toString());
         }
 
         return resultado;
@@ -67,7 +66,7 @@ public class Control_Base_Datos implements Serializable {
             stmt.close();
         } catch (Exception ex) {
             resultado = -1;
-            System.out.println("PROYECTO:client-rest-sfc-transporte|CLASE:" + this.getClass().getName() + "|METODO:ObtenerEntero()|ERROR:" + ex.toString());
+            System.out.println("PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: ObtenerEntero(), ERRROR: " + ex.toString());
         }
 
         return resultado;
@@ -86,7 +85,7 @@ public class Control_Base_Datos implements Serializable {
             stmt.close();
         } catch (Exception ex) {
             resultado = Long.valueOf(-1);
-            System.out.println("PROYECTO:client-rest-sfc-transporte|CLASE:" + this.getClass().getName() + "|METODO:ObtenerLong()|ERROR:" + ex.toString());
+            System.out.println("PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: ObtenerLong(), ERRROR: " + ex.toString());
         }
 
         return resultado;
@@ -105,7 +104,7 @@ public class Control_Base_Datos implements Serializable {
             stmt.close();
         } catch (Exception ex) {
             resultado = -1.00;
-            System.out.println("PROYECTO:client-rest-sfc-transporte|CLASE:" + this.getClass().getName() + "|METODO:ObtenerDouble()|ERROR:" + ex.toString());
+            System.out.println("PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: ObtenerDouble(), ERRROR: " + ex.toString());
         }
 
         return resultado;
@@ -125,7 +124,7 @@ public class Control_Base_Datos implements Serializable {
         } catch (Exception ex) {
             resultado = new ArrayList<>();
             resultado.add(ex.toString());
-            System.out.println("PROYECTO:client-rest-sfc-transporte|CLASE:" + this.getClass().getName() + "|METODO:ObtenerVectorString()|ERROR:" + ex.toString());
+            System.out.println("PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: ObtenerVectorString(), ERRROR: " + ex.toString());
         }
 
         return resultado;
@@ -145,10 +144,10 @@ public class Control_Base_Datos implements Serializable {
         } catch (Exception ex) {
             resultado = new ArrayList<>();
             resultado.add(-1);
-            System.out.println("PROYECTO:client-rest-sfc-transporte|CLASE:" + this.getClass().getName() + "|METODO:ObtenerVectorEntero()|ERROR:" + ex.toString());
+            System.out.println("PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: ObtenerVectorEntero(), ERRROR: " + ex.toString());
         }
 
         return resultado;
     }
-
+    
 }

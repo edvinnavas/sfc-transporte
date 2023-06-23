@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>.:UNO-CORP:.</title>
+    </h:head>
+    <h:body onload="#{Plantilla.onload(IndexBean.usuario_sesion)}">
+        <h:form id="formPlantilla">
+            <div class="card" style="float: none;">
+                <h:panelGrid columns="1">
+                    <p:outputLabel value="UNO-CORP." style="color: black; font-weight: bold; font-size: 30px;"/>
+                    <p:outputLabel value="Seguimieto de viajes." style="color: black; font-weight: bold; font-size: 16px;"/>
+                    <p:outputLabel value="#{Plantilla.nombre_sesion_usuario}" style="color: red; font-weight: bold; font-size: 12px;"/>
+                </h:panelGrid>
+            </div>
+            <div class="card" style="float: none;">
+                <ui:include src="menu.xhtml"></ui:include>
+            </div>
+            <div class="card" style="float: none;">
+                <ui:insert name="contenido">
+                </ui:insert>
+            </div>
+        </h:form>
+    </h:body>
+</html>

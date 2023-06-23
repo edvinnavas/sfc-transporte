@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>.:UNO-CORP:.</title>   
+    </h:head>
+    <h:body>
+        <h:form id="formIndex">
+            <p:growl id="mensaje1" showDetail="true"/>
+            <div align="center">
+                <p:card style="width: 25rem; margin-bottom: 2em;">
+                    <f:facet name="header">
+                        <img src="imagenes/LogoUno2.jpg" alt=""/>
+                    </f:facet>
+                    <f:facet name="title">
+                        <div align="left">
+                            <p:outputLabel value="Autenticación"/>
+                        </div>
+                    </f:facet>
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Usuario"/>
+                        <p:inputText id="txt_usuario" value="#{IndexBean.txt_usuario}"/>
+                        <p:outputLabel value="Constraña"/>
+                        <p:password id="pass_contrasena" value="#{IndexBean.pass_contrasena}"/>
+                    </p:panelGrid>
+                    <f:facet name="footer">
+                        <div align="right">
+                            <p:commandButton id="btnIniciar" value="Iniciar" icon="pi pi-sign-in" action="#{IndexBean.autenticar}" update="mensaje1" styleClass="rounded-button ui-button-success"/>
+                        </div>
+                    </f:facet>
+                </p:card>
+            </div>
+        </h:form>
+    </h:body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <style>
+        .ui-clock {
+            color: blue !important;
+            background-color: transparent !important;
+        }
+        ul.ui-menu-child {
+            white-space: nowrap;
+            width: auto !important;
+        }
+    </style>
+    <p:menubar>
+        <p:submenu rendered="#{Plantilla.render_menu('menu-Archivo')}" label="Archivo" icon="pi pi-file">
+            <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Inicio')}" value="Inicio" icon="pi pi-home" action="inicio.xhtml" actionListener="#{Inicio.cargar_vista(Plantilla.usuario_sesion)}" update=":formPlantilla"/>
+            <p:divider/>menuitemInicio
+            <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Roles')}" value="Roles" icon="pi pi-unlock" action="roles.xhtml" update=":formPlantilla"/>
+            <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Usuarios')}" value="Usuarios" icon="pi pi-user" action="usuarios.xhtml" update=":formPlantilla"/>
+        </p:submenu>
+        <p:submenu rendered="#{Plantilla.render_menu('menu-Inventario')}" label="Inventario" icon="pi pi-file">
+            <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Almacenes')}" value="Almacenes" icon="pi pi-unlock" action="almacenes.xhtml" update=":formPlantilla"/>
+            <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Articulos')}" value="Artículos" icon="pi pi-unlock" action="articulos.xhtml" update=":formPlantilla"/>
+            <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Almacen-Articulo')}" value="Álmacen-Artículo" icon="pi pi-unlock" action="almacen_articulos.xhtml" update=":formPlantilla"/>
+            <p:divider/>
+            <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Entrada-Inventario')}" value="Entrada-Inventario" icon="pi pi-unlock" action="entrada_inventario.xhtml" update=":formPlantilla"/>
+            <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Salida-Inventario')}" value="Salida-Inventario" icon="pi pi-unlock" action="salida_inventario.xhtml" update=":formPlantilla"/>
+            <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Reconciliacion-Inventario')}" value="Reconciliación-Inventario" icon="pi pi-unlock" action="reconciliacion_inventario.xhtml" update=":formPlantilla"/>
+            <p:divider/>
+            <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Reporte-Inventario')}" value="Reporte-Inventario" icon="pi pi-unlock" action="reporte_inventario.xhtml" update=":formPlantilla"/>
+        </p:submenu>
+        <p:divider layout="vertical"/>
+        <p:menuitem value="Salir" icon="pi pi-power-off" action="#{Plantilla.logout}"/>
+        <f:facet name="options">
+            <p:clock pattern="dd/MM/yyyy HH:mm:ss" mode="server"/>
+        </f:facet>
+    </p:menubar>
+</ui:composition>

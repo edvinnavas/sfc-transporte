@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="WEB-INF/plantilla/plantilla.xhtml">
+    <ui:define name="contenido">
+        <p:panel id="panelInicio" header="Inicio">
+            <p:growl id="msgInicio" showDetail="true"/>
+            <p:dataTable id="tblInicio" var="registro_tabla" value="#{Inicio.lst_reg_tbl_inicio}">
+                <p:column headerText="Id">
+                    <h:outputText value="#{registro_tabla.id_reg_tbl_inicio}" />
+                </p:column>
+                <p:column headerText="Name">
+                    <h:outputText value="#{registro_tabla.asunto}" />
+                </p:column>
+                <p:column headerText="Category">
+                    <h:outputText value="#{registro_tabla.fecha}" />
+                </p:column>
+                <p:column headerText="Quantity">
+                    <h:outputText value="#{registro_tabla.leido}" />
+                </p:column>
+            </p:dataTable>            
+        </p:panel>
+    </ui:define>
+</ui:composition>
