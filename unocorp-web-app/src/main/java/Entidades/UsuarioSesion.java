@@ -32,5 +32,5 @@ public class UsuarioSesion implements Serializable {
     public String toString() {
         return "UsuarioSesion{" + "id_usuario=" + id_usuario + ", nombre_usuario=" + nombre_usuario + ", nombre_sesion_usuario=" + nombre_sesion_usuario + ", contrasena_usuario=" + contrasena_usuario + ", lista_opcion_menu=" + lista_opcion_menu + '}';
     }
-    
+
 }

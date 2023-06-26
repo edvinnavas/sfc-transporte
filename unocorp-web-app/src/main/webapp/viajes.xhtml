@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="WEB-INF/plantilla/plantilla.xhtml">
+    <ui:define name="contenido">
+        <p:panel header="Viajes">
+            <p:growl id="msgViajes" showDetail="true"/>
+            <p:dataTable id="tblViajes" var="registro_tabla" value="#{Viajes.lst_reg_tbl_viajes}">
+                <p:column headerText="Id" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.id_reg_tbl_viajes}" />
+                </p:column>
+                <p:column headerText="Código País" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.codigo_pais}" />
+                </p:column>
+                <p:column headerText="Nombre País" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.nombre_pais}" />
+                </p:column>
+                <p:column headerText="Código Compañía" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.codigo_compania}" />
+                </p:column>
+                <p:column headerText="Nombre Compañía" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.nombre_compania}" />
+                </p:column>
+                <p:column headerText="Código Planta" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.codigo_planta}" />
+                </p:column>
+                <p:column headerText="Nombre Planta" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.nombre_planta}" />
+                </p:column>
+                <p:column headerText="Número Viaje" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.numero_viaje}" />
+                </p:column>
+                <p:column headerText="Fecha Viaje" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.fecha_viaje}" />
+                </p:column>
+                <p:column headerText="Código Viaje" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.codigo_viaje}" />
+                </p:column>
+                <p:column headerText="Nombre Viaje" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.nombre_viaje}" />
+                </p:column>
+                <p:column headerText="Vehículo" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.vehiculo}" />
+                </p:column>
+                <p:column headerText="Placa Vehículo" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.placa_vehiculo}" />
+                </p:column>
+                <p:column headerText="Código Transportista" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.codigo_transportista}" />
+                </p:column>
+                <p:column headerText="Nombre Transportista" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.nombre_transportista}" />
+                </p:column>
+                <p:column headerText="Tipo Orden" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.tipo_orden_venta}" />
+                </p:column>
+                <p:column headerText="No. Orden" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.numero_orden_venta}" />
+                </p:column>
+                <p:column headerText="Código Cliente" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.codigo_cliente}" />
+                </p:column>
+                <p:column headerText="Nombre Cliente" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.nombre_cliente}" />
+                </p:column>
+                <p:column headerText="Código Cliente Destino" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.codigo_cliente_destino}" />
+                </p:column>
+                <p:column headerText="Nombre Cliente Destino" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.nombre_cliente_destino}" />
+                </p:column>
+                <p:column headerText="Tipo Flete" style="width: 200px;">
+                    <h:outputText value="#{registro_tabla.tipo_flete_viaje}" />
+                </p:column>
+            </p:dataTable>
+        </p:panel>
+    </ui:define>
+</ui:composition>

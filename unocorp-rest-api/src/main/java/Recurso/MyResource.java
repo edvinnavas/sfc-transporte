@@ -1,6 +1,5 @@
 package Recurso;
 
-import Control.Usuario;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -29,8 +28,27 @@ public class MyResource implements Serializable {
         String resultado;
 
         try {
-            Usuario ctrl_usuario = new Usuario();
+            Control.Usuario ctrl_usuario = new Control.Usuario();
             resultado = ctrl_usuario.autenticar(usuario, contrasena);
+        } catch (Exception ex) {
+            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: autenticar(), ERRROR: " + ex.toString();
+        }
+
+        return resultado;
+    }
+    
+    @GET
+    @Path("lista_viajes/{fecha_inicio}/{fecha_final}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String lista_viajes(
+            @PathParam("fecha_inicio") String fecha_inicio, 
+            @PathParam("fecha_final") String fecha_final) {
+        
+        String resultado;
+
+        try {
+            Control.Viajes ctrl_viajes = new Control.Viajes();
+            resultado = ctrl_viajes.lista_viajes(fecha_inicio, fecha_final);
         } catch (Exception ex) {
             resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: autenticar(), ERRROR: " + ex.toString();
         }

@@ -10,7 +10,7 @@ import lombok.Setter;
 public class Rol implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private Long id_rol;
     private String nombre;
     private Integer activo;
@@ -32,5 +32,5 @@ public class Rol implements Serializable {
     public String toString() {
         return "Rol{" + "id_rol=" + id_rol + ", nombre=" + nombre + ", activo=" + activo + ", fecha_hora=" + fecha_hora + ", lista_menu=" + lista_menu + '}';
     }
-    
+
 }

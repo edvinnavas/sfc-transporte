@@ -1,7 +1,5 @@
 package Beans;
 
-import ClientesRest.ClienteRestApi;
-import Entidades.UsuarioSesion;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import jakarta.annotation.PostConstruct;
@@ -24,14 +22,14 @@ public class IndexBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private UsuarioSesion usuario_sesion;
+    private Entidades.UsuarioSesion usuario_sesion;
     private String txt_usuario;
     private String pass_contrasena;
 
     @PostConstruct
     public void init() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        this.usuario_sesion = new UsuarioSesion();
+        this.usuario_sesion = new Entidades.UsuarioSesion();
         this.txt_usuario = "";
         this.pass_contrasena = "";
     }
@@ -40,24 +38,24 @@ public class IndexBean implements Serializable {
         String resultado;
 
         try {
-            ClienteRestApi cliente_rest_api = new ClienteRestApi();
+            ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
             String json_result = cliente_rest_api.autenticar(this.txt_usuario, this.pass_contrasena);
             System.out.println("JSON-RESULT: " + json_result);
             if (!json_result.equals("Usuario no autenticado.")) {
                 Type usuario_type = new TypeToken<Entidades.Usuario>() {
                 }.getType();
                 Entidades.Usuario usuario = new Gson().fromJson(json_result, usuario_type);
-                
+
                 this.usuario_sesion.setId_usuario(usuario.getId_usuario());
                 this.usuario_sesion.setNombre_usuario(usuario.getNombre_usuario());
                 this.usuario_sesion.setNombre_sesion_usuario(usuario.getNombre_completo());
                 this.usuario_sesion.setContrasena_usuario(usuario.getContrasena());
                 List<String> lista_opcion_menu = new ArrayList<>();
-                for(Integer i=0; i < usuario.getRol().getLista_menu().size(); i++) {
+                for (Integer i = 0; i < usuario.getRol().getLista_menu().size(); i++) {
                     lista_opcion_menu.add(usuario.getRol().getLista_menu().get(i).getNombre());
                 }
                 this.usuario_sesion.setLista_opcion_menu(lista_opcion_menu);
-                
+
                 resultado = "inicio.xhtml";
             } else {
                 resultado = "index.xhtml";

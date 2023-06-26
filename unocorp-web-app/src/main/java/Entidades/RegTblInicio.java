@@ -30,5 +30,5 @@ public class RegTblInicio implements Serializable {
     public String toString() {
         return "RegTblInicio{" + "id_reg_tbl_inicio=" + id_reg_tbl_inicio + ", asunto=" + asunto + ", fecha=" + fecha + ", leido=" + leido + '}';
     }
-    
+
 }

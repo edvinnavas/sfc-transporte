@@ -50,13 +50,13 @@ public class Plantilla implements Serializable {
 
         return resultado;
     }
-    
+
     public Boolean render_menu(String menu) {
         Boolean resultado = false;
 
         try {
-            for(Integer i = 0; i < this.usuario_sesion.getLista_opcion_menu().size(); i++) {
-                if(this.usuario_sesion.getLista_opcion_menu().get(i).equals(menu) ) {
+            for (Integer i = 0; i < this.usuario_sesion.getLista_opcion_menu().size(); i++) {
+                if (this.usuario_sesion.getLista_opcion_menu().get(i).equals(menu)) {
                     resultado = true;
                 }
             }
