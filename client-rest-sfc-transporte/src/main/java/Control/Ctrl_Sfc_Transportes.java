@@ -309,7 +309,7 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                             + "WHERE "
                             + "ID_PAIS=" + ID_PAIS + " AND "
                             + "ID_COMPANIA=" + ID_COMPANIA + " AND "
-                            + "CODIGO_PLANTA=" + ID_PLANTA + " AND "
+                            + "ID_PLANTA=" + ID_PLANTA + " AND "
                             + "NUMERO_VIAJE=" + respuesta_sfc_transportes.getLista_viajes().get(i).getNUMERO_VIAJE() + " AND "
                             + "TIPO_ORDEN_VENTA='" + respuesta_sfc_transportes.getLista_viajes().get(i).getTIPO_ORDEN_VENTA() + "' AND "
                             + "NUMERO_ORDEN_VENTA=" + respuesta_sfc_transportes.getLista_viajes().get(i).getNUMERO_ORDEN_VENTA();

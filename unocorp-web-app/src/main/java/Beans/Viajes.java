@@ -26,8 +26,9 @@ public class Viajes implements Serializable {
 
     private Entidades.UsuarioSesion usuario_sesion;
     private List<Entidades.RegTblViajes> lst_reg_tbl_viajes;
-    
-    private Date fecha_inicio;
+    private Entidades.RegTblViajes sel_reg_tbl_viajes;
+
+    private Date fecha_inicial;
     private Date fecha_final;
 
     @PostConstruct
@@ -36,9 +37,10 @@ public class Viajes implements Serializable {
             this.lst_reg_tbl_viajes = new ArrayList<>();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String fechap = "2023-01-15";
-            this.fecha_inicio = dateFormat.parse(fechap);
+            this.fecha_inicial = dateFormat.parse(fechap);
             this.fecha_final = dateFormat.parse(fechap);
-        } catch(Exception ex) {
+            this.filtrar_tabla();
+        } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
             System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: init(), ERRROR: " + ex.toString());
         }
@@ -47,18 +49,29 @@ public class Viajes implements Serializable {
     public void cargar_vista(Entidades.UsuarioSesion usuario_sesion) {
         try {
             this.usuario_sesion = usuario_sesion;
-            
+            System.out.println("USUARIO: " + this.usuario_sesion.getNombre_usuario());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje del sistema.", "Vista-Viajes."));
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
+            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: cargar_vista(), ERRROR: " + ex.toString());
+        }
+    }
+    
+    public void filtrar_tabla() {
+        try {
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
             ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
-            String json_result = cliente_rest_api.lista_viajes(dateFormat1.format(this.fecha_inicio), dateFormat1.format(this.fecha_final));
-            
+            String json_result = cliente_rest_api.lista_viajes(dateFormat1.format(this.fecha_inicial), dateFormat1.format(this.fecha_final));
+
             Type lista_viaje_type = new TypeToken<List<Entidades.Viaje>>() {
             }.getType();
             List<Entidades.Viaje> lista_viajes = new Gson().fromJson(json_result, lista_viaje_type);
-            
+
             SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
+
+            this.lst_reg_tbl_viajes = new ArrayList<>();
             
-            for(Integer i=0; i < lista_viajes.size(); i++) {
+            for (Integer i = 0; i < lista_viajes.size(); i++) {
                 Entidades.RegTblViajes regtblviajes = new Entidades.RegTblViajes();
                 regtblviajes.setId_reg_tbl_viajes(Long.valueOf(i.toString()));
                 regtblviajes.setCodigo_pais(lista_viajes.get(i).getPais().getCodigo());
@@ -84,13 +97,10 @@ public class Viajes implements Serializable {
                 regtblviajes.setTipo_flete_viaje(lista_viajes.get(i).getTipo_flete_viaje());
                 this.lst_reg_tbl_viajes.add(regtblviajes);
             }
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje del sistema.", "Vista-Viajes."));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
-            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: cargar_vista(), ERRROR: " + ex.toString());
+            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: filtrar_tabla(), ERRROR: " + ex.toString());
         }
-
     }
 
 }

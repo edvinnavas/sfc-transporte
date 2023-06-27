@@ -2,77 +2,94 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="WEB-INF/plantilla/plantilla.xhtml">
     <ui:define name="contenido">
-        <p:panel header="Viajes">
+        <p:panel header="Viajes" style="font-size: 10px;">
             <p:growl id="msgViajes" showDetail="true"/>
-            <p:dataTable id="tblViajes" var="registro_tabla" value="#{Viajes.lst_reg_tbl_viajes}">
-                <p:column headerText="Id" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.id_reg_tbl_viajes}" />
+            <h:panelGrid columns="4">
+                <p:outputLabel value="Fecha inicial"/>
+                <p:calendar id="calFechaInicial" value="#{Viajes.fecha_inicial}" pattern="dd/MM/yyyy">
+                    <p:ajax event="dateSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
+                </p:calendar>
+                <p:outputLabel value="Fecha final"/>
+                <p:calendar id="calFechaFinal" value="#{Viajes.fecha_final}" pattern="dd/MM/yyyy">
+                    <p:ajax event="dateSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
+                </p:calendar>
+            </h:panelGrid>
+            <p:dataTable 
+                id="tblViajes" var="viaje" widgetVar="widgetTblViajes" value="#{Viajes.lst_reg_tbl_viajes}"
+                selectionMode="single" selection="#{Viajes.sel_reg_tbl_viajes}" rowKey="#{viaje.id_reg_tbl_viajes}"
+                paginator="true" rows="10" rowsPerPageTemplate="10,20,30" 
+                paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
+                <p:column headerText="Id" sortBy="#{viaje.id_reg_tbl_viajes}" filterBy="#{viaje.id_reg_tbl_viajes}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.id_reg_tbl_viajes}" />
                 </p:column>
-                <p:column headerText="Código País" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.codigo_pais}" />
+                <p:column headerText="Código País" sortBy="#{viaje.codigo_pais}" filterBy="#{viaje.codigo_pais}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.codigo_pais}" />
                 </p:column>
-                <p:column headerText="Nombre País" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.nombre_pais}" />
+                <p:column headerText="Nombre País" sortBy="#{viaje.nombre_pais}" filterBy="#{viaje.nombre_pais}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.nombre_pais}" />
                 </p:column>
-                <p:column headerText="Código Compañía" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.codigo_compania}" />
+                <p:column headerText="Código Compañía" sortBy="#{viaje.codigo_compania}" filterBy="#{viaje.codigo_compania}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.codigo_compania}" />
                 </p:column>
-                <p:column headerText="Nombre Compañía" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.nombre_compania}" />
+                <p:column headerText="Nombre Compañía" sortBy="#{viaje.nombre_compania}" filterBy="#{viaje.nombre_compania}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.nombre_compania}" />
                 </p:column>
-                <p:column headerText="Código Planta" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.codigo_planta}" />
+                <p:column headerText="Código Planta" sortBy="#{viaje.codigo_planta}" filterBy="#{viaje.codigo_planta}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.codigo_planta}" />
                 </p:column>
-                <p:column headerText="Nombre Planta" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.nombre_planta}" />
+                <p:column headerText="Nombre Planta" sortBy="#{viaje.nombre_planta}" filterBy="#{viaje.nombre_planta}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.nombre_planta}" />
                 </p:column>
-                <p:column headerText="Número Viaje" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.numero_viaje}" />
+                <p:column headerText="Número Viaje" sortBy="#{viaje.numero_viaje}" filterBy="#{viaje.numero_viaje}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.numero_viaje}" />
                 </p:column>
-                <p:column headerText="Fecha Viaje" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.fecha_viaje}" />
+                <p:column headerText="Fecha Viaje" sortBy="#{viaje.fecha_viaje}" filterBy="#{viaje.fecha_viaje}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.fecha_viaje}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
                 </p:column>
-                <p:column headerText="Código Viaje" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.codigo_viaje}" />
+                <p:column headerText="Código Viaje" sortBy="#{viaje.codigo_viaje}" filterBy="#{viaje.codigo_viaje}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.codigo_viaje}" />
                 </p:column>
-                <p:column headerText="Nombre Viaje" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.nombre_viaje}" />
+                <p:column headerText="Nombre Viaje" sortBy="#{viaje.nombre_viaje}" filterBy="#{viaje.nombre_viaje}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.nombre_viaje}" />
                 </p:column>
-                <p:column headerText="Vehículo" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.vehiculo}" />
+                <p:column headerText="Vehículo" sortBy="#{viaje.vehiculo}" filterBy="#{viaje.vehiculo}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.vehiculo}" />
                 </p:column>
-                <p:column headerText="Placa Vehículo" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.placa_vehiculo}" />
+                <p:column headerText="Placa Vehículo" sortBy="#{viaje.placa_vehiculo}" filterBy="#{viaje.placa_vehiculo}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.placa_vehiculo}" />
                 </p:column>
-                <p:column headerText="Código Transportista" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.codigo_transportista}" />
+                <p:column headerText="Código Transportista" sortBy="#{viaje.codigo_transportista}" filterBy="#{viaje.codigo_transportista}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.codigo_transportista}" />
                 </p:column>
-                <p:column headerText="Nombre Transportista" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.nombre_transportista}" />
+                <p:column headerText="Nombre Transportista" sortBy="#{viaje.nombre_transportista}" filterBy="#{viaje.nombre_transportista}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.nombre_transportista}" />
                 </p:column>
-                <p:column headerText="Tipo Orden" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.tipo_orden_venta}" />
+                <p:column headerText="Tipo Orden" sortBy="#{viaje.tipo_orden_venta}" filterBy="#{viaje.tipo_orden_venta}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.tipo_orden_venta}" />
                 </p:column>
-                <p:column headerText="No. Orden" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.numero_orden_venta}" />
+                <p:column headerText="No. Orden" sortBy="#{viaje.numero_orden_venta}" filterBy="#{viaje.numero_orden_venta}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.numero_orden_venta}" />
                 </p:column>
-                <p:column headerText="Código Cliente" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.codigo_cliente}" />
+                <p:column headerText="Código Cliente" sortBy="#{viaje.codigo_cliente}" filterBy="#{viaje.codigo_cliente}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.codigo_cliente}" />
                 </p:column>
-                <p:column headerText="Nombre Cliente" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.nombre_cliente}" />
+                <p:column headerText="Nombre Cliente" sortBy="#{viaje.nombre_cliente}" filterBy="#{viaje.nombre_cliente}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.nombre_cliente}" />
                 </p:column>
-                <p:column headerText="Código Cliente Destino" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.codigo_cliente_destino}" />
+                <p:column headerText="Código Cliente Destino" sortBy="#{viaje.codigo_cliente_destino}" filterBy="#{viaje.codigo_cliente_destino}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.codigo_cliente_destino}" />
                 </p:column>
-                <p:column headerText="Nombre Cliente Destino" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.nombre_cliente_destino}" />
+                <p:column headerText="Nombre Cliente Destino" sortBy="#{viaje.nombre_cliente_destino}" filterBy="#{viaje.nombre_cliente_destino}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.nombre_cliente_destino}" />
                 </p:column>
-                <p:column headerText="Tipo Flete" style="width: 200px;">
-                    <h:outputText value="#{registro_tabla.tipo_flete_viaje}" />
+                <p:column headerText="Tipo Flete" sortBy="#{viaje.tipo_flete_viaje}" filterBy="#{viaje.tipo_flete_viaje}" filterMatchMode="contains" style="width: 200px;">
+                    <h:outputText value="#{viaje.tipo_flete_viaje}" />
                 </p:column>
             </p:dataTable>
         </p:panel>
