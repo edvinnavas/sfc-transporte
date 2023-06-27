@@ -87,15 +87,15 @@ public class Viajes implements Serializable {
                 
                 Entidad.Transportista transportista = new Entidad.Transportista();
                 transportista.setId_transportista(rs.getLong(7));
-                transportista.setCodigo(ctrl_base_datos.ObtenerString("SELECT A.CODIGO FROM TRANSPORTISTA A WHERE A.ID_TRANSPORTISTA=" + rs.getLong(7), conn));
-                transportista.setNombre(ctrl_base_datos.ObtenerString("SELECT A.NOMBRE FROM TRANSPORTISTA A WHERE A.ID_TRANSPORTISTA=" + rs.getLong(7), conn));
+                transportista.setCodigo(ctrl_base_datos.ObtenerString("SELECT A.CODIGO FROM TRANSPORTISTA A WHERE A.ID_TRANSPORTISTA=" + rs.getLong(8), conn));
+                transportista.setNombre(ctrl_base_datos.ObtenerString("SELECT A.NOMBRE FROM TRANSPORTISTA A WHERE A.ID_TRANSPORTISTA=" + rs.getLong(8), conn));
                 transportista.setPais(pais);
                 viaje.setTransportista(transportista);
                 
                 Entidad.Vehiculo vehiculo = new Entidad.Vehiculo();
                 vehiculo.setId_vehiculo(rs.getLong(8));
-                vehiculo.setCodigo(ctrl_base_datos.ObtenerString("SELECT A.CODIGO FROM VEHICULO A WHERE A.ID_VEHICULO=" + rs.getLong(8), conn));
-                vehiculo.setPlaca(ctrl_base_datos.ObtenerString("SELECT A.PLACA FROM VEHICULO A WHERE A.ID_VEHICULO=" + rs.getLong(8), conn));
+                vehiculo.setCodigo(ctrl_base_datos.ObtenerString("SELECT A.CODIGO FROM VEHICULO A WHERE A.ID_VEHICULO=" + rs.getLong(7), conn));
+                vehiculo.setPlaca(ctrl_base_datos.ObtenerString("SELECT A.PLACA FROM VEHICULO A WHERE A.ID_VEHICULO=" + rs.getLong(7), conn));
                 vehiculo.setTransportista(transportista);
                 viaje.setVehiculo(vehiculo);
                 

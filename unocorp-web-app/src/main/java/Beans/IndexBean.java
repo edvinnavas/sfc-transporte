@@ -40,7 +40,6 @@ public class IndexBean implements Serializable {
         try {
             ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
             String json_result = cliente_rest_api.autenticar(this.txt_usuario, this.pass_contrasena);
-            System.out.println("JSON-RESULT: " + json_result);
             if (!json_result.equals("Usuario no autenticado.")) {
                 Type usuario_type = new TypeToken<Entidades.Usuario>() {
                 }.getType();
