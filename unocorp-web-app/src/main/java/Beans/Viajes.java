@@ -27,7 +27,6 @@ public class Viajes implements Serializable {
     private Entidades.UsuarioSesion usuario_sesion;
     private List<Entidades.RegTblViajes> lst_reg_tbl_viajes;
     private Entidades.RegTblViajes sel_reg_tbl_viajes;
-
     private Date fecha_inicial;
     private Date fecha_final;
 
@@ -35,10 +34,8 @@ public class Viajes implements Serializable {
     public void init() {
         try {
             this.lst_reg_tbl_viajes = new ArrayList<>();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String fechap = "2023-01-15";
-            this.fecha_inicial = dateFormat.parse(fechap);
-            this.fecha_final = dateFormat.parse(fechap);
+            this.fecha_inicial = new Date();
+            this.fecha_final = new Date();
             this.filtrar_tabla();
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));

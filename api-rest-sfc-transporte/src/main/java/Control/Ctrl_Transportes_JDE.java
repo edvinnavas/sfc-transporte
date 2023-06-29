@@ -51,7 +51,7 @@ public class Ctrl_Transportes_JDE implements Serializable {
                     + "FROM "
                     + "PRODDTA.F4960 A LEFT JOIN PRODDTA.F49631 C ON (A.TMVMCU=C.TOVMCU AND A.TMLDNM=C.TOLDNM) "
                     + "WHERE "
-                    + "A.TMLOAD=" + TMLOAD + " AND TRIM(A.TMURCD) IS NULL AND C.TODOCO>0";
+                    + "A.TMLOAD=" + TMLOAD + " AND C.TODOCO>0 AND TRIM(C.TOKCOO) IS NOT NULL";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
             while (rs.next()) {

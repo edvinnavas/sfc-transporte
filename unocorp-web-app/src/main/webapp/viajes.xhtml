@@ -6,89 +6,97 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="WEB-INF/plantilla/plantilla.xhtml">
     <ui:define name="contenido">
-        <p:panel header="Viajes" style="font-size: 10px;">
+        <p:panel header="Viajes">
             <p:growl id="msgViajes" showDetail="true"/>
-            <h:panelGrid columns="4">
-                <p:outputLabel value="Fecha inicial"/>
+            <p:panelGrid columns="4">
+                <p:outputLabel value="Fecha inicial" style="font-weight: bold; font-size: 12px;"/>
                 <p:calendar id="calFechaInicial" value="#{Viajes.fecha_inicial}" pattern="dd/MM/yyyy">
                     <p:ajax event="dateSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
                 </p:calendar>
-                <p:outputLabel value="Fecha final"/>
+                <p:outputLabel value="Fecha final" style="font-weight: bold; font-size: 12px;"/>
                 <p:calendar id="calFechaFinal" value="#{Viajes.fecha_final}" pattern="dd/MM/yyyy">
                     <p:ajax event="dateSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
                 </p:calendar>
-            </h:panelGrid>
+            </p:panelGrid>
             <p:dataTable 
-                id="tblViajes" var="viaje" widgetVar="widgetTblViajes" value="#{Viajes.lst_reg_tbl_viajes}"
-                selectionMode="single" selection="#{Viajes.sel_reg_tbl_viajes}" rowKey="#{viaje.id_reg_tbl_viajes}"
-                paginator="true" rows="10" rowsPerPageTemplate="10,20,30" 
-                paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
-                <p:column headerText="Id" sortBy="#{viaje.id_reg_tbl_viajes}" filterBy="#{viaje.id_reg_tbl_viajes}" filterMatchMode="contains" style="width: 200px;">
+                id="tblViajes" 
+                var="viaje" 
+                widgetVar="widgetTblViajes" 
+                value="#{Viajes.lst_reg_tbl_viajes}"
+                selectionMode="single" 
+                selection="#{Viajes.sel_reg_tbl_viajes}" 
+                rowKey="#{viaje.id_reg_tbl_viajes}"
+                paginator="true" 
+                rows="10" 
+                rowsPerPageTemplate="10,20,30" 
+                paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                style="font-size: 12px;">
+                <p:column headerText="Id" sortBy="#{viaje.id_reg_tbl_viajes}" filterBy="#{viaje.id_reg_tbl_viajes}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.id_reg_tbl_viajes}" />
                 </p:column>
-                <p:column headerText="Código País" sortBy="#{viaje.codigo_pais}" filterBy="#{viaje.codigo_pais}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Código País" sortBy="#{viaje.codigo_pais}" filterBy="#{viaje.codigo_pais}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.codigo_pais}" />
                 </p:column>
-                <p:column headerText="Nombre País" sortBy="#{viaje.nombre_pais}" filterBy="#{viaje.nombre_pais}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Nombre País" sortBy="#{viaje.nombre_pais}" filterBy="#{viaje.nombre_pais}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.nombre_pais}" />
                 </p:column>
-                <p:column headerText="Código Compañía" sortBy="#{viaje.codigo_compania}" filterBy="#{viaje.codigo_compania}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Código Compañía" sortBy="#{viaje.codigo_compania}" filterBy="#{viaje.codigo_compania}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.codigo_compania}" />
                 </p:column>
-                <p:column headerText="Nombre Compañía" sortBy="#{viaje.nombre_compania}" filterBy="#{viaje.nombre_compania}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Nombre Compañía" sortBy="#{viaje.nombre_compania}" filterBy="#{viaje.nombre_compania}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.nombre_compania}" />
                 </p:column>
-                <p:column headerText="Código Planta" sortBy="#{viaje.codigo_planta}" filterBy="#{viaje.codigo_planta}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Código Planta" sortBy="#{viaje.codigo_planta}" filterBy="#{viaje.codigo_planta}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.codigo_planta}" />
                 </p:column>
-                <p:column headerText="Nombre Planta" sortBy="#{viaje.nombre_planta}" filterBy="#{viaje.nombre_planta}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Nombre Planta" sortBy="#{viaje.nombre_planta}" filterBy="#{viaje.nombre_planta}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.nombre_planta}" />
                 </p:column>
-                <p:column headerText="Número Viaje" sortBy="#{viaje.numero_viaje}" filterBy="#{viaje.numero_viaje}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Número Viaje" sortBy="#{viaje.numero_viaje}" filterBy="#{viaje.numero_viaje}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.numero_viaje}" />
                 </p:column>
-                <p:column headerText="Fecha Viaje" sortBy="#{viaje.fecha_viaje}" filterBy="#{viaje.fecha_viaje}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Fecha Viaje" sortBy="#{viaje.fecha_viaje}" filterBy="#{viaje.fecha_viaje}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.fecha_viaje}">
                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                     </h:outputText>
                 </p:column>
-                <p:column headerText="Código Viaje" sortBy="#{viaje.codigo_viaje}" filterBy="#{viaje.codigo_viaje}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Código Viaje" sortBy="#{viaje.codigo_viaje}" filterBy="#{viaje.codigo_viaje}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.codigo_viaje}" />
                 </p:column>
-                <p:column headerText="Nombre Viaje" sortBy="#{viaje.nombre_viaje}" filterBy="#{viaje.nombre_viaje}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Nombre Viaje" sortBy="#{viaje.nombre_viaje}" filterBy="#{viaje.nombre_viaje}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.nombre_viaje}" />
                 </p:column>
-                <p:column headerText="Vehículo" sortBy="#{viaje.vehiculo}" filterBy="#{viaje.vehiculo}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Vehículo" sortBy="#{viaje.vehiculo}" filterBy="#{viaje.vehiculo}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.vehiculo}" />
                 </p:column>
-                <p:column headerText="Placa Vehículo" sortBy="#{viaje.placa_vehiculo}" filterBy="#{viaje.placa_vehiculo}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Placa Vehículo" sortBy="#{viaje.placa_vehiculo}" filterBy="#{viaje.placa_vehiculo}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.placa_vehiculo}" />
                 </p:column>
-                <p:column headerText="Código Transportista" sortBy="#{viaje.codigo_transportista}" filterBy="#{viaje.codigo_transportista}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Código Transportista" sortBy="#{viaje.codigo_transportista}" filterBy="#{viaje.codigo_transportista}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.codigo_transportista}" />
                 </p:column>
-                <p:column headerText="Nombre Transportista" sortBy="#{viaje.nombre_transportista}" filterBy="#{viaje.nombre_transportista}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Nombre Transportista" sortBy="#{viaje.nombre_transportista}" filterBy="#{viaje.nombre_transportista}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.nombre_transportista}" />
                 </p:column>
-                <p:column headerText="Tipo Orden" sortBy="#{viaje.tipo_orden_venta}" filterBy="#{viaje.tipo_orden_venta}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Tipo Orden" sortBy="#{viaje.tipo_orden_venta}" filterBy="#{viaje.tipo_orden_venta}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.tipo_orden_venta}" />
                 </p:column>
-                <p:column headerText="No. Orden" sortBy="#{viaje.numero_orden_venta}" filterBy="#{viaje.numero_orden_venta}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="No. Orden" sortBy="#{viaje.numero_orden_venta}" filterBy="#{viaje.numero_orden_venta}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.numero_orden_venta}" />
                 </p:column>
-                <p:column headerText="Código Cliente" sortBy="#{viaje.codigo_cliente}" filterBy="#{viaje.codigo_cliente}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Código Cliente" sortBy="#{viaje.codigo_cliente}" filterBy="#{viaje.codigo_cliente}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.codigo_cliente}" />
                 </p:column>
-                <p:column headerText="Nombre Cliente" sortBy="#{viaje.nombre_cliente}" filterBy="#{viaje.nombre_cliente}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Nombre Cliente" sortBy="#{viaje.nombre_cliente}" filterBy="#{viaje.nombre_cliente}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.nombre_cliente}" />
                 </p:column>
-                <p:column headerText="Código Cliente Destino" sortBy="#{viaje.codigo_cliente_destino}" filterBy="#{viaje.codigo_cliente_destino}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Código Cliente Destino" sortBy="#{viaje.codigo_cliente_destino}" filterBy="#{viaje.codigo_cliente_destino}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.codigo_cliente_destino}" />
                 </p:column>
-                <p:column headerText="Nombre Cliente Destino" sortBy="#{viaje.nombre_cliente_destino}" filterBy="#{viaje.nombre_cliente_destino}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Nombre Cliente Destino" sortBy="#{viaje.nombre_cliente_destino}" filterBy="#{viaje.nombre_cliente_destino}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.nombre_cliente_destino}" />
                 </p:column>
-                <p:column headerText="Tipo Flete" sortBy="#{viaje.tipo_flete_viaje}" filterBy="#{viaje.tipo_flete_viaje}" filterMatchMode="contains" style="width: 200px;">
+                <p:column headerText="Tipo Flete" sortBy="#{viaje.tipo_flete_viaje}" filterBy="#{viaje.tipo_flete_viaje}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.tipo_flete_viaje}" />
                 </p:column>
             </p:dataTable>
