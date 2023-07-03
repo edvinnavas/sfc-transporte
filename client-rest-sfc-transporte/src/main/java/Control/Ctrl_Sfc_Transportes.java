@@ -65,10 +65,11 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     rs.close();
                     stmt.close();
                     ID_PAIS++;
-                    cadenasql = "INSERT INTO PAIS (ID_PAIS, CODIGO, NOMBRE) VALUES ("
+                    cadenasql = "INSERT INTO PAIS (ID_PAIS, CODIGO, NOMBRE, FECHA_HORA) VALUES ("
                             + ID_PAIS + ",'"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_PAIS() + "','"
-                            + respuesta_sfc_transportes.getLista_viajes().get(i).getNOMBRE_PAIS().replaceAll("'", "") + "')";
+                            + respuesta_sfc_transportes.getLista_viajes().get(i).getNOMBRE_PAIS().replaceAll("'", "") + "',"
+                            + "CURRENT_TIMESTAMP" + ")";
                     stmt = conn.createStatement();
                     System.out.println(cadenasql);
                     stmt.executeUpdate(cadenasql);
@@ -94,11 +95,12 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     rs.close();
                     stmt.close();
                     ID_COMPANIA++;
-                    cadenasql = "INSERT INTO COMPANIA (ID_COMPANIA, CODIGO, NOMBRE, ID_PAIS) VALUES ("
+                    cadenasql = "INSERT INTO COMPANIA (ID_COMPANIA, CODIGO, NOMBRE, ID_PAIS, FECHA_HORA) VALUES ("
                             + ID_COMPANIA + ",'"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_COMPANIA() + "','"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getNOMBRE_COMPANIA().replaceAll("'", "") + "',"
-                            + ID_PAIS + ")";
+                            + ID_PAIS + ","
+                            + "CURRENT_TIMESTAMP" + ")";
                     stmt = conn.createStatement();
                     System.out.println(cadenasql);
                     stmt.executeUpdate(cadenasql);
@@ -124,11 +126,12 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     rs.close();
                     stmt.close();
                     ID_PLANTA++;
-                    cadenasql = "INSERT INTO PLANTA (ID_PLANTA, CODIGO, NOMBRE, ID_COMPANIA) VALUES ("
+                    cadenasql = "INSERT INTO PLANTA (ID_PLANTA, CODIGO, NOMBRE, ID_COMPANIA, FECHA_HORA) VALUES ("
                             + ID_PLANTA + ",'"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_PLANTA() + "','"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getNOMBRE_PLANTA().replaceAll("'", "") + "',"
-                            + ID_COMPANIA + ")";
+                            + ID_COMPANIA + ","
+                            + "CURRENT_TIMESTAMP" + ")";
                     stmt = conn.createStatement();
                     System.out.println(cadenasql);
                     stmt.executeUpdate(cadenasql);
@@ -154,10 +157,11 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     rs.close();
                     stmt.close();
                     ID_ESTADO_VIAJE++;
-                    cadenasql = "INSERT INTO ESTADO_VIAJE (ID_ESTADO_VIAJE, CODIGO, NOMBRE) VALUES ("
+                    cadenasql = "INSERT INTO ESTADO_VIAJE (ID_ESTADO_VIAJE, CODIGO, NOMBRE, FECHA_HORA) VALUES ("
                             + ID_ESTADO_VIAJE + ",'"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_ESTADO_VIAJE() + "','"
-                            + respuesta_sfc_transportes.getLista_viajes().get(i).getNOMBRE_ESTADO_VIAJE().replaceAll("'", "") + "')";
+                            + respuesta_sfc_transportes.getLista_viajes().get(i).getNOMBRE_ESTADO_VIAJE().replaceAll("'", "") + "',"
+                            + "CURRENT_TIMESTAMP" + ")";
                     stmt = conn.createStatement();
                     System.out.println(cadenasql);
                     stmt.executeUpdate(cadenasql);
@@ -183,11 +187,12 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     rs.close();
                     stmt.close();
                     ID_TRANSPORTISTA++;
-                    cadenasql = "INSERT INTO TRANSPORTISTA (ID_TRANSPORTISTA, CODIGO, NOMBRE, ID_PAIS) VALUES ("
+                    cadenasql = "INSERT INTO TRANSPORTISTA (ID_TRANSPORTISTA, CODIGO, NOMBRE, ID_PAIS, FECHA_HORA) VALUES ("
                             + ID_TRANSPORTISTA + ",'"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_TRANSPORTISTA() + "','"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getNOMBRE_TRANSPORTISTA().replaceAll("'", "") + "',"
-                            + ID_PAIS + ")";
+                            + ID_PAIS + ","
+                            + "CURRENT_TIMESTAMP" + ")";
                     stmt = conn.createStatement();
                     System.out.println(cadenasql);
                     stmt.executeUpdate(cadenasql);
@@ -213,11 +218,12 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     rs.close();
                     stmt.close();
                     ID_VEHICULO++;
-                    cadenasql = "INSERT INTO VEHICULO (ID_VEHICULO, CODIGO, PLACA, ID_TRANSPORTISTA) VALUES ("
+                    cadenasql = "INSERT INTO VEHICULO (ID_VEHICULO, CODIGO, PLACA, ID_TRANSPORTISTA, FECHA_HORA) VALUES ("
                             + ID_VEHICULO + ",'"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getVEHICULO().replaceAll("'", "") + "','"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getPLACA_VEHICULO().replaceAll("'", "") + "',"
-                            + ID_TRANSPORTISTA + ")";
+                            + ID_TRANSPORTISTA + ","
+                            + "CURRENT_TIMESTAMP" + ")";
                     stmt = conn.createStatement();
                     System.out.println(cadenasql);
                     stmt.executeUpdate(cadenasql);
@@ -243,10 +249,11 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     rs.close();
                     stmt.close();
                     ID_CLIENTE++;
-                    cadenasql = "INSERT INTO CLIENTE (ID_CLIENTE, CODIGO, NOMBRE) VALUES ("
+                    cadenasql = "INSERT INTO CLIENTE (ID_CLIENTE, CODIGO, NOMBRE, FECHA_HORA) VALUES ("
                             + ID_CLIENTE + ",'"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_CLIENTE() + "','"
-                            + respuesta_sfc_transportes.getLista_viajes().get(i).getNOMBRE_CLIENTE().replaceAll("'", "") + "')";
+                            + respuesta_sfc_transportes.getLista_viajes().get(i).getNOMBRE_CLIENTE().replaceAll("'", "") + "',"
+                            + "CURRENT_TIMESTAMP" + ")";
                     stmt = conn.createStatement();
                     System.out.println(cadenasql);
                     stmt.executeUpdate(cadenasql);
@@ -272,11 +279,12 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     rs.close();
                     stmt.close();
                     ID_CLIENTE_DESTINO++;
-                    cadenasql = "INSERT INTO CLIENTE_DESTINO (ID_CLIENTE_DESTINO, CODIGO, NOMBRE, ID_CLIENTE) VALUES ("
+                    cadenasql = "INSERT INTO CLIENTE_DESTINO (ID_CLIENTE_DESTINO, CODIGO, NOMBRE, ID_CLIENTE, FECHA_HORA) VALUES ("
                             + ID_CLIENTE_DESTINO + ",'"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_CLIENTE_DESTINO() + "','"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getNOMBRE_CLIENTE_DESTINO().replaceAll("'", "") + "',"
-                            + ID_CLIENTE + ")";
+                            + ID_CLIENTE + ","
+                            + "CURRENT_TIMESTAMP" + ")";
                     stmt = conn.createStatement();
                     System.out.println(cadenasql);
                     stmt.executeUpdate(cadenasql);
@@ -302,6 +310,13 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                 }
                 rs.close();
                 stmt.close();
+                
+                String ESTADO = "";
+                if(Objects.equals(ID_ESTADO_VIAJE, Long.valueOf("1")) || Objects.equals(ID_ESTADO_VIAJE, Long.valueOf("2")) || Objects.equals(ID_ESTADO_VIAJE, Long.valueOf("5"))) {
+                    ESTADO = "TER";
+                } else {
+                    ESTADO = "ACT";
+                }
                 
                 if (exite_viaje) {
                     cadenasql = "UPDATE VIAJES SET "
@@ -331,7 +346,9 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                             + "NUMERO_ORDEN_VENTA, "
                             + "ID_CLIENTE, "
                             + "ID_CLIENTE_DESTINO, "
-                            + "TIPO_FLETE_VIAJE) VALUES ("
+                            + "TIPO_FLETE_VIAJE, "
+                            + "FECHA_HORA,"
+                            + "ESTADO) VALUES ("
                             + ID_PAIS + ","
                             + ID_COMPANIA + ","
                             + ID_PLANTA + ","
@@ -344,7 +361,9 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getNUMERO_ORDEN_VENTA() + ","
                             + ID_CLIENTE + ","
                             + ID_CLIENTE_DESTINO + ",'"
-                            + respuesta_sfc_transportes.getLista_viajes().get(i).getTIPO_FLETE_VIAJE() + "')";
+                            + respuesta_sfc_transportes.getLista_viajes().get(i).getTIPO_FLETE_VIAJE() + "',"
+                            + "CURRENT_TIMESTAMP" + ",'" 
+                            + ESTADO + "')";
                     stmt = conn.createStatement();
                     System.out.println(cadenasql);
                     stmt.executeUpdate(cadenasql);
