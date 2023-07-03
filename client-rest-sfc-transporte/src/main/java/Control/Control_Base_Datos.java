@@ -26,7 +26,7 @@ public class Control_Base_Datos implements Serializable {
 
             Class.forName("com.mysql.jdbc.Driver");
             resultado = DriverManager.getConnection("jdbc:mysql://" + this.host_mysql_db + ":3306/db_transportes", usuario_db, contrasena_db);
-            System.out.println("Conexión satisfactoria: " + usuario_db);
+            // System.out.println("Conexión satisfactoria: " + usuario_db);
         } catch (Exception ex) {
             resultado = null;
             System.out.println("PROYECTO:client-rest-sfc-transporte|CLASE:" + this.getClass().getName() + "|METODO:obtener_conexion_mysql()|ERROR:" + ex.toString());

@@ -46,7 +46,6 @@ public class Viajes implements Serializable {
     public void cargar_vista(Entidades.UsuarioSesion usuario_sesion) {
         try {
             this.usuario_sesion = usuario_sesion;
-            System.out.println("USUARIO: " + this.usuario_sesion.getNombre_usuario());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje del sistema.", "Vista-Viajes."));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
@@ -59,7 +58,7 @@ public class Viajes implements Serializable {
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
             ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
             String json_result = cliente_rest_api.lista_viajes(dateFormat1.format(this.fecha_inicial), dateFormat1.format(this.fecha_final));
-
+            
             Type lista_viaje_type = new TypeToken<List<Entidades.Viaje>>() {
             }.getType();
             List<Entidades.Viaje> lista_viajes = new Gson().fromJson(json_result, lista_viaje_type);

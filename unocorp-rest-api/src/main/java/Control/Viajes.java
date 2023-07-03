@@ -49,7 +49,7 @@ public class Viajes implements Serializable {
                     + "V.TIPO_FLETE_VIAJE, "
                     + "V.FECHA_HORA, "
                     + "V.ESTADO, "
-                    + "V.FECHA_HORA_TERMINADO "
+                    + "IFNULL(V.FECHA_HORA_TERMINADO, DATE('2000-01-01')) FECHA_HORA_TERMINADO "
                     + "FROM "
                     + "VIAJES V "
                     + "WHERE "
