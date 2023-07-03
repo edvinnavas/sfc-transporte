@@ -38,17 +38,18 @@ public class MyResource implements Serializable {
     }
     
     @GET
-    @Path("lista_viajes/{fecha_inicio}/{fecha_final}")
+    @Path("lista_viajes/{fecha_inicio}/{fecha_final}/{estado}")
     @Produces(MediaType.APPLICATION_JSON)
     public String lista_viajes(
             @PathParam("fecha_inicio") String fecha_inicio, 
-            @PathParam("fecha_final") String fecha_final) {
+            @PathParam("fecha_final") String fecha_final,
+            @PathParam("estado") String estado) {
         
         String resultado;
 
         try {
             Control.Viajes ctrl_viajes = new Control.Viajes();
-            resultado = ctrl_viajes.lista_viajes(fecha_inicio, fecha_final);
+            resultado = ctrl_viajes.lista_viajes(fecha_inicio, fecha_final, estado);
         } catch (Exception ex) {
             resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: autenticar(), ERRROR: " + ex.toString();
         }

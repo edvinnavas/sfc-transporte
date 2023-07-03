@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="WEB-INF/plantilla/plantilla.xhtml">
     <ui:define name="contenido">
         <p:panel header="Viajes">
             <p:growl id="msgViajes" showDetail="true"/>
-            <p:panelGrid columns="4">
+            <p:panelGrid columns="6">
                 <p:outputLabel value="Fecha inicial" style="font-weight: bold; font-size: 12px;"/>
-                <p:calendar id="calFechaInicial" value="#{Viajes.fecha_inicial}" pattern="dd/MM/yyyy">
+                <p:calendar id="calFechaInicial" value="#{Viajes.fecha_inicial}" pattern="dd/MM/yyyy" style="font-size: 12px;">
                     <p:ajax event="dateSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
                 </p:calendar>
                 <p:outputLabel value="Fecha final" style="font-weight: bold; font-size: 12px;"/>
-                <p:calendar id="calFechaFinal" value="#{Viajes.fecha_final}" pattern="dd/MM/yyyy">
+                <p:calendar id="calFechaFinal" value="#{Viajes.fecha_final}" pattern="dd/MM/yyyy" style="font-size: 12px;">
                     <p:ajax event="dateSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
                 </p:calendar>
+                <p:outputLabel value="Estado" style="font-weight: bold; font-size: 12px;"/>
+                <p:selectOneMenu id="cbxEstado" value="#{Viajes.estado}" style="font-size: 12px;">
+                    <f:selectItem itemLabel="Ambos" itemValue="Ambos"/>
+                    <f:selectItem itemLabel="Activos" itemValue="ACT"/>
+                    <f:selectItem itemLabel="Terminados" itemValue="TER"/>
+                    <p:ajax event="itemSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
+                </p:selectOneMenu>
             </p:panelGrid>
             <p:dataTable 
                 id="tblViajes" 

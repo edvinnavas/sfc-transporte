@@ -17,7 +17,7 @@ public class Viajes implements Serializable {
     public Viajes() {
     }
 
-    public String lista_viajes(String fecha_inicio, String fecha_final) {
+    public String lista_viajes(String fecha_inicio, String fecha_final, String estado) {
         String resultado = "";
         
         Connection conn = null;
@@ -32,6 +32,10 @@ public class Viajes implements Serializable {
             conn.setAutoCommit(false);
             
             List<Entidad.Viaje> lista_viajes = new ArrayList<>();
+            
+            if(estado.equals("Ambos")) {
+                estado = "%%";
+            }
             
             String cadenasql = "SELECT "
                     + "V.ID_PAIS, "
@@ -53,7 +57,8 @@ public class Viajes implements Serializable {
                     + "FROM "
                     + "VIAJES V "
                     + "WHERE "
-                    + "V.FECHA_VIAJE BETWEEN '" + dateFormat2.format(dateFormat1.parse(fecha_inicio)) + "' AND '" + dateFormat2.format(dateFormat1.parse(fecha_final)) + "'";
+                    + "V.FECHA_VIAJE BETWEEN '" + dateFormat2.format(dateFormat1.parse(fecha_inicio)) + "' AND '" + dateFormat2.format(dateFormat1.parse(fecha_final)) + "' AND "
+                    + "V.ESTADO LIKE '" + estado + "'";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
             while(rs.next()) {
