@@ -26,31 +26,31 @@ public class Ctrl_Sfc_Transportes implements Serializable {
 
     public String obtner_viajes(String fecha) {
         String resultado = "";
-        
+
         Connection conn = null;
 
         try {
             Control_Base_Datos control_base_datos = new Control_Base_Datos();
             conn = control_base_datos.obtener_conexion_mysql();
-            
+
             conn.setAutoCommit(false);
-            
+
             Cliente_Rest_SFC_JDE cliente_rest_sfc_jde = new Cliente_Rest_SFC_JDE(user_rest_sfc, pass_rest_sfc);
             String response_obtener_viajes = cliente_rest_sfc_jde.obtener_viajes(fecha);
 
             Type respuesta_ws_viaje_type = new TypeToken<Respuesta_WS_Viaje>() {
             }.getType();
             Respuesta_WS_Viaje respuesta_sfc_transportes = new Gson().fromJson(response_obtener_viajes, respuesta_ws_viaje_type);
-            
+
             for (Integer i = 0; i < respuesta_sfc_transportes.getLista_viajes().size(); i++) {
                 SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd-MM-yyyy");
                 SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
-                
+
                 Long ID_PAIS = Long.valueOf("0");
                 String cadenasql = "SELECT P.ID_PAIS FROM PAIS P WHERE P.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_PAIS() + "'";
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(cadenasql);
-                while(rs.next()) {
+                while (rs.next()) {
                     ID_PAIS = rs.getLong(1);
                 }
                 rs.close();
@@ -59,7 +59,7 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     cadenasql = "SELECT IFNULL(MAX(P.ID_PAIS),0) FROM PAIS P";
                     stmt = conn.createStatement();
                     rs = stmt.executeQuery(cadenasql);
-                    while(rs.next()) {
+                    while (rs.next()) {
                         ID_PAIS = rs.getLong(1);
                     }
                     rs.close();
@@ -75,12 +75,12 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     stmt.executeUpdate(cadenasql);
                     stmt.close();
                 }
-                
+
                 Long ID_COMPANIA = Long.valueOf("0");
                 cadenasql = "SELECT C.ID_COMPANIA FROM COMPANIA C WHERE C.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_COMPANIA() + "'";
                 stmt = conn.createStatement();
                 rs = stmt.executeQuery(cadenasql);
-                while(rs.next()) {
+                while (rs.next()) {
                     ID_COMPANIA = rs.getLong(1);
                 }
                 rs.close();
@@ -89,7 +89,7 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     cadenasql = "SELECT IFNULL(MAX(C.ID_COMPANIA),0) FROM COMPANIA C";
                     stmt = conn.createStatement();
                     rs = stmt.executeQuery(cadenasql);
-                    while(rs.next()) {
+                    while (rs.next()) {
                         ID_COMPANIA = rs.getLong(1);
                     }
                     rs.close();
@@ -106,12 +106,12 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     stmt.executeUpdate(cadenasql);
                     stmt.close();
                 }
-                
+
                 Long ID_PLANTA = Long.valueOf("0");
                 cadenasql = "SELECT P.ID_PLANTA FROM PLANTA P WHERE P.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_PLANTA() + "'";
                 stmt = conn.createStatement();
                 rs = stmt.executeQuery(cadenasql);
-                while(rs.next()) {
+                while (rs.next()) {
                     ID_PLANTA = rs.getLong(1);
                 }
                 rs.close();
@@ -120,7 +120,7 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     cadenasql = "SELECT IFNULL(MAX(P.ID_PLANTA),0) FROM PLANTA P";
                     stmt = conn.createStatement();
                     rs = stmt.executeQuery(cadenasql);
-                    while(rs.next()) {
+                    while (rs.next()) {
                         ID_PLANTA = rs.getLong(1);
                     }
                     rs.close();
@@ -137,12 +137,12 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     stmt.executeUpdate(cadenasql);
                     stmt.close();
                 }
-                
+
                 Long ID_ESTADO_VIAJE = Long.valueOf("0");
                 cadenasql = "SELECT EV.ID_ESTADO_VIAJE FROM ESTADO_VIAJE EV WHERE EV.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_ESTADO_VIAJE() + "'";
                 stmt = conn.createStatement();
                 rs = stmt.executeQuery(cadenasql);
-                while(rs.next()) {
+                while (rs.next()) {
                     ID_ESTADO_VIAJE = rs.getLong(1);
                 }
                 rs.close();
@@ -151,7 +151,7 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     cadenasql = "SELECT IFNULL(MAX(EV.ID_ESTADO_VIAJE),0) FROM ESTADO_VIAJE EV";
                     stmt = conn.createStatement();
                     rs = stmt.executeQuery(cadenasql);
-                    while(rs.next()) {
+                    while (rs.next()) {
                         ID_ESTADO_VIAJE = rs.getLong(1);
                     }
                     rs.close();
@@ -167,12 +167,12 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     stmt.executeUpdate(cadenasql);
                     stmt.close();
                 }
-                
+
                 Long ID_TRANSPORTISTA = Long.valueOf("0");
                 cadenasql = "SELECT T.ID_TRANSPORTISTA FROM TRANSPORTISTA T WHERE T.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_TRANSPORTISTA() + "'";
                 stmt = conn.createStatement();
                 rs = stmt.executeQuery(cadenasql);
-                while(rs.next()) {
+                while (rs.next()) {
                     ID_TRANSPORTISTA = rs.getLong(1);
                 }
                 rs.close();
@@ -181,7 +181,7 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     cadenasql = "SELECT IFNULL(MAX(T.ID_TRANSPORTISTA),0) FROM TRANSPORTISTA T";
                     stmt = conn.createStatement();
                     rs = stmt.executeQuery(cadenasql);
-                    while(rs.next()) {
+                    while (rs.next()) {
                         ID_TRANSPORTISTA = rs.getLong(1);
                     }
                     rs.close();
@@ -198,12 +198,12 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     stmt.executeUpdate(cadenasql);
                     stmt.close();
                 }
-                
+
                 Long ID_VEHICULO = Long.valueOf("0");
                 cadenasql = "SELECT V.ID_VEHICULO FROM VEHICULO V WHERE V.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getVEHICULO().replaceAll("'", "") + "'";
                 stmt = conn.createStatement();
                 rs = stmt.executeQuery(cadenasql);
-                while(rs.next()) {
+                while (rs.next()) {
                     ID_VEHICULO = rs.getLong(1);
                 }
                 rs.close();
@@ -212,7 +212,7 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     cadenasql = "SELECT IFNULL(MAX(V.ID_VEHICULO),0) FROM VEHICULO V";
                     stmt = conn.createStatement();
                     rs = stmt.executeQuery(cadenasql);
-                    while(rs.next()) {
+                    while (rs.next()) {
                         ID_VEHICULO = rs.getLong(1);
                     }
                     rs.close();
@@ -229,12 +229,12 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     stmt.executeUpdate(cadenasql);
                     stmt.close();
                 }
-                
+
                 Long ID_CLIENTE = Long.valueOf("0");
                 cadenasql = "SELECT C.ID_CLIENTE FROM CLIENTE C WHERE C.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_CLIENTE() + "'";
                 stmt = conn.createStatement();
                 rs = stmt.executeQuery(cadenasql);
-                while(rs.next()) {
+                while (rs.next()) {
                     ID_CLIENTE = rs.getLong(1);
                 }
                 rs.close();
@@ -243,7 +243,7 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     cadenasql = "SELECT IFNULL(MAX(C.ID_CLIENTE),0) FROM CLIENTE C";
                     stmt = conn.createStatement();
                     rs = stmt.executeQuery(cadenasql);
-                    while(rs.next()) {
+                    while (rs.next()) {
                         ID_CLIENTE = rs.getLong(1);
                     }
                     rs.close();
@@ -259,12 +259,12 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     stmt.executeUpdate(cadenasql);
                     stmt.close();
                 }
-                
+
                 Long ID_CLIENTE_DESTINO = Long.valueOf("0");
                 cadenasql = "SELECT CD.ID_CLIENTE_DESTINO FROM CLIENTE_DESTINO CD WHERE CD.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_CLIENTE_DESTINO() + "'";
                 stmt = conn.createStatement();
                 rs = stmt.executeQuery(cadenasql);
-                while(rs.next()) {
+                while (rs.next()) {
                     ID_CLIENTE_DESTINO = rs.getLong(1);
                 }
                 rs.close();
@@ -273,7 +273,7 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     cadenasql = "SELECT IFNULL(MAX(CD.ID_CLIENTE_DESTINO),0) FROM CLIENTE_DESTINO CD";
                     stmt = conn.createStatement();
                     rs = stmt.executeQuery(cadenasql);
-                    while(rs.next()) {
+                    while (rs.next()) {
                         ID_CLIENTE_DESTINO = rs.getLong(1);
                     }
                     rs.close();
@@ -290,12 +290,15 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     stmt.executeUpdate(cadenasql);
                     stmt.close();
                 }
-                
+
                 Boolean exite_viaje = false;
+                String ESTADO_ACTUAL = "";
                 cadenasql = "SELECT "
                         + "V.ID_PLANTA, "
-                        + "V.NUMERO_VIAJE "
-                        + "FROM VIAJES V "
+                        + "V.NUMERO_VIAJE, "
+                        + "V.ESTADO "
+                        + "FROM "
+                        + "VIAJES V "
                         + "WHERE "
                         + "V.ID_PAIS=" + ID_PAIS + " AND "
                         + "V.ID_COMPANIA=" + ID_COMPANIA + " AND "
@@ -305,38 +308,41 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                         + "V.NUMERO_ORDEN_VENTA=" + respuesta_sfc_transportes.getLista_viajes().get(i).getNUMERO_ORDEN_VENTA();
                 stmt = conn.createStatement();
                 rs = stmt.executeQuery(cadenasql);
-                while(rs.next()) {
+                while (rs.next()) {
                     exite_viaje = true;
+                    ESTADO_ACTUAL = rs.getString(3);
                 }
                 rs.close();
                 stmt.close();
-                
+
                 String ESTADO;
                 String FECHA_HORA_TERMINADO;
-                if(Objects.equals(ID_ESTADO_VIAJE, Long.valueOf("1")) || Objects.equals(ID_ESTADO_VIAJE, Long.valueOf("2")) || Objects.equals(ID_ESTADO_VIAJE, Long.valueOf("5"))) {
+                if (Objects.equals(ID_ESTADO_VIAJE, Long.valueOf("1")) || Objects.equals(ID_ESTADO_VIAJE, Long.valueOf("2")) || Objects.equals(ID_ESTADO_VIAJE, Long.valueOf("5"))) {
                     ESTADO = "TER";
                     FECHA_HORA_TERMINADO = "CURRENT_TIMESTAMP";
                 } else {
                     ESTADO = "ACT";
                     FECHA_HORA_TERMINADO = "NULL";
                 }
-                
+
                 if (exite_viaje) {
-                    cadenasql = "UPDATE VIAJES SET "
-                            + "ID_ESTADO_VIAJE=" + ID_ESTADO_VIAJE + ", "
-                            + "ESTADO='" + ESTADO + "', "
-                            + "FECHA_HORA_TERMINADO=" + FECHA_HORA_TERMINADO + " "
-                            + "WHERE "
-                            + "ID_PAIS=" + ID_PAIS + " AND "
-                            + "ID_COMPANIA=" + ID_COMPANIA + " AND "
-                            + "ID_PLANTA=" + ID_PLANTA + " AND "
-                            + "NUMERO_VIAJE=" + respuesta_sfc_transportes.getLista_viajes().get(i).getNUMERO_VIAJE() + " AND "
-                            + "TIPO_ORDEN_VENTA='" + respuesta_sfc_transportes.getLista_viajes().get(i).getTIPO_ORDEN_VENTA() + "' AND "
-                            + "NUMERO_ORDEN_VENTA=" + respuesta_sfc_transportes.getLista_viajes().get(i).getNUMERO_ORDEN_VENTA();
-                    stmt = conn.createStatement();
-                    System.out.println(cadenasql);
-                    stmt.executeUpdate(cadenasql);
-                    stmt.close();
+                    if (!ESTADO_ACTUAL.equals("TER")) {
+                        cadenasql = "UPDATE VIAJES SET "
+                                + "ID_ESTADO_VIAJE=" + ID_ESTADO_VIAJE + ", "
+                                + "ESTADO='" + ESTADO + "', "
+                                + "FECHA_HORA_TERMINADO=" + FECHA_HORA_TERMINADO + " "
+                                + "WHERE "
+                                + "ID_PAIS=" + ID_PAIS + " AND "
+                                + "ID_COMPANIA=" + ID_COMPANIA + " AND "
+                                + "ID_PLANTA=" + ID_PLANTA + " AND "
+                                + "NUMERO_VIAJE=" + respuesta_sfc_transportes.getLista_viajes().get(i).getNUMERO_VIAJE() + " AND "
+                                + "TIPO_ORDEN_VENTA='" + respuesta_sfc_transportes.getLista_viajes().get(i).getTIPO_ORDEN_VENTA() + "' AND "
+                                + "NUMERO_ORDEN_VENTA=" + respuesta_sfc_transportes.getLista_viajes().get(i).getNUMERO_ORDEN_VENTA();
+                        stmt = conn.createStatement();
+                        System.out.println(cadenasql);
+                        stmt.executeUpdate(cadenasql);
+                        stmt.close();
+                    }
                 } else {
                     cadenasql = "INSERT INTO VIAJES ("
                             + "ID_PAIS, "
@@ -345,7 +351,7 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                             + "NUMERO_VIAJE, "
                             + "FECHA_VIAJE, "
                             + "ID_ESTADO_VIAJE, "
-                            + "ID_VEHICULO, "                            
+                            + "ID_VEHICULO, "
                             + "ID_TRANSPORTISTA, "
                             + "TIPO_ORDEN_VENTA, "
                             + "NUMERO_ORDEN_VENTA, "
@@ -368,8 +374,8 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                             + ID_CLIENTE + ","
                             + ID_CLIENTE_DESTINO + ",'"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getTIPO_FLETE_VIAJE() + "',"
-                            + "CURRENT_TIMESTAMP" + ",'" 
-                            + ESTADO + "'," 
+                            + "CURRENT_TIMESTAMP" + ",'"
+                            + ESTADO + "',"
                             + FECHA_HORA_TERMINADO + ")";
                     stmt = conn.createStatement();
                     System.out.println(cadenasql);
@@ -377,18 +383,18 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     stmt.close();
                 }
             }
-            
+
             conn.commit();
             conn.setAutoCommit(true);
-            
+
             resultado = "VIAJES ACTUALIZADOS EN TRANSPORTE-GPS.";
         } catch (Exception ex) {
             try {
-                if(conn != null) {
+                if (conn != null) {
                     conn.rollback();
                     conn.setAutoCommit(true);
                     conn = null;
-                    
+
                     resultado = "PROYECTO:client-rest-sfc-transporte|CLASE:" + this.getClass().getName() + "|METODO:obtner_viajes()|ERROR:" + ex.toString();
                     System.out.println("PROYECTO:client-rest-sfc-transporte|CLASE:" + this.getClass().getName() + "|METODO:obtner_viajes()|ERROR:" + ex.toString());
                 }
@@ -398,7 +404,7 @@ public class Ctrl_Sfc_Transportes implements Serializable {
             }
         } finally {
             try {
-                if(conn != null) {
+                if (conn != null) {
                     conn.close();
                 }
             } catch (Exception ex) {
