@@ -311,16 +311,21 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                 rs.close();
                 stmt.close();
                 
-                String ESTADO = "";
+                String ESTADO;
+                String FECHA_HORA_TERMINADO;
                 if(Objects.equals(ID_ESTADO_VIAJE, Long.valueOf("1")) || Objects.equals(ID_ESTADO_VIAJE, Long.valueOf("2")) || Objects.equals(ID_ESTADO_VIAJE, Long.valueOf("5"))) {
                     ESTADO = "TER";
+                    FECHA_HORA_TERMINADO = "CURRENT_TIMESTAMP";
                 } else {
                     ESTADO = "ACT";
+                    FECHA_HORA_TERMINADO = "NULL";
                 }
                 
                 if (exite_viaje) {
                     cadenasql = "UPDATE VIAJES SET "
-                            + "ID_ESTADO_VIAJE=" + ID_ESTADO_VIAJE + " "
+                            + "ID_ESTADO_VIAJE=" + ID_ESTADO_VIAJE + ", "
+                            + "ESTADO='" + ESTADO + "', "
+                            + "FECHA_HORA_TERMINADO=" + FECHA_HORA_TERMINADO + " "
                             + "WHERE "
                             + "ID_PAIS=" + ID_PAIS + " AND "
                             + "ID_COMPANIA=" + ID_COMPANIA + " AND "
@@ -347,8 +352,9 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                             + "ID_CLIENTE, "
                             + "ID_CLIENTE_DESTINO, "
                             + "TIPO_FLETE_VIAJE, "
-                            + "FECHA_HORA,"
-                            + "ESTADO) VALUES ("
+                            + "FECHA_HORA, "
+                            + "ESTADO, "
+                            + "FECHA_HORA_TERMINADO) VALUES ("
                             + ID_PAIS + ","
                             + ID_COMPANIA + ","
                             + ID_PLANTA + ","
@@ -363,7 +369,8 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                             + ID_CLIENTE_DESTINO + ",'"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getTIPO_FLETE_VIAJE() + "',"
                             + "CURRENT_TIMESTAMP" + ",'" 
-                            + ESTADO + "')";
+                            + ESTADO + "'," 
+                            + FECHA_HORA_TERMINADO + ")";
                     stmt = conn.createStatement();
                     System.out.println(cadenasql);
                     stmt.executeUpdate(cadenasql);
