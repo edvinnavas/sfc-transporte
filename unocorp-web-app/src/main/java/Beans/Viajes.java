@@ -64,8 +64,6 @@ public class Viajes implements Serializable {
             }.getType();
             List<Entidades.Viaje> lista_viajes = new Gson().fromJson(json_result, lista_viaje_type);
 
-            SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
-
             this.lst_reg_tbl_viajes = new ArrayList<>();
             
             for (Integer i = 0; i < lista_viajes.size(); i++) {
@@ -78,7 +76,7 @@ public class Viajes implements Serializable {
                 regtblviajes.setCodigo_planta(Long.valueOf(lista_viajes.get(i).getPlanta().getCodigo()));
                 regtblviajes.setNombre_planta(lista_viajes.get(i).getPlanta().getNombre());
                 regtblviajes.setNumero_viaje(lista_viajes.get(i).getNumero_viaje());
-                regtblviajes.setFecha_viaje(dateFormat2.parse(lista_viajes.get(i).getFecha_viaje()));
+                regtblviajes.setFecha_viaje(lista_viajes.get(i).getFecha_viaje());
                 regtblviajes.setCodigo_viaje(Integer.valueOf(lista_viajes.get(i).getEstado_viaje().getCodigo()));
                 regtblviajes.setNombre_viaje(lista_viajes.get(i).getEstado_viaje().getNombre());
                 regtblviajes.setVehiculo(lista_viajes.get(i).getVehiculo().getCodigo());
@@ -92,6 +90,9 @@ public class Viajes implements Serializable {
                 regtblviajes.setCodigo_cliente_destino(Long.valueOf(lista_viajes.get(i).getCliente_destino().getCodigo()));
                 regtblviajes.setNombre_cliente_destino(lista_viajes.get(i).getCliente_destino().getNombre());
                 regtblviajes.setTipo_flete_viaje(lista_viajes.get(i).getTipo_flete_viaje());
+                regtblviajes.setFecha_hora(lista_viajes.get(i).getFecha_hora());
+                regtblviajes.setEstado(lista_viajes.get(i).getEstado());
+                regtblviajes.setFecha_hora_terminado(lista_viajes.get(i).getFecha_hora_terminado());
                 this.lst_reg_tbl_viajes.add(regtblviajes);
             }
         } catch (Exception ex) {

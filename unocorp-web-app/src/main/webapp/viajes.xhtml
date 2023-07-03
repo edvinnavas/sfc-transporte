@@ -2,7 +2,6 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="WEB-INF/plantilla/plantilla.xhtml">
     <ui:define name="contenido">
@@ -56,9 +55,7 @@
                     <h:outputText value="#{viaje.numero_viaje}" />
                 </p:column>
                 <p:column headerText="Fecha Viaje" sortBy="#{viaje.fecha_viaje}" filterBy="#{viaje.fecha_viaje}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
-                    <h:outputText value="#{viaje.fecha_viaje}">
-                        <f:convertDateTime pattern="dd/MM/yyyy"/>
-                    </h:outputText>
+                    <h:outputText value="#{viaje.fecha_viaje}" />
                 </p:column>
                 <p:column headerText="Código Viaje" sortBy="#{viaje.codigo_viaje}" filterBy="#{viaje.codigo_viaje}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.codigo_viaje}" />
@@ -98,6 +95,15 @@
                 </p:column>
                 <p:column headerText="Tipo Flete" sortBy="#{viaje.tipo_flete_viaje}" filterBy="#{viaje.tipo_flete_viaje}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.tipo_flete_viaje}" />
+                </p:column>
+                <p:column headerText="Fecha-Hora" sortBy="#{viaje.fecha_hora}" filterBy="#{viaje.fecha_hora}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                    <h:outputText value="#{viaje.fecha_hora}" />
+                </p:column>
+                <p:column headerText="Estado" sortBy="#{viaje.estado}" filterBy="#{viaje.estado}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                    <h:outputText value="#{viaje.estado}" />
+                </p:column>
+                <p:column headerText="Fecha-Hora-Terminado" sortBy="#{viaje.fecha_hora_terminado}" filterBy="#{viaje.fecha_hora_terminado}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                    <h:outputText value="#{viaje.fecha_hora_terminado}" />
                 </p:column>
             </p:dataTable>
         </p:panel>

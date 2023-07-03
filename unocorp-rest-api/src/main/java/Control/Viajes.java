@@ -46,7 +46,10 @@ public class Viajes implements Serializable {
                     + "V.NUMERO_ORDEN_VENTA, "
                     + "V.ID_CLIENTE, "
                     + "V.ID_CLIENTE_DESTINO, "
-                    + "V.TIPO_FLETE_VIAJE "
+                    + "V.TIPO_FLETE_VIAJE, "
+                    + "V.FECHA_HORA, "
+                    + "V.ESTADO, "
+                    + "V.FECHA_HORA_TERMINADO "
                     + "FROM "
                     + "VIAJES V "
                     + "WHERE "
@@ -116,6 +119,9 @@ public class Viajes implements Serializable {
                 viaje.setCliente_destino(cliente_destino);
                 
                 viaje.setTipo_flete_viaje(rs.getString(13));
+                viaje.setFecha_hora(dateFormat2.format(rs.getDate(14)));
+                viaje.setEstado(rs.getString(15));
+                viaje.setFecha_hora_terminado(dateFormat2.format(rs.getDate(16)));
                 
                 lista_viajes.add(viaje);
             }

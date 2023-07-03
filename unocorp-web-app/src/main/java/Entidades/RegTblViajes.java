@@ -1,7 +1,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +18,7 @@ public class RegTblViajes implements Serializable {
     private Long codigo_planta;
     private String nombre_planta;
     private Long numero_viaje;
-    private Date fecha_viaje;
+    private String fecha_viaje;
     private Integer codigo_viaje;
     private String nombre_viaje;
     private String vehiculo;
@@ -33,8 +32,11 @@ public class RegTblViajes implements Serializable {
     private Long codigo_cliente_destino;
     private String nombre_cliente_destino;
     private String tipo_flete_viaje;
+    private String fecha_hora;
+    private String estado;
+    private String fecha_hora_terminado;
 
-    public RegTblViajes(Long id_reg_tbl_viajes, String codigo_pais, String nombre_pais, String codigo_compania, String nombre_compania, Long codigo_planta, String nombre_planta, Long numero_viaje, Date fecha_viaje, Integer codigo_viaje, String nombre_viaje, String vehiculo, String placa_vehiculo, Long codigo_transportista, String nombre_transportista, String tipo_orden_venta, Long numero_orden_venta, Long codigo_cliente, String nombre_cliente, Long codigo_cliente_destino, String nombre_cliente_destino, String tipo_flete_viaje) {
+    public RegTblViajes(Long id_reg_tbl_viajes, String codigo_pais, String nombre_pais, String codigo_compania, String nombre_compania, Long codigo_planta, String nombre_planta, Long numero_viaje, String fecha_viaje, Integer codigo_viaje, String nombre_viaje, String vehiculo, String placa_vehiculo, Long codigo_transportista, String nombre_transportista, String tipo_orden_venta, Long numero_orden_venta, Long codigo_cliente, String nombre_cliente, Long codigo_cliente_destino, String nombre_cliente_destino, String tipo_flete_viaje, String fecha_hora, String estado, String fecha_hora_terminado) {
         this.id_reg_tbl_viajes = id_reg_tbl_viajes;
         this.codigo_pais = codigo_pais;
         this.nombre_pais = nombre_pais;
@@ -57,6 +59,9 @@ public class RegTblViajes implements Serializable {
         this.codigo_cliente_destino = codigo_cliente_destino;
         this.nombre_cliente_destino = nombre_cliente_destino;
         this.tipo_flete_viaje = tipo_flete_viaje;
+        this.fecha_hora = fecha_hora;
+        this.estado = estado;
+        this.fecha_hora_terminado = fecha_hora_terminado;
     }
 
     public RegTblViajes() {
@@ -64,7 +69,7 @@ public class RegTblViajes implements Serializable {
 
     @Override
     public String toString() {
-        return "RegTblViajes{" + "id_reg_tbl_viajes=" + id_reg_tbl_viajes + ", codigo_pais=" + codigo_pais + ", nombre_pais=" + nombre_pais + ", codigo_compania=" + codigo_compania + ", nombre_compania=" + nombre_compania + ", codigo_planta=" + codigo_planta + ", nombre_planta=" + nombre_planta + ", numero_viaje=" + numero_viaje + ", fecha_viaje=" + fecha_viaje + ", codigo_viaje=" + codigo_viaje + ", nombre_viaje=" + nombre_viaje + ", vehiculo=" + vehiculo + ", placa_vehiculo=" + placa_vehiculo + ", codigo_transportista=" + codigo_transportista + ", nombre_transportista=" + nombre_transportista + ", tipo_orden_venta=" + tipo_orden_venta + ", numero_orden_venta=" + numero_orden_venta + ", codigo_cliente=" + codigo_cliente + ", nombre_cliente=" + nombre_cliente + ", codigo_cliente_destino=" + codigo_cliente_destino + ", nombre_cliente_destino=" + nombre_cliente_destino + ", tipo_flete_viaje=" + tipo_flete_viaje + '}';
+        return "RegTblViajes{" + "id_reg_tbl_viajes=" + id_reg_tbl_viajes + ", codigo_pais=" + codigo_pais + ", nombre_pais=" + nombre_pais + ", codigo_compania=" + codigo_compania + ", nombre_compania=" + nombre_compania + ", codigo_planta=" + codigo_planta + ", nombre_planta=" + nombre_planta + ", numero_viaje=" + numero_viaje + ", fecha_viaje=" + fecha_viaje + ", codigo_viaje=" + codigo_viaje + ", nombre_viaje=" + nombre_viaje + ", vehiculo=" + vehiculo + ", placa_vehiculo=" + placa_vehiculo + ", codigo_transportista=" + codigo_transportista + ", nombre_transportista=" + nombre_transportista + ", tipo_orden_venta=" + tipo_orden_venta + ", numero_orden_venta=" + numero_orden_venta + ", codigo_cliente=" + codigo_cliente + ", nombre_cliente=" + nombre_cliente + ", codigo_cliente_destino=" + codigo_cliente_destino + ", nombre_cliente_destino=" + nombre_cliente_destino + ", tipo_flete_viaje=" + tipo_flete_viaje + ", fecha_hora=" + fecha_hora + ", estado=" + estado + ", fecha_hora_terminado=" + fecha_hora_terminado + '}';
     }
     
 }
