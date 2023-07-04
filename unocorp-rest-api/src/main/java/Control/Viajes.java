@@ -25,6 +25,7 @@ public class Viajes implements Serializable {
         try {
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
             SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat dateFormat3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             
             Base_Datos ctrl_base_datos = new Base_Datos();
             conn = ctrl_base_datos.obtener_conexion_mysql();
@@ -124,9 +125,9 @@ public class Viajes implements Serializable {
                 viaje.setCliente_destino(cliente_destino);
                 
                 viaje.setTipo_flete_viaje(rs.getString(13));
-                viaje.setFecha_hora(dateFormat2.format(rs.getDate(14)));
+                viaje.setFecha_hora(dateFormat3.format(rs.getDate(14)));
                 viaje.setEstado(rs.getString(15));
-                viaje.setFecha_hora_terminado(dateFormat2.format(rs.getDate(16)));
+                viaje.setFecha_hora_terminado(dateFormat3.format(rs.getDate(16)));
                 
                 lista_viajes.add(viaje);
             }

@@ -4,11 +4,11 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.bitnet</groupId>
-    <artifactId>unocorp-rest-api</artifactId>
+    <groupId>sfc.com</groupId>
+    <artifactId>client-rest-sms</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>unocorp-rest-api</name>
+    <name>client-rest-sms</name>
 
     <dependencyManagement>
         <dependencies>
@@ -32,10 +32,39 @@
             <artifactId>jersey-hk2</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.glassfish.jersey.connectors</groupId>
+            <artifactId>jersey-apache5-connector</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.49</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.7</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.xml.soap</groupId>
+            <artifactId>jakarta.xml.soap-api</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.messaging.saaj</groupId>
+            <artifactId>saaj-impl</artifactId>
+            <version>3.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -43,14 +72,15 @@
             <version>1.18.28</version>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.33</version>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>4.0.0</version>
         </dependency>
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.10.1</version>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>4.0.0</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>jakarta.activation</groupId>
@@ -101,7 +131,4 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <surefire.mvn.plugin.version>3.0.0-M7</surefire.mvn.plugin.version>
     </properties>
-    
-    <description>unocorp-rest-api</description>
-    
 </project>

@@ -20,3 +20,14 @@ docker run -p 9002:8018 -t -i --network unocorp_network --name UNOCORP-CLIENTE-R
 
 docker build -t unocorp/unocorp-rest-api:1.0.0 .
 docker run -p 9003:8080 -t -i --network unocorp_network --name UNOCORP-REST-API --restart=always --env TZ=America/Guatemala unocorp/unocorp-rest-api:1.0.0
+
+docker build -t unocorp/unocorp-cliente-rest-sms:1.0.0 .
+docker run -p 9004:8080 -t -i --network unocorp_network --name UNOCORP-REST-API-SMS --restart=always --env TZ=America/Guatemala unocorp/unocorp-cliente-rest-sms:1.0.0
+
+-- ALTER TABLE VIAJES DROP CONSTRAINT FK_VIAJES_10;
+-- ALTER TABLE VIAJES DROP ID_CABEZAL;
+-- ALTER TABLE VIAJES DROP ETA;
+-- ALTER TABLE VIAJES DROP TIEMPO_RESTANTE;
+-- ALTER TABLE VIAJES DROP DISTANCIA_RESTANTE;
+-- ALTER TABLE VIAJES DROP ULTIMA_LATITUD;
+-- ALTER TABLE VIAJES DROP ULTIMA_LONGITUD;

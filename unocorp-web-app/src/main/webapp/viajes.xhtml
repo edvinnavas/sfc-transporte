@@ -25,6 +25,13 @@
                     <p:ajax event="itemSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
                 </p:selectOneMenu>
             </p:panelGrid>
+            <style type="text/css">
+                .activo {
+                    background-color: orange !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+            </style>
             <p:dataTable 
                 id="tblViajes" 
                 var="viaje" 
@@ -37,6 +44,7 @@
                 rows="10" 
                 rowsPerPageTemplate="10,20,30" 
                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                rowStyleClass="#{viaje.estado eq 'ACT' ? 'activo' : null}"
                 style="font-size: 12px;">
                 <p:column headerText="Id" sortBy="#{viaje.id_reg_tbl_viajes}" filterBy="#{viaje.id_reg_tbl_viajes}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.id_reg_tbl_viajes}" />
