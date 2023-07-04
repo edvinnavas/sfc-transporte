@@ -30,6 +30,7 @@ public class Viajes implements Serializable {
     private Date fecha_inicial;
     private Date fecha_final;
     private String estado;
+    private String tipo_flete;
 
     @PostConstruct
     public void init() {
@@ -38,6 +39,7 @@ public class Viajes implements Serializable {
             this.fecha_inicial = new Date();
             this.fecha_final = new Date();
             this.estado = "ACT";
+            this.tipo_flete = "CIF";
             this.filtrar_tabla();
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
@@ -59,7 +61,7 @@ public class Viajes implements Serializable {
         try {
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
             ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
-            String json_result = cliente_rest_api.lista_viajes(dateFormat1.format(this.fecha_inicial), dateFormat1.format(this.fecha_final), this.estado);
+            String json_result = cliente_rest_api.lista_viajes(dateFormat1.format(this.fecha_inicial), dateFormat1.format(this.fecha_final), this.estado, this.tipo_flete);
             
             Type lista_viaje_type = new TypeToken<List<Entidades.Viaje>>() {
             }.getType();

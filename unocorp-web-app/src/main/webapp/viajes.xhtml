@@ -8,7 +8,7 @@
     <ui:define name="contenido">
         <p:panel header="Viajes">
             <p:growl id="msgViajes" showDetail="true"/>
-            <p:panelGrid columns="6">
+            <p:panelGrid columns="8">
                 <p:outputLabel value="Fecha inicial" style="font-weight: bold; font-size: 12px;"/>
                 <p:calendar id="calFechaInicial" value="#{Viajes.fecha_inicial}" pattern="dd/MM/yyyy" style="font-size: 12px;">
                     <p:ajax event="dateSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
@@ -22,6 +22,12 @@
                     <f:selectItem itemLabel="Ambos" itemValue="Ambos"/>
                     <f:selectItem itemLabel="Activos" itemValue="ACT"/>
                     <f:selectItem itemLabel="Terminados" itemValue="TER"/>
+                    <p:ajax event="itemSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="Flete" style="font-weight: bold; font-size: 12px;"/>
+                <p:selectOneMenu id="cbxFlete" value="#{Viajes.tipo_flete}" style="font-size: 12px;">
+                    <f:selectItem itemLabel="CIF" itemValue="CIF"/>
+                    <f:selectItem itemLabel="FOB" itemValue="FOB"/>
                     <p:ajax event="itemSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
                 </p:selectOneMenu>
             </p:panelGrid>

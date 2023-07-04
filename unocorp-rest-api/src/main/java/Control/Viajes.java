@@ -17,7 +17,7 @@ public class Viajes implements Serializable {
     public Viajes() {
     }
 
-    public String lista_viajes(String fecha_inicio, String fecha_final, String estado) {
+    public String lista_viajes(String fecha_inicio, String fecha_final, String estado, String tipo_flete) {
         String resultado = "";
         
         Connection conn = null;
@@ -38,6 +38,12 @@ public class Viajes implements Serializable {
                 estado = "%%";
             }
             
+            if(tipo_flete.equals("FOB")) {
+                tipo_flete = "LIKE '%FOB%'";
+            } else {
+                tipo_flete = "NOT LIKE '%FOB%'";
+            }
+            
             String cadenasql = "SELECT "
                     + "V.ID_PAIS, "
                     + "V.ID_COMPANIA, "
@@ -54,12 +60,13 @@ public class Viajes implements Serializable {
                     + "V.TIPO_FLETE_VIAJE, "
                     + "V.FECHA_HORA, "
                     + "V.ESTADO, "
-                    + "IFNULL(V.FECHA_HORA_TERMINADO, DATE('2000-01-01')) FECHA_HORA_TERMINADO "
+                    + "IFNULL(V.FECHA_HORA_TERMINADO, DATE('2000-01-01 00:00:00')) FECHA_HORA_TERMINADO "
                     + "FROM "
                     + "VIAJES V "
                     + "WHERE "
                     + "V.FECHA_VIAJE BETWEEN '" + dateFormat2.format(dateFormat1.parse(fecha_inicio)) + "' AND '" + dateFormat2.format(dateFormat1.parse(fecha_final)) + "' AND "
-                    + "V.ESTADO LIKE '" + estado + "'";
+                    + "V.ESTADO LIKE '" + estado + "' AND "
+                    + "V.ESTADO " + tipo_flete;
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
             while(rs.next()) {
