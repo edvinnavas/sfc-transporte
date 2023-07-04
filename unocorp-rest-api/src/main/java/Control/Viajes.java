@@ -66,7 +66,7 @@ public class Viajes implements Serializable {
                     + "WHERE "
                     + "V.FECHA_VIAJE BETWEEN '" + dateFormat2.format(dateFormat1.parse(fecha_inicio)) + "' AND '" + dateFormat2.format(dateFormat1.parse(fecha_final)) + "' AND "
                     + "V.ESTADO LIKE '" + estado + "' AND "
-                    + "V.ESTADO " + tipo_flete;
+                    + "V.TIPO_FLETE_VIAJE " + tipo_flete;
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
             while(rs.next()) {
