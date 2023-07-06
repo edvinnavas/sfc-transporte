@@ -52,23 +52,23 @@ public class Ctrl_SMS_OPEN implements Serializable {
             String[] lst_getStrUbicacion = str_obtener_ubicacion_response.getStrUbicacion().split("¥");
             List<Entidad.Ubicacion> lista_ubicaciones = new ArrayList<>();
             for (Integer i = 1; i < lst_getStrUbicacion.length; i++) {
-                String[] lst_Ubicacion = lst_getStrUbicacion[i].split("Â");
+                String[] lst_Ubicacion = lst_getStrUbicacion[i].split("¤");
                 Entidad.Ubicacion ubicacion = new Entidad.Ubicacion();
-                ubicacion.setName(lst_Ubicacion[0].replaceAll("¤", ""));
-                ubicacion.setIMEI(lst_Ubicacion[1].replaceAll("¤", ""));
-                ubicacion.setOdometer(lst_Ubicacion[2].replaceAll("¤", ""));
-                ubicacion.setLatitude(lst_Ubicacion[3].replaceAll("¤", ""));
-                ubicacion.setLongitude(lst_Ubicacion[4].replaceAll("¤", ""));
-                ubicacion.setDateTime(lst_Ubicacion[5].replaceAll("¤", ""));
-                ubicacion.setSpeed(lst_Ubicacion[6].replaceAll("¤", ""));
-                ubicacion.setSpeedMeasure(lst_Ubicacion[7].replaceAll("¤", ""));
-                ubicacion.setHeading(lst_Ubicacion[8].replaceAll("¤", ""));
-                ubicacion.setLocationDescription(lst_Ubicacion[9].replaceAll("¤", ""));
-                ubicacion.setDirverName(lst_Ubicacion[10].replaceAll("¤", ""));
-                ubicacion.setDraverCode(lst_Ubicacion[11].replaceAll("¤", ""));
-                ubicacion.setIgnition(lst_Ubicacion[12].replaceAll("¤", ""));
-                ubicacion.setDateUTC(lst_Ubicacion[13].replaceAll("¤", ""));
-                ubicacion.setAddress(lst_Ubicacion[14].replaceAll("¤", ""));
+                ubicacion.setName(lst_Ubicacion[0].replaceAll("Â", ""));
+                ubicacion.setIMEI(lst_Ubicacion[1].replaceAll("Â", ""));
+                ubicacion.setOdometer(lst_Ubicacion[2].replaceAll("Â", ""));
+                ubicacion.setLatitude(lst_Ubicacion[3].replaceAll("Â", ""));
+                ubicacion.setLongitude(lst_Ubicacion[4].replaceAll("Â", ""));
+                ubicacion.setDateTime(lst_Ubicacion[5].replaceAll("Â", ""));
+                ubicacion.setSpeed(lst_Ubicacion[6].replaceAll("Â", ""));
+                ubicacion.setSpeedMeasure(lst_Ubicacion[7].replaceAll("Â", ""));
+                ubicacion.setHeading(lst_Ubicacion[8].replaceAll("Â", ""));
+                ubicacion.setLocationDescription(lst_Ubicacion[9].replaceAll("Â", ""));
+                ubicacion.setDirverName(lst_Ubicacion[10].replaceAll("Â", ""));
+                ubicacion.setDraverCode(lst_Ubicacion[11].replaceAll("Â", ""));
+                ubicacion.setIgnition(lst_Ubicacion[12].replaceAll("Â", ""));
+                ubicacion.setDateUTC(lst_Ubicacion[13].replaceAll("Â", ""));
+                ubicacion.setAddress(lst_Ubicacion[14].replaceAll("Â", ""));
                 lista_ubicaciones.add(ubicacion);
             }
 
