@@ -10,6 +10,7 @@ import jakarta.xml.soap.SOAPMessage;
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 import java.sql.Connection;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +27,6 @@ public class Ctrl_SMS_OPEN implements Serializable {
         Connection conn = null;
 
         try {
-            Control_Base_Datos control_base_datos = new Control_Base_Datos();
-            conn = control_base_datos.obtener_conexion_mysql();
-
-            conn.setAutoCommit(false);
-
             String xml_request = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:syn=\"http://localhost/SyncVehiculosunopetrol\">"
                     + "<soapenv:Header/>"
                     + "<soapenv:Body>"
@@ -71,7 +67,57 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 ubicacion.setAddress(lst_Ubicacion[14].replaceAll("Â", ""));
                 lista_ubicaciones.add(ubicacion);
             }
+            
+            Control_Base_Datos control_base_datos = new Control_Base_Datos();
+            conn = control_base_datos.obtener_conexion_mysql();
 
+            conn.setAutoCommit(false);
+            
+            Long ID_SMS_OPEN = control_base_datos.ObtenerLong("SELECT IFNULL(MAX(A.ID_SMS_OPEN),0)+1 MAX_ID FROM SMS_OPEN A", conn);
+            
+            for (Integer i = 0; i < lista_ubicaciones.size(); i++) {
+                String cadenasql = "INSERT INTO SMS_OPEN ("
+                        + "ID_SMS_OPEN, "
+                        + "NAME_VEHICULO, "
+                        + "IMEI, "
+                        + "ODOMETER, "
+                        + "LATITUDE, "
+                        + "LONGITUDE, "
+                        + "DATETIME_UBICACION, "
+                        + "SPEED, "
+                        + "SPEEDMEASURE, "
+                        + "HEADING, "
+                        + "LOCATIONDESCRIPTION, "
+                        + "DIRVERNAME, "
+                        + "DRAVERCODE, "
+                        + "IGNITION, "
+                        + "DATEUTC, "
+                        + "ADDRESS,"
+                        + "FECHA_HORA) VALUES ("
+                        + ID_SMS_OPEN + ",'"
+                        + lista_ubicaciones.get(i).getName() + "','"
+                        + lista_ubicaciones.get(i).getIMEI() + "','"
+                        + lista_ubicaciones.get(i).getOdometer() + "','"
+                        + lista_ubicaciones.get(i).getLatitude() + "','"
+                        + lista_ubicaciones.get(i).getLongitude() + "','"
+                        + lista_ubicaciones.get(i).getDateTime() + "','"
+                        + lista_ubicaciones.get(i).getSpeed() + "','"
+                        + lista_ubicaciones.get(i).getSpeedMeasure() + "','"
+                        + lista_ubicaciones.get(i).getHeading() + "','"
+                        + lista_ubicaciones.get(i).getLocationDescription() + "','"
+                        + lista_ubicaciones.get(i).getDirverName() + "','"
+                        + lista_ubicaciones.get(i).getDraverCode() + "','"
+                        + lista_ubicaciones.get(i).getIgnition() + "','"
+                        + lista_ubicaciones.get(i).getDateUTC() + "','"
+                        + lista_ubicaciones.get(i).getAddress() + "',"
+                        + "CURRENT_TIMESTAMP" + ")";
+                Statement stmt = conn.createStatement();
+                stmt.executeUpdate(cadenasql);
+                stmt.close();
+                
+                ID_SMS_OPEN++;
+            }
+            
             conn.commit();
             conn.setAutoCommit(true);
 
