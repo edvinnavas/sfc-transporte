@@ -11,7 +11,6 @@ import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +76,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
             Long ID_SMS_OPEN = control_base_datos.ObtenerLong("SELECT IFNULL(MAX(A.ID_SMS_OPEN),0)+1 MAX_ID FROM SMS_OPEN A", conn);
             
             String cadenasql = "INSERT INTO SMS_OPEN_ENCABEZADO (ID_SMS_OPEN, FECHA_ACTUALIZACION, NUMERO_UBICACIONES) VALUES (" 
-                    + ID_SMS_OPEN + ",'"
+                    + ID_SMS_OPEN + ","
                     + "CURRENT_DATE" + ","
                     + "0" + ")";
             Statement stmt = conn.createStatement();
