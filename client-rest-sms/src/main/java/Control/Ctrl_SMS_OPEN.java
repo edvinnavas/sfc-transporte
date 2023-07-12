@@ -77,7 +77,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
             
             String cadenasql = "INSERT INTO SMS_OPEN_ENCABEZADO (ID_SMS_OPEN, FECHA_ACTUALIZACION, NUMERO_UBICACIONES) VALUES (" 
                     + ID_SMS_OPEN + ","
-                    + "CURRENT_DATE" + ","
+                    + "CURRENT_TIMESTAMP" + ","
                     + "0" + ")";
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(cadenasql);
