@@ -11,6 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,9 +76,21 @@ public class Ctrl_SMS_OPEN implements Serializable {
             
             Long ID_SMS_OPEN = control_base_datos.ObtenerLong("SELECT IFNULL(MAX(A.ID_SMS_OPEN),0)+1 MAX_ID FROM SMS_OPEN A", conn);
             
+            String cadenasql = "INSERT INTO SMS_OPEN_ENCABEZADO (ID_SMS_OPEN, FECHA_ACTUALIZACION, NUMERO_UBICACIONES) VALUES (" 
+                    + ID_SMS_OPEN + ",'"
+                    + "CURRENT_DATE" + ","
+                    + "0" + ")";
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(cadenasql);
+            stmt.close();
+            
+            Integer CORRELATIVO = 0;
             for (Integer i = 0; i < lista_ubicaciones.size(); i++) {
-                String cadenasql = "INSERT INTO SMS_OPEN ("
+                CORRELATIVO++;
+                
+                cadenasql = "INSERT INTO SMS_OPEN_DETALLE ("
                         + "ID_SMS_OPEN, "
+                        + "CORRELATIVO, "
                         + "NAME_VEHICULO, "
                         + "IMEI, "
                         + "ODOMETER, "
@@ -94,7 +107,8 @@ public class Ctrl_SMS_OPEN implements Serializable {
                         + "DATEUTC, "
                         + "ADDRESS,"
                         + "FECHA_HORA) VALUES ("
-                        + ID_SMS_OPEN + ",'"
+                        + ID_SMS_OPEN + ","
+                        + CORRELATIVO + ",'"
                         + lista_ubicaciones.get(i).getName() + "','"
                         + lista_ubicaciones.get(i).getIMEI() + "','"
                         + lista_ubicaciones.get(i).getOdometer() + "','"
@@ -111,12 +125,15 @@ public class Ctrl_SMS_OPEN implements Serializable {
                         + lista_ubicaciones.get(i).getDateUTC() + "','"
                         + lista_ubicaciones.get(i).getAddress() + "',"
                         + "CURRENT_TIMESTAMP" + ")";
-                Statement stmt = conn.createStatement();
+                stmt = conn.createStatement();
                 stmt.executeUpdate(cadenasql);
                 stmt.close();
-                
-                ID_SMS_OPEN++;
             }
+            
+            cadenasql = "UPDATE SMS_OPEN_ENCABEZADO SET NUMERO_UBICACIONES=" + CORRELATIVO + " WHERE ID_SMS_OPEN=" + ID_SMS_OPEN;
+            stmt = conn.createStatement();
+            stmt.executeUpdate(cadenasql);
+            stmt.close();
             
             conn.commit();
             conn.setAutoCommit(true);
