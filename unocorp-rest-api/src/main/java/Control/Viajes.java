@@ -48,9 +48,9 @@ public class Viajes implements Serializable {
             }
             
             if(rastreable.equals("SI")) {
-                estado = "1";
+                rastreable = "1";
             } else {
-                estado = "0, 1";
+                rastreable = "0, 1";
             }
             
             String cadenasql = "SELECT "
