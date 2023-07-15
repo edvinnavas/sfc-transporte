@@ -38,19 +38,20 @@ public class MyResource implements Serializable {
     }
     
     @GET
-    @Path("lista_viajes/{fecha_inicio}/{fecha_final}/{estado}/{tipo_flete}")
+    @Path("lista_viajes/{fecha_inicio}/{fecha_final}/{estado}/{tipo_flete}/{rastreable}")
     @Produces(MediaType.APPLICATION_JSON)
     public String lista_viajes(
             @PathParam("fecha_inicio") String fecha_inicio, 
             @PathParam("fecha_final") String fecha_final,
             @PathParam("estado") String estado,
-            @PathParam("tipo_flete") String tipo_flete) {
+            @PathParam("tipo_flete") String tipo_flete,
+            @PathParam("rastreable") String rastreable) {
         
         String resultado;
 
         try {
             Control.Viajes ctrl_viajes = new Control.Viajes();
-            resultado = ctrl_viajes.lista_viajes(fecha_inicio, fecha_final, estado, tipo_flete);
+            resultado = ctrl_viajes.lista_viajes(fecha_inicio, fecha_final, estado, tipo_flete, rastreable);
         } catch (Exception ex) {
             resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: autenticar(), ERRROR: " + ex.toString();
         }

@@ -17,7 +17,7 @@ public class Viajes implements Serializable {
     public Viajes() {
     }
 
-    public String lista_viajes(String fecha_inicio, String fecha_final, String estado, String tipo_flete) {
+    public String lista_viajes(String fecha_inicio, String fecha_final, String estado, String tipo_flete, String rastreable) {
         String resultado = "";
         
         Connection conn = null;
@@ -37,10 +37,20 @@ public class Viajes implements Serializable {
                 estado = "%%";
             }
             
-            if(tipo_flete.equals("FOB")) {
-                tipo_flete = "LIKE '%FOB%'";
+            if (tipo_flete.equals("Ambos")) {
+                tipo_flete = "LIKE '%%'";
             } else {
-                tipo_flete = "NOT LIKE '%FOB%'";
+                if (tipo_flete.equals("FOB")) {
+                    tipo_flete = "LIKE '%FOB%'";
+                } else {
+                    tipo_flete = "NOT LIKE '%FOB%'";
+                }
+            }
+            
+            if(rastreable.equals("SI")) {
+                estado = "1";
+            } else {
+                estado = "0, 1";
             }
             
             String cadenasql = "SELECT "
@@ -59,13 +69,22 @@ public class Viajes implements Serializable {
                     + "V.TIPO_FLETE_VIAJE, "
                     + "V.FECHA_HORA, "
                     + "V.ESTADO, "
-                    + "IFNULL(V.FECHA_HORA_TERMINADO, DATE('2000-01-01 00:00:00')) FECHA_HORA_TERMINADO "
+                    + "IFNULL(V.FECHA_HORA_TERMINADO, DATE('2000-01-01 00:00:00')) FECHA_HORA_TERMINADO, "
+                    + "CASE WHEN T.RASTREABLE=1 THEN 'SI' ELSE 'NO' END RASTREABLE, "
+                    + "CASE WHEN VD.CODIGO IS NULL THEN 'NO' ELSE 'SI' END DISPONIBILIDAD, "
+                    + "IFNULL(VD.ID_VEHICULO, 0) CISTERNA_DISPONIBILIDAD, "
+                    + "IFNULL(CD.ID_CABEZAL, 0) CABEZAL_DISPONIBILIDAD "
                     + "FROM "
                     + "VIAJES V "
+                    + "LEFT JOIN TRANSPORTISTA T ON (V.ID_TRANSPORTISTA=T.ID_TRANSPORTISTA) "
+                    + "LEFT JOIN DISPONIBILIDAD D ON (V.ID_TRANSPORTISTA=D.ID_TRANSPORTISTA AND V.ID_VEHICULO=D.ID_VEHICULO AND D.FECHA BETWEEN '" + dateFormat2.format(dateFormat1.parse(fecha_inicio)) + "' AND '" + dateFormat2.format(dateFormat1.parse(fecha_final)) + "') "
+                    + "LEFT JOIN VEHICULO VD ON (D.ID_VEHICULO=VD.ID_VEHICULO) "
+                    + "LEFT JOIN CABEZAL CD ON (D.ID_CABEZAL=CD.ID_CABEZAL) "
                     + "WHERE "
                     + "V.FECHA_VIAJE BETWEEN '" + dateFormat2.format(dateFormat1.parse(fecha_inicio)) + "' AND '" + dateFormat2.format(dateFormat1.parse(fecha_final)) + "' AND "
                     + "V.ESTADO LIKE '" + estado + "' AND "
-                    + "V.TIPO_FLETE_VIAJE " + tipo_flete;
+                    + "V.TIPO_FLETE_VIAJE " + tipo_flete + " AND "
+                    + "T.RASTREABLE IN (" + rastreable + ")";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
             while(rs.next()) {
@@ -105,6 +124,7 @@ public class Viajes implements Serializable {
                 transportista.setCodigo(ctrl_base_datos.ObtenerString("SELECT A.CODIGO FROM TRANSPORTISTA A WHERE A.ID_TRANSPORTISTA=" + rs.getLong(8), conn));
                 transportista.setNombre(ctrl_base_datos.ObtenerString("SELECT A.NOMBRE FROM TRANSPORTISTA A WHERE A.ID_TRANSPORTISTA=" + rs.getLong(8), conn));
                 transportista.setPais(pais);
+                transportista.setRastreable(ctrl_base_datos.ObtenerEntero("SELECT A.RASTREABLE FROM TRANSPORTISTA A WHERE A.ID_TRANSPORTISTA=" + rs.getLong(8), conn));
                 viaje.setTransportista(transportista);
                 
                 Entidad.Vehiculo vehiculo = new Entidad.Vehiculo();
@@ -140,6 +160,31 @@ public class Viajes implements Serializable {
                     fecha_hora_terminado = rs.getString(16);
                 }
                 viaje.setFecha_hora_terminado(fecha_hora_terminado);
+                viaje.setRastreable(rs.getString(17));
+                viaje.setDisponibilidad(rs.getString(18));
+                
+                if(rs.getLong(19) == Long.parseLong("0")) {
+                    viaje.setCisterna_disponibilidad(null);
+                } else {
+                    Entidad.Vehiculo cisterna_disponibilidad = new Entidad.Vehiculo();
+                    cisterna_disponibilidad.setId_vehiculo(rs.getLong(19));
+                    cisterna_disponibilidad.setCodigo(ctrl_base_datos.ObtenerString("SELECT A.CODIGO FROM VEHICULO A WHERE A.ID_VEHICULO=" + rs.getLong(19), conn));
+                    cisterna_disponibilidad.setPlaca(ctrl_base_datos.ObtenerString("SELECT A.PLACA FROM VEHICULO A WHERE A.ID_VEHICULO=" + rs.getLong(19), conn));
+                    cisterna_disponibilidad.setTransportista(transportista);
+                    viaje.setCisterna_disponibilidad(cisterna_disponibilidad);
+                }
+                
+                if(rs.getLong(20) == Long.parseLong("0")) {
+                    viaje.setCabezal_disponibilidad(null);
+                } else {
+                    Entidad.Cabezal cabezal_disponibilidad = new Entidad.Cabezal();
+                    cabezal_disponibilidad.setId_cabezal(rs.getLong(20));
+                    cabezal_disponibilidad.setCodigo(ctrl_base_datos.ObtenerString("SELECT A.CODIGO FROM CABEZAL A WHERE A.ID_CABEZAL=" + rs.getLong(20), conn));
+                    cabezal_disponibilidad.setPlaca(ctrl_base_datos.ObtenerString("SELECT A.PLACA FROM CABEZAL A WHERE A.ID_CABEZAL=" + rs.getLong(20), conn));
+                    cabezal_disponibilidad.setImei(ctrl_base_datos.ObtenerString("SELECT A.IMEI FROM CABEZAL A WHERE A.ID_CABEZAL=" + rs.getLong(20), conn));
+                    cabezal_disponibilidad.setTransportista(transportista);
+                    viaje.setCabezal_disponibilidad(cabezal_disponibilidad);
+                }
                 
                 lista_viajes.add(viaje);
             }
