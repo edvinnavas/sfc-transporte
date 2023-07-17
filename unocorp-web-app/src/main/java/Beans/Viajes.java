@@ -121,10 +121,6 @@ public class Viajes implements Serializable {
                     regtblviajes.setPlaca_cabezal(lista_viajes.get(i).getCabezal_disponibilidad().getPlaca());
                     regtblviajes.setImei_cabezal(lista_viajes.get(i).getCabezal_disponibilidad().getImei());
                 }
-                regtblviajes.setCisterna_disponibilidad("-");
-                regtblviajes.setCabezal("-");
-                regtblviajes.setPlaca_cabezal("-");
-                regtblviajes.setImei_cabezal("-");
                 regtblviajes.setNumero_ubicaciones_gps(0);
                 this.lst_reg_tbl_viajes.add(regtblviajes);
             }
