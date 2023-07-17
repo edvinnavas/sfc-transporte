@@ -31,6 +31,7 @@ public class Viajes implements Serializable {
     private Date fecha_final;
     private String estado;
     private String tipo_flete;
+    private Boolean rastreable;
 
     @PostConstruct
     public void init() {
@@ -40,6 +41,7 @@ public class Viajes implements Serializable {
             this.fecha_final = new Date();
             this.estado = "ACT";
             this.tipo_flete = "CIF";
+            this.rastreable = true;
             this.filtrar_tabla();
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
@@ -61,7 +63,13 @@ public class Viajes implements Serializable {
         try {
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
             ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
-            String json_result = cliente_rest_api.lista_viajes(dateFormat1.format(this.fecha_inicial), dateFormat1.format(this.fecha_final), this.estado, this.tipo_flete);
+            String rastreable_bean;
+            if(this.rastreable) {
+                rastreable_bean = "SI";
+            } else {
+                rastreable_bean = "NO";
+            }
+            String json_result = cliente_rest_api.lista_viajes(dateFormat1.format(this.fecha_inicial), dateFormat1.format(this.fecha_final), this.estado, this.tipo_flete, rastreable_bean);
             
             Type lista_viaje_type = new TypeToken<List<Entidades.Viaje>>() {
             }.getType();
@@ -96,6 +104,17 @@ public class Viajes implements Serializable {
                 regtblviajes.setFecha_hora(lista_viajes.get(i).getFecha_hora());
                 regtblviajes.setEstado(lista_viajes.get(i).getEstado());
                 regtblviajes.setFecha_hora_terminado(lista_viajes.get(i).getFecha_hora_terminado());
+                String rastreable_viaje = "NO";
+                if(lista_viajes.get(i).getTransportista().getRastreable() == 1) {
+                    rastreable_viaje = "SI";
+                }
+                regtblviajes.setRastreable(rastreable_viaje);
+                regtblviajes.setDisponibilidad(lista_viajes.get(i).getDisponibilidad());
+                regtblviajes.setCisterna_disponibilidad(lista_viajes.get(i).getCisterna_disponibilidad().getCodigo());
+                regtblviajes.setCabezal(lista_viajes.get(i).getCabezal_disponibilidad().getCodigo());
+                regtblviajes.setPlaca_cabezal(lista_viajes.get(i).getCabezal_disponibilidad().getPlaca());
+                regtblviajes.setImei_cabezal(lista_viajes.get(i).getCabezal_disponibilidad().getImei());
+                regtblviajes.setNumero_ubicaciones_gps(0);
                 this.lst_reg_tbl_viajes.add(regtblviajes);
             }
         } catch (Exception ex) {

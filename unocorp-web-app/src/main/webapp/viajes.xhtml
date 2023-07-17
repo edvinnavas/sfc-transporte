@@ -8,7 +8,7 @@
     <ui:define name="contenido">
         <p:panel header="Viajes">
             <p:growl id="msgViajes" showDetail="true"/>
-            <p:panelGrid columns="8">
+            <p:panelGrid columns="9">
                 <p:outputLabel value="Fecha inicial" style="font-weight: bold; font-size: 12px;"/>
                 <p:calendar id="calFechaInicial" value="#{Viajes.fecha_inicial}" pattern="dd/MM/yyyy" style="font-size: 12px;">
                     <p:ajax event="dateSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
@@ -26,10 +26,14 @@
                 </p:selectOneMenu>
                 <p:outputLabel value="Flete" style="font-weight: bold; font-size: 12px;"/>
                 <p:selectOneMenu id="cbxFlete" value="#{Viajes.tipo_flete}" style="font-size: 12px;">
+                    <f:selectItem itemLabel="Ambos" itemValue="Ambos"/>
                     <f:selectItem itemLabel="CIF" itemValue="CIF"/>
                     <f:selectItem itemLabel="FOB" itemValue="FOB"/>
                     <p:ajax event="itemSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
                 </p:selectOneMenu>
+                <p:selectBooleanCheckbox id="chkTracking" value="#{Viajes.rastreable}" itemLabel="Tracking">
+                    <p:ajax update="tblViajes" listener="#{Viajes.filtrar_tabla}"/>
+                </p:selectBooleanCheckbox>
             </p:panelGrid>
             <style type="text/css">
                 .activo {
@@ -126,6 +130,24 @@
                 </p:column>
                 <p:column headerText="Fecha-Hora-Terminado" sortBy="#{viaje.fecha_hora_terminado}" filterBy="#{viaje.fecha_hora_terminado}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.fecha_hora_terminado}" />
+                </p:column>
+                <p:column headerText="Tracking" sortBy="#{viaje.rastreable}" filterBy="#{viaje.rastreable}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                    <h:outputText value="#{viaje.rastreable}" />
+                </p:column>
+                <p:column headerText="Disponibilidad" sortBy="#{viaje.disponibilidad}" filterBy="#{viaje.disponibilidad}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                    <h:outputText value="#{viaje.disponibilidad}" />
+                </p:column>
+                <p:column headerText="Cabezal" sortBy="#{viaje.cabezal}" filterBy="#{viaje.cabezal}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                    <h:outputText value="#{viaje.cabezal}" />
+                </p:column>
+                <p:column headerText="Cabezal-Placa" sortBy="#{viaje.placa_cabezal}" filterBy="#{viaje.placa_cabezal}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                    <h:outputText value="#{viaje.placa_cabezal}" />
+                </p:column>
+                <p:column headerText="Cabezal-IMEI" sortBy="#{viaje.imei_cabezal}" filterBy="#{viaje.imei_cabezal}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                    <h:outputText value="#{viaje.imei_cabezal}" />
+                </p:column>
+                <p:column headerText="No Ubicaciones" sortBy="#{viaje.numero_ubicaciones_gps}" filterBy="#{viaje.numero_ubicaciones_gps}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                    <h:outputText value="#{viaje.numero_ubicaciones_gps}" />
                 </p:column>
             </p:dataTable>
         </p:panel>
