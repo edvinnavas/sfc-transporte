@@ -110,10 +110,21 @@ public class Viajes implements Serializable {
                 }
                 regtblviajes.setRastreable(rastreable_viaje);
                 regtblviajes.setDisponibilidad(lista_viajes.get(i).getDisponibilidad());
-                regtblviajes.setCisterna_disponibilidad(lista_viajes.get(i).getCisterna_disponibilidad().getCodigo());
-                regtblviajes.setCabezal(lista_viajes.get(i).getCabezal_disponibilidad().getCodigo());
-                regtblviajes.setPlaca_cabezal(lista_viajes.get(i).getCabezal_disponibilidad().getPlaca());
-                regtblviajes.setImei_cabezal(lista_viajes.get(i).getCabezal_disponibilidad().getImei());
+                if (lista_viajes.get(i).getDisponibilidad().equals("NO")) {
+                    regtblviajes.setCisterna_disponibilidad("-");
+                    regtblviajes.setCabezal("-");
+                    regtblviajes.setPlaca_cabezal("-");
+                    regtblviajes.setImei_cabezal("-");
+                } else {
+                    regtblviajes.setCisterna_disponibilidad(lista_viajes.get(i).getCisterna_disponibilidad().getCodigo());
+                    regtblviajes.setCabezal(lista_viajes.get(i).getCabezal_disponibilidad().getCodigo());
+                    regtblviajes.setPlaca_cabezal(lista_viajes.get(i).getCabezal_disponibilidad().getPlaca());
+                    regtblviajes.setImei_cabezal(lista_viajes.get(i).getCabezal_disponibilidad().getImei());
+                }
+                regtblviajes.setCisterna_disponibilidad("-");
+                regtblviajes.setCabezal("-");
+                regtblviajes.setPlaca_cabezal("-");
+                regtblviajes.setImei_cabezal("-");
                 regtblviajes.setNumero_ubicaciones_gps(0);
                 this.lst_reg_tbl_viajes.add(regtblviajes);
             }
