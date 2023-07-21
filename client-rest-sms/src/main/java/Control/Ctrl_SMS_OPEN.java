@@ -174,6 +174,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 System.out.println("FECHA-HORA-1: " + rs.getString(7));
                 Date FECHA_HORA = dateFormat2.parse(rs.getString(7));
                 System.out.println("FECHA-HORA-2: " + FECHA_HORA);
+                System.out.println("FECHA-HORA-3: " + dateFormat2.format(FECHA_HORA));
                 String IMEI = rs.getString(8);
                 String LATITUDE = rs.getString(9);
                 String LONGITUDE = rs.getString(10);
@@ -193,7 +194,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                         + "A.NUMERO_VIAJE=" + NUMERO_VIAJE + " AND "
                         + "A.TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
                         + "A.NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA + " AND "
-                        + "A.FECHA_HORA='" + FECHA_HORA + "' AND "
+                        + "A.FECHA_HORA='" + dateFormat2.format(FECHA_HORA) + "' AND "
                         + "A.IMEI='" + IMEI + "'";
                 Statement stmt1 = conn.createStatement();
                 ResultSet rs1 = stmt1.executeQuery(cadenasql);
@@ -204,8 +205,6 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 stmt1.close();
 
                 if (no_existe) {
-                    SimpleDateFormat dateFormat3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    System.out.println("FECHA-HORA-3: " + dateFormat3.format(FECHA_HORA));
                     cadenasql = "INSERT INTO VIAJE_UBICACIONES ("
                             + "ID_PAIS, "
                             + "ID_COMPANIA, "
@@ -226,7 +225,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                             + NUMERO_VIAJE + ",'"
                             + TIPO_ORDEN_VENTA + "',"
                             + NUMERO_ORDEN_VENTA + ",'"
-                            + dateFormat3.format(FECHA_HORA) + "','"
+                            + dateFormat2.format(FECHA_HORA) + "','"
                             + IMEI + "','"
                             + LATITUDE + "','"
                             + LONGITUDE + "','"
