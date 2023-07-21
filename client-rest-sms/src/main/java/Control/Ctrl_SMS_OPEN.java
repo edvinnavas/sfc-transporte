@@ -231,6 +231,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                             + ETA_HORAS + ","
                             + EDA_KMS + ")";
                     stmt1 = conn.createStatement();
+                    System.out.println("CADENASQL: " + cadenasql);
                     stmt1.executeUpdate(cadenasql);
                     stmt1.close();
                 }
