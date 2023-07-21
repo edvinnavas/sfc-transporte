@@ -170,7 +170,9 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 Long NUMERO_VIAJE = rs.getLong(4);
                 String TIPO_ORDEN_VENTA = rs.getString(5);
                 Long NUMERO_ORDEN_VENTA = rs.getLong(6);
+                System.out.println("FECHA-HORA-1: " + rs.getString(7));
                 SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                System.out.println("FECHA-HORA-2: " + dateFormat2.parse(rs.getString(7)));
                 Date FECHA_HORA = dateFormat2.parse(rs.getString(7));
                 String IMEI = rs.getString(8);
                 String LATITUDE = rs.getString(9);
@@ -180,6 +182,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 Double EDA_KMS = 0.00;
 
                 SimpleDateFormat dateFormat3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                System.out.println("FECHA-HORA-3: " + dateFormat3.format(FECHA_HORA));
                 cadenasql = "INSERT INTO VIAJE_UBICACIONES ("
                         + "ID_PAIS, "
                         + "ID_COMPANIA, "
@@ -208,6 +211,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                         + ETA_HORAS + ","
                         + EDA_KMS + ")";
                 Statement stmt1 = conn.createStatement();
+                System.out.println("CADENASQL: " + cadenasql);
                 stmt1.executeUpdate(cadenasql);
                 stmt1.close();
             }
