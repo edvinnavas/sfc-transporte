@@ -171,7 +171,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 String TIPO_ORDEN_VENTA = rs.getString(5);
                 Long NUMERO_ORDEN_VENTA = rs.getLong(6);
                 System.out.println("FECHA-HORA-1: " + rs.getString(7));
-                SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 System.out.println("FECHA-HORA-2: " + dateFormat2.parse(rs.getString(7)));
                 Date FECHA_HORA = dateFormat2.parse(rs.getString(7));
                 String IMEI = rs.getString(8);
