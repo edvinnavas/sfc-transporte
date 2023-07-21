@@ -148,7 +148,8 @@ public class Ctrl_SMS_OPEN implements Serializable {
                     + "STR_TO_DATE(SOD.DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s') FECHA_HORA_UBICACION, "
                     + "SOD.IMEI, "
                     + "SOD.LATITUDE LATITUD_UBICACION, "
-                    + "SOD.LONGITUDE LONGITUD_UBICACION "
+                    + "SOD.LONGITUDE LONGITUD_UBICACION, "
+                    + "SOD.LOCATIONDESCRIPTION DESCRIPCION_UBICACION "
                     + "FROM "
                     + "VIAJES V "
                     + "LEFT JOIN TRANSPORTISTA T ON (V.ID_TRANSPORTISTA=T.ID_TRANSPORTISTA) "
@@ -169,50 +170,70 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 Long NUMERO_VIAJE = rs.getLong(4);
                 String TIPO_ORDEN_VENTA = rs.getString(5);
                 Long NUMERO_ORDEN_VENTA = rs.getLong(6);
-                System.out.println("FECHA-HORA-1: " + rs.getString(7));
                 SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                System.out.println("FECHA-HORA-2: " + dateFormat2.parse(rs.getString(7)));
                 Date FECHA_HORA = dateFormat2.parse(rs.getString(7));
                 String IMEI = rs.getString(8);
                 String LATITUDE = rs.getString(9);
                 String LONGITUDE = rs.getString(10);
-                String LOCATIONDESCRIPTION = "UBICACIÓN PENDIENTE.";
+                String LOCATIONDESCRIPTION = rs.getString(11);
                 Double ETA_HORAS = 0.00;
                 Double EDA_KMS = 0.00;
 
-                SimpleDateFormat dateFormat3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                System.out.println("FECHA-HORA-3: " + dateFormat3.format(FECHA_HORA));
-                cadenasql = "INSERT INTO VIAJE_UBICACIONES ("
-                        + "ID_PAIS, "
-                        + "ID_COMPANIA, "
-                        + "ID_PLANTA, "
-                        + "NUMERO_VIAJE, "
-                        + "TIPO_ORDEN_VENTA, "
-                        + "NUMERO_ORDEN_VENTA, "
-                        + "FECHA_HORA, "
-                        + "IMEI, "
-                        + "LATITUDE, "
-                        + "LONGITUDE, "
-                        + "LOCATIONDESCRIPTION, "
-                        + "ETA_HORAS, "
-                        + "EDA_KMS) VALUES ("
-                        + ID_PAIS + ","
-                        + ID_COMPANIA + ","
-                        + ID_PLANTA + ","
-                        + NUMERO_VIAJE + ",'"
-                        + TIPO_ORDEN_VENTA + "',"
-                        + NUMERO_ORDEN_VENTA + ",'"
-                        + dateFormat3.format(FECHA_HORA) + "','"
-                        + IMEI + "','"
-                        + LATITUDE + "','"
-                        + LONGITUDE + "','"
-                        + LOCATIONDESCRIPTION + "',"
-                        + ETA_HORAS + ","
-                        + EDA_KMS + ")";
+                Boolean no_existe = true;
+                cadenasql = "SELECT "
+                        + "A.LATITUDE, A.LONGITUDE "
+                        + "FROM "
+                        + "VIAJE_UBICACIONES A "
+                        + "WHERE "
+                        + "A.ID_PAIS=" + ID_PAIS + " AND "
+                        + "A.ID_COMPANIA=" + ID_COMPANIA + " AND "
+                        + "A.ID_PLANTA=" + ID_PLANTA + " AND "
+                        + "A.NUMERO_VIAJE=" + NUMERO_VIAJE + " AND "
+                        + "A.TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
+                        + "A.NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA + " AND "
+                        + "A.FECHA_HORA='" + FECHA_HORA + "' AND "
+                        + "A.IMEI='" + IMEI + "'";
                 Statement stmt1 = conn.createStatement();
-                System.out.println("CADENASQL: " + cadenasql);
-                stmt1.executeUpdate(cadenasql);
+                ResultSet rs1 = stmt1.executeQuery(cadenasql);
+                while (rs1.next()) {
+                    no_existe = false;
+                }
+                rs1.close();
                 stmt1.close();
+
+                if (no_existe) {
+                    SimpleDateFormat dateFormat3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    cadenasql = "INSERT INTO VIAJE_UBICACIONES ("
+                            + "ID_PAIS, "
+                            + "ID_COMPANIA, "
+                            + "ID_PLANTA, "
+                            + "NUMERO_VIAJE, "
+                            + "TIPO_ORDEN_VENTA, "
+                            + "NUMERO_ORDEN_VENTA, "
+                            + "FECHA_HORA, "
+                            + "IMEI, "
+                            + "LATITUDE, "
+                            + "LONGITUDE, "
+                            + "LOCATIONDESCRIPTION, "
+                            + "ETA_HORAS, "
+                            + "EDA_KMS) VALUES ("
+                            + ID_PAIS + ","
+                            + ID_COMPANIA + ","
+                            + ID_PLANTA + ","
+                            + NUMERO_VIAJE + ",'"
+                            + TIPO_ORDEN_VENTA + "',"
+                            + NUMERO_ORDEN_VENTA + ",'"
+                            + dateFormat3.format(FECHA_HORA) + "','"
+                            + IMEI + "','"
+                            + LATITUDE + "','"
+                            + LONGITUDE + "','"
+                            + LOCATIONDESCRIPTION + "',"
+                            + ETA_HORAS + ","
+                            + EDA_KMS + ")";
+                    stmt1 = conn.createStatement();
+                    stmt1.executeUpdate(cadenasql);
+                    stmt1.close();
+                }
             }
             rs.close();
             stmt.close();
