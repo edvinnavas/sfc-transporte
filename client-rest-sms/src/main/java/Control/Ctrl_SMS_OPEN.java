@@ -148,8 +148,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                     + "STR_TO_DATE(SOD.DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s') FECHA_HORA_UBICACION, "
                     + "SOD.IMEI, "
                     + "SOD.LATITUDE LATITUD_UBICACION, "
-                    + "SOD.LONGITUDE LONGITUD_UBICACION, "
-                    + "SOD.LOCATIONDESCRIPTION DESCRIPCION_UBICACION "
+                    + "SOD.LONGITUDE LONGITUD_UBICACION "
                     + "FROM "
                     + "VIAJES V "
                     + "LEFT JOIN TRANSPORTISTA T ON (V.ID_TRANSPORTISTA=T.ID_TRANSPORTISTA) "
@@ -177,7 +176,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 String IMEI = rs.getString(8);
                 String LATITUDE = rs.getString(9);
                 String LONGITUDE = rs.getString(10);
-                String LOCATIONDESCRIPTION = rs.getString(11);
+                String LOCATIONDESCRIPTION = "UBICACIÓN PENDIENTE.";
                 Double ETA_HORAS = 0.00;
                 Double EDA_KMS = 0.00;
 
