@@ -184,6 +184,44 @@ public class Viajes implements Serializable {
                     viaje.setCabezal_disponibilidad(cabezal_disponibilidad);
                 }
                 
+                Integer numero_ubicaciones_gps = 0;
+                List<Entidad.Ubicacion> lista_ubicaciones = new ArrayList<>();
+                cadenasql = "SELECT "
+                        + "A.FECHA_HORA, "
+                        + "A.IMEI, "
+                        + "A.LATITUDE, "
+                        + "A.LONGITUDE, "
+                        + "A.LOCATIONDESCRIPTION, "
+                        + "A.ETA_HORAS, "
+                        + "A.EDA_KMS "
+                        + "FROM "
+                        + "VIAJE_UBICACIONES A "
+                        + "WHERE "
+                        + "A.ID_PAIS=" + pais.getId_pais() + " AND "
+                        + "A.ID_COMPANIA=" + compania.getId_compania() + " AND "
+                        + "A.ID_PLANTA=" + planta.getId_planta() + " AND "
+                        + "A.NUMERO_VIAJE=" + viaje.getNumero_viaje() + " AND "
+                        + "A.TIPO_ORDEN_VENTA='" + viaje.getTipo_orden_venta() + "' AND "
+                        + "A.NUMERO_ORDEN_VENTA=" + viaje.getNumero_orden_venta();
+                Statement stmt1 = conn.createStatement();
+                ResultSet rs1 = stmt1.executeQuery(cadenasql);
+                while(rs1.next()) {
+                    Entidad.Ubicacion ubicacion = new Entidad.Ubicacion();
+                    ubicacion.setFecha_hora_ubicacion(rs1.getString(1));
+                    ubicacion.setImei(rs1.getString(2));
+                    ubicacion.setLatitude(rs1.getString(3));
+                    ubicacion.setLogitude(rs1.getString(4));
+                    ubicacion.setDescripcion_ubicacion(rs1.getString(5));
+                    ubicacion.setEta_hora(rs1.getDouble(6));
+                    ubicacion.setEda_kms(rs1.getDouble(7));
+                    lista_ubicaciones.add(ubicacion);
+                    numero_ubicaciones_gps++;
+                }
+                rs1.close();
+                stmt1.close();
+                viaje.setNumero_ubicaciones_gps(numero_ubicaciones_gps);
+                viaje.setLista_ubicaciones(lista_ubicaciones);
+                
                 lista_viajes.add(viaje);
             }
             rs.close();
