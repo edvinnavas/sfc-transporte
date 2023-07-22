@@ -11,8 +11,6 @@ import java.util.List;
 public class Control_Base_Datos implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    final String host_mysql_db = "UNOCORP-MYSQL";
     
     public Control_Base_Datos() {
     }
@@ -21,11 +19,12 @@ public class Control_Base_Datos implements Serializable {
         Connection resultado;
 
         try {
+            String host_mysql_db = "UNOCORP-MYSQL";
             String usuario_db = "user_transportes";
             String contrasena_db = "TransGPS2023";
 
-            Class.forName("com.mysql.jdbc.Driver");
-            resultado = DriverManager.getConnection("jdbc:mysql://" + this.host_mysql_db + ":3306/db_transportes", usuario_db, contrasena_db);
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            resultado = DriverManager.getConnection("jdbc:mysql://" + host_mysql_db + ":3306/db_transportes", usuario_db, contrasena_db);
             // System.out.println("Conexión satisfactoria: " + usuario_db);
         } catch (Exception ex) {
             resultado = null;
