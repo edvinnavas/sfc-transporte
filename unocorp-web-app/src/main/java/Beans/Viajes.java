@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.primefaces.PrimeFaces;
 
 @ViewScoped
 @Named(value = "Viajes")
@@ -27,6 +28,8 @@ public class Viajes implements Serializable {
     private Entidades.UsuarioSesion usuario_sesion;
     private List<Entidades.RegTblViajes> lst_reg_tbl_viajes;
     private Entidades.RegTblViajes sel_reg_tbl_viajes;
+    private List<Entidades.RegTblUbicaciones> lst_reg_tbl_ubicaciones;
+    private Entidades.RegTblUbicaciones sel_reg_tbl_ubicaciones;
     private Date fecha_inicial;
     private Date fecha_final;
     private String estado;
@@ -37,6 +40,7 @@ public class Viajes implements Serializable {
     public void init() {
         try {
             this.lst_reg_tbl_viajes = new ArrayList<>();
+            this.lst_reg_tbl_ubicaciones = new ArrayList<>();
             this.fecha_inicial = new Date();
             this.fecha_final = new Date();
             this.estado = "ACT";
@@ -58,25 +62,25 @@ public class Viajes implements Serializable {
             System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: cargar_vista(), ERRROR: " + ex.toString());
         }
     }
-    
+
     public void filtrar_tabla() {
         try {
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
             ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
             String rastreable_bean;
-            if(this.rastreable) {
+            if (this.rastreable) {
                 rastreable_bean = "SI";
             } else {
                 rastreable_bean = "NO";
             }
             String json_result = cliente_rest_api.lista_viajes(dateFormat1.format(this.fecha_inicial), dateFormat1.format(this.fecha_final), this.estado, this.tipo_flete, rastreable_bean);
-            
+
             Type lista_viaje_type = new TypeToken<List<Entidades.Viaje>>() {
             }.getType();
             List<Entidades.Viaje> lista_viajes = new Gson().fromJson(json_result, lista_viaje_type);
 
             this.lst_reg_tbl_viajes = new ArrayList<>();
-            
+
             for (Integer i = 0; i < lista_viajes.size(); i++) {
                 Entidades.RegTblViajes regtblviajes = new Entidades.RegTblViajes();
                 regtblviajes.setId_reg_tbl_viajes(Long.valueOf(i.toString()));
@@ -105,7 +109,7 @@ public class Viajes implements Serializable {
                 regtblviajes.setEstado(lista_viajes.get(i).getEstado());
                 regtblviajes.setFecha_hora_terminado(lista_viajes.get(i).getFecha_hora_terminado());
                 String rastreable_viaje = "NO";
-                if(lista_viajes.get(i).getTransportista().getRastreable() == 1) {
+                if (lista_viajes.get(i).getTransportista().getRastreable() == 1) {
                     rastreable_viaje = "SI";
                 }
                 regtblviajes.setRastreable(rastreable_viaje);
@@ -121,12 +125,45 @@ public class Viajes implements Serializable {
                     regtblviajes.setPlaca_cabezal(lista_viajes.get(i).getCabezal_disponibilidad().getPlaca());
                     regtblviajes.setImei_cabezal(lista_viajes.get(i).getCabezal_disponibilidad().getImei());
                 }
-                regtblviajes.setNumero_ubicaciones_gps(0);
+                regtblviajes.setNumero_ubicaciones_gps(lista_viajes.get(i).getNumero_ubicaciones_gps());
                 this.lst_reg_tbl_viajes.add(regtblviajes);
             }
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
             System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: filtrar_tabla(), ERRROR: " + ex.toString());
+        }
+    }
+
+    public void mostrar_ubicaciones() {
+        try {
+            if (this.sel_reg_tbl_viajes != null) {
+                ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
+                String json_result = cliente_rest_api.lista_viajes_ubicaciones(this.sel_reg_tbl_viajes.getCodigo_pais(), this.sel_reg_tbl_viajes.getCodigo_compania(), this.sel_reg_tbl_viajes.getCodigo_planta().toString(), this.sel_reg_tbl_viajes.getNumero_viaje());
+
+                Type lista_ubicacion_type = new TypeToken<List<Entidades.Ubicacion>>() {
+                }.getType();
+                List<Entidades.Ubicacion> lista_ubicaciones = new Gson().fromJson(json_result, lista_ubicacion_type);
+
+                this.lst_reg_tbl_ubicaciones = new ArrayList<>();
+
+                for (Integer i = 0; i < lista_ubicaciones.size(); i++) {
+                    Entidades.RegTblUbicaciones regtblubicaciones = new Entidades.RegTblUbicaciones();
+                    regtblubicaciones.setId_reg_tbl_ubicaciones(Long.valueOf(i.toString()));
+                    regtblubicaciones.setFecha_hora_ubicacion(lista_ubicaciones.get(i).getFecha_hora_ubicacion());
+                    regtblubicaciones.setLatitude(lista_ubicaciones.get(i).getLatitude());
+                    regtblubicaciones.setLogitude(lista_ubicaciones.get(i).getLogitude());
+                    regtblubicaciones.setDescripcion_ubicacion(lista_ubicaciones.get(i).getDescripcion_ubicacion());
+                    regtblubicaciones.setEta_hora(lista_ubicaciones.get(i).getEta_hora());
+                    regtblubicaciones.setEda_kms(lista_ubicaciones.get(i).getEda_kms());
+                }
+
+                PrimeFaces.current().executeScript("PF('widvarUbicaciones').show();");
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Mensaje del sistema...", "Debe seleccionar un viaje."));
+            }
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
+            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: mostrar_ubicaciones(), ERRROR: " + ex.toString());
         }
     }
 

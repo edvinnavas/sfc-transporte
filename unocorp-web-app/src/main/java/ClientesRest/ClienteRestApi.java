@@ -51,7 +51,7 @@ public class ClienteRestApi implements Serializable {
         String resultado = "";
 
         try {
-            WebTarget webTarget = this.client.target(BASE_URI).path("lista_viajes/" + fecha_inicio + "/" + fecha_final + "/" + estado + "/" + tipo_flete+ "/" + rastreable);
+            WebTarget webTarget = this.client.target(BASE_URI).path("lista_viajes/" + fecha_inicio + "/" + fecha_final + "/" + estado + "/" + tipo_flete + "/" + rastreable);
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
             Response response = invocationBuilder.get();
             // System.out.println("CONEXION JDE-REST-API: " + response.getStatus());
@@ -61,7 +61,27 @@ public class ClienteRestApi implements Serializable {
                 resultado = response.getStatus() + ": " + response.getStatusInfo();
             }
         } catch (Exception ex) {
-            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: autenticar(), ERRROR: " + ex.toString());
+            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: lista_viajes(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+    
+    public String lista_viajes_ubicaciones(String codigo_pais, String codigo_compania, String codigo_planta, Long numero_viaje) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("lista_viajes_ubicaciones/" + codigo_pais + "/" + codigo_compania + "/" + codigo_planta + "/" + numero_viaje);
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.get();
+            // System.out.println("CONEXION JDE-REST-API: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: lista_viajes_ubicaciones(), ERRROR: " + ex.toString());
         }
 
         return resultado;

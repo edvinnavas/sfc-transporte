@@ -56,6 +56,7 @@
                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                 rowStyleClass="#{viaje.estado eq 'ACT' ? 'activo' : null}"
                 style="font-size: 12px;">
+                <p:ajax event="rowDblselect" listener="#{Viajes.mostrar_ubicaciones}" global="false"/>
                 <p:column headerText="Id" sortBy="#{viaje.id_reg_tbl_viajes}" filterBy="#{viaje.id_reg_tbl_viajes}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.id_reg_tbl_viajes}" />
                 </p:column>
@@ -151,5 +152,46 @@
                 </p:column>
             </p:dataTable>
         </p:panel>
+        <p:dialog id="dlgUbicaciones" header="Ubicaciones-GPS" widgetVar="widvarUbicaciones" modal="true" appendTo="@(body)" resizable="false" closable="true" closeOnEscape="true" style="font-size:12px; font-weight:bold;">
+            <h:form id="formUbicaciones">
+                <p:panel header="Ubicaciones GPS">
+                    <p:dataTable 
+                        id="tblUbicaciones" 
+                        var="ubicacion" 
+                        widgetVar="widgetTblUbicaciones" 
+                        value="#{Viajes.lst_reg_tbl_ubicaciones}"
+                        selectionMode="single" 
+                        selection="#{Viajes.sel_reg_tbl_ubicaciones}" 
+                        rowKey="#{ubicacion.id_reg_tbl_ubicaciones}"
+                        paginator="true" 
+                        rows="10" 
+                        rowsPerPageTemplate="10,20,30" 
+                        paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                        style="font-size: 12px;">
+                        <p:column headerText="Id" sortBy="#{ubicacion.id_reg_tbl_ubicaciones}" filterBy="#{ubicacion.id_reg_tbl_ubicaciones}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                            <h:outputText value="#{ubicacion.id_reg_tbl_ubicaciones}" />
+                        </p:column>
+                        <p:column headerText="Fecha-Hora" sortBy="#{ubicacion.fecha_hora_ubicacion}" filterBy="#{ubicacion.fecha_hora_ubicacion}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                            <h:outputText value="#{ubicacion.fecha_hora_ubicacion}" />
+                        </p:column>
+                        <p:column headerText="Latitud" sortBy="#{ubicacion.latitude}" filterBy="#{ubicacion.latitude}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                            <h:outputText value="#{ubicacion.latitude}" />
+                        </p:column>
+                        <p:column headerText="Longitud" sortBy="#{ubicacion.logitude}" filterBy="#{ubicacion.logitude}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                            <h:outputText value="#{ubicacion.logitude}" />
+                        </p:column>
+                        <p:column headerText="Ubicación" sortBy="#{ubicacion.descripcion_ubicacion}" filterBy="#{ubicacion.descripcion_ubicacion}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                            <h:outputText value="#{ubicacion.descripcion_ubicacion}" />
+                        </p:column>
+                        <p:column headerText="Tiempo-Restante" sortBy="#{ubicacion.eta_hora}" filterBy="#{ubicacion.eta_hora}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                            <h:outputText value="#{ubicacion.eta_hora}" />
+                        </p:column>
+                        <p:column headerText="Distancia-Restante" sortBy="#{ubicacion.eda_kms}" filterBy="#{ubicacion.eda_kms}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                            <h:outputText value="#{ubicacion.eda_kms}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+        </p:dialog>
     </ui:define>
 </ui:composition>

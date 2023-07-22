@@ -58,5 +58,26 @@ public class MyResource implements Serializable {
 
         return resultado;
     }
+    
+    @GET
+    @Path("lista_viajes_ubicaciones/{codigo_pais}/{codigo_compania}/{codigo_planta}/{numero_viaje}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String lista_viajes_ubicaciones(
+            @PathParam("codigo_pais") String codigo_pais, 
+            @PathParam("codigo_compania") String codigo_compania,
+            @PathParam("codigo_planta") String codigo_planta,
+            @PathParam("numero_viaje") Long numero_viaje) {
+        
+        String resultado;
+
+        try {
+            Control.Viajes ctrl_viajes = new Control.Viajes();
+            resultado = ctrl_viajes.lista_viajes_ubicaciones(codigo_pais, codigo_compania, codigo_planta, numero_viaje);
+        } catch (Exception ex) {
+            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: autenticar(), ERRROR: " + ex.toString();
+        }
+
+        return resultado;
+    }
 
 }
