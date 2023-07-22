@@ -241,8 +241,8 @@ public class Viajes implements Serializable {
             conn.setAutoCommit(false);
             
             Long id_pais = ctrl_base_datos.ObtenerLong("SELECT A.ID_PAIS FROM PAIS A WHERE A.CODIGO='" + codigo_pais + "'", conn);
-            Long id_compania = ctrl_base_datos.ObtenerLong("SELECT A.ID_COMPANIA FROM COMPANIA A WHERE A.CODIGO='" + codigo_pais + "'", conn);
-            Long id_planta = ctrl_base_datos.ObtenerLong("SELECT A.ID_PLANTA FROM PLANTA A WHERE A.CODIGO='" + codigo_pais + "'", conn);
+            Long id_compania = ctrl_base_datos.ObtenerLong("SELECT A.ID_COMPANIA FROM COMPANIA A WHERE A.CODIGO='" + codigo_compania + "'", conn);
+            Long id_planta = ctrl_base_datos.ObtenerLong("SELECT A.ID_PLANTA FROM PLANTA A WHERE A.CODIGO='" + codigo_planta + "'", conn);
 
             List<Entidad.Ubicacion> lista_ubicaciones = new ArrayList<>();
             String cadenasql = "SELECT "
