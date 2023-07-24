@@ -139,7 +139,7 @@ public class Viajes implements Serializable {
             if (this.sel_reg_tbl_viajes != null) {
                 ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
                 String json_result = cliente_rest_api.lista_viajes_ubicaciones(this.sel_reg_tbl_viajes.getCodigo_pais(), this.sel_reg_tbl_viajes.getCodigo_compania(), this.sel_reg_tbl_viajes.getCodigo_planta().toString(), this.sel_reg_tbl_viajes.getNumero_viaje());
-
+                
                 Type lista_ubicacion_type = new TypeToken<List<Entidades.Ubicacion>>() {
                 }.getType();
                 List<Entidades.Ubicacion> lista_ubicaciones = new Gson().fromJson(json_result, lista_ubicacion_type);
@@ -155,6 +155,7 @@ public class Viajes implements Serializable {
                     regtblubicaciones.setDescripcion_ubicacion(lista_ubicaciones.get(i).getDescripcion_ubicacion());
                     regtblubicaciones.setEta_hora(lista_ubicaciones.get(i).getEta_hora());
                     regtblubicaciones.setEda_kms(lista_ubicaciones.get(i).getEda_kms());
+                    this.lst_reg_tbl_ubicaciones.add(regtblubicaciones);
                 }
 
                 PrimeFaces.current().executeScript("PF('widvarUbicaciones').show();");

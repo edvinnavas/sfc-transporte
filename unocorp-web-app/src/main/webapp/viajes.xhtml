@@ -5,6 +5,9 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="WEB-INF/plantilla/plantilla.xhtml">
+    <ui:define name="head">
+        <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
+    </ui:define>
     <ui:define name="contenido">
         <p:panel header="Viajes">
             <p:growl id="msgViajes" showDetail="true"/>
@@ -56,7 +59,7 @@
                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                 rowStyleClass="#{viaje.estado eq 'ACT' ? 'activo' : null}"
                 style="font-size: 12px;">
-                <p:ajax event="rowDblselect" listener="#{Viajes.mostrar_ubicaciones}" global="false"/>
+                <p:ajax event="rowDblselect" listener="#{Viajes.mostrar_ubicaciones}" update="formPlantilla:formUbicaciones:tblUbicaciones,formPlantilla:formUbicaciones:mapUbicaciones" global="false"/>
                 <p:column headerText="Id" sortBy="#{viaje.id_reg_tbl_viajes}" filterBy="#{viaje.id_reg_tbl_viajes}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
                     <h:outputText value="#{viaje.id_reg_tbl_viajes}" />
                 </p:column>
@@ -152,46 +155,45 @@
                 </p:column>
             </p:dataTable>
         </p:panel>
-        <p:dialog id="dlgUbicaciones" header="Ubicaciones-GPS" widgetVar="widvarUbicaciones" modal="true" appendTo="@(body)" resizable="false" closable="true" closeOnEscape="true" style="font-size:12px; font-weight:bold;">
+        <p:dialog id="dlgUbicaciones" header="Ubicaciones-GPS" widgetVar="widvarUbicaciones" modal="true" appendTo="@(body)" resizable="false" closable="true" closeOnEscape="true" style="font-size:10px; font-weight:bold;">
             <h:form id="formUbicaciones">
-                <p:panel header="Ubicaciones GPS">
-                    <p:dataTable 
-                        id="tblUbicaciones" 
-                        var="ubicacion" 
-                        widgetVar="widgetTblUbicaciones" 
-                        value="#{Viajes.lst_reg_tbl_ubicaciones}"
-                        selectionMode="single" 
-                        selection="#{Viajes.sel_reg_tbl_ubicaciones}" 
-                        rowKey="#{ubicacion.id_reg_tbl_ubicaciones}"
-                        paginator="true" 
-                        rows="10" 
-                        rowsPerPageTemplate="10,20,30" 
-                        paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                        style="font-size: 12px;">
-                        <p:column headerText="Id" sortBy="#{ubicacion.id_reg_tbl_ubicaciones}" filterBy="#{ubicacion.id_reg_tbl_ubicaciones}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
-                            <h:outputText value="#{ubicacion.id_reg_tbl_ubicaciones}" />
-                        </p:column>
-                        <p:column headerText="Fecha-Hora" sortBy="#{ubicacion.fecha_hora_ubicacion}" filterBy="#{ubicacion.fecha_hora_ubicacion}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
-                            <h:outputText value="#{ubicacion.fecha_hora_ubicacion}" />
-                        </p:column>
-                        <p:column headerText="Latitud" sortBy="#{ubicacion.latitude}" filterBy="#{ubicacion.latitude}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
-                            <h:outputText value="#{ubicacion.latitude}" />
-                        </p:column>
-                        <p:column headerText="Longitud" sortBy="#{ubicacion.logitude}" filterBy="#{ubicacion.logitude}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
-                            <h:outputText value="#{ubicacion.logitude}" />
-                        </p:column>
-                        <p:column headerText="Ubicación" sortBy="#{ubicacion.descripcion_ubicacion}" filterBy="#{ubicacion.descripcion_ubicacion}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
-                            <h:outputText value="#{ubicacion.descripcion_ubicacion}" />
-                        </p:column>
-                        <p:column headerText="Tiempo-Restante" sortBy="#{ubicacion.eta_hora}" filterBy="#{ubicacion.eta_hora}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
-                            <h:outputText value="#{ubicacion.eta_hora}" />
-                        </p:column>
-                        <p:column headerText="Distancia-Restante" sortBy="#{ubicacion.eda_kms}" filterBy="#{ubicacion.eda_kms}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
-                            <h:outputText value="#{ubicacion.eda_kms}" />
-                        </p:column>
-                    </p:dataTable>
-                </p:panel>
+                <p:dataTable 
+                    id="tblUbicaciones" 
+                    var="ubicacion" 
+                    widgetVar="widgetTblUbicaciones" 
+                    value="#{Viajes.lst_reg_tbl_ubicaciones}"
+                    selectionMode="single" 
+                    selection="#{Viajes.sel_reg_tbl_ubicaciones}" 
+                    rowKey="#{ubicacion.id_reg_tbl_ubicaciones}"
+                    scrollable="true" 
+                    scrollHeight="200"
+                    style="font-size: 10px;">
+                    <p:column headerText="Id" style="width: 200px; font-size: 10px;">
+                        <h:outputText value="#{ubicacion.id_reg_tbl_ubicaciones}" />
+                    </p:column>
+                    <p:column headerText="Fecha-Hora" style="width: 200px; font-size: 10px;">
+                        <h:outputText value="#{ubicacion.fecha_hora_ubicacion}" />
+                    </p:column>
+                    <p:column headerText="Latitud" style="width: 200px; font-size: 10px;">
+                        <h:outputText value="#{ubicacion.latitude}" />
+                    </p:column>
+                    <p:column headerText="Longitud" style="width: 200px; font-size: 10px;">
+                        <h:outputText value="#{ubicacion.logitude}" />
+                    </p:column>
+                    <p:column headerText="Ubicación" style="width: 400px; font-size: 10px;">
+                        <h:outputText value="#{ubicacion.descripcion_ubicacion}" />
+                    </p:column>
+                    <p:column headerText="Tiempo-Restante" style="width: 200px; font-size: 10px;">
+                        <h:outputText value="#{ubicacion.eta_hora}" />
+                    </p:column>
+                    <p:column headerText="Distancia-Restante" style="width: 200px; font-size: 10px;">
+                        <h:outputText value="#{ubicacion.eda_kms}" />
+                    </p:column>
+                </p:dataTable>
+                <div class="card">
+                    <p:gmap id="mapUbicaciones" center="41.381542, 2.122893" zoom="15" type="HYBRID" style="width:100%;height:400px"/>
+                </div>
             </h:form>
-        </p:dialog>
+        </p:dialog>    
     </ui:define>
 </ui:composition>
