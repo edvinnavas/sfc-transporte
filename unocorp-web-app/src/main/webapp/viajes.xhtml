@@ -34,7 +34,7 @@
                     <f:selectItem itemLabel="FOB" itemValue="FOB"/>
                     <p:ajax event="itemSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
                 </p:selectOneMenu>
-                <p:selectBooleanCheckbox id="chkTracking" value="#{Viajes.rastreable}" itemLabel="Tracking">
+                <p:selectBooleanCheckbox id="chkTracking" value="#{Viajes.rastreable}" itemLabel="Tracking" style="font-size: 12px;">
                     <p:ajax update="tblViajes" listener="#{Viajes.filtrar_tabla}"/>
                 </p:selectBooleanCheckbox>
             </p:panelGrid>
@@ -155,7 +155,7 @@
                 </p:column>
             </p:dataTable>
         </p:panel>
-        <p:dialog id="dlgUbicaciones" header="Ubicaciones-GPS" widgetVar="widvarUbicaciones" modal="true" appendTo="@(body)" resizable="false" closable="true" closeOnEscape="true" style="font-size:10px; font-weight:bold;">
+        <p:dialog id="dlgUbicaciones" widgetVar="widvarUbicaciones" modal="true" appendTo="@(body)" resizable="false" closable="true" closeOnEscape="true" width="1000" style="font-size:12px; font-weight:bold;">
             <h:form id="formUbicaciones">
                 <p:dataTable 
                     id="tblUbicaciones" 
@@ -166,33 +166,33 @@
                     selection="#{Viajes.sel_reg_tbl_ubicaciones}" 
                     rowKey="#{ubicacion.id_reg_tbl_ubicaciones}"
                     scrollable="true" 
-                    scrollHeight="200"
-                    style="font-size: 10px;">
-                    <p:column headerText="Id" style="width: 200px; font-size: 10px;">
+                    scrollHeight="150"
+                    style="font-size: 12px;">
+                    <p:column headerText="Id" style="width: 200px; font-size: 12px;">
                         <h:outputText value="#{ubicacion.id_reg_tbl_ubicaciones}" />
                     </p:column>
-                    <p:column headerText="Fecha-Hora" style="width: 200px; font-size: 10px;">
+                    <p:column headerText="Fecha-Hora" style="width: 200px; font-size: 12px;">
                         <h:outputText value="#{ubicacion.fecha_hora_ubicacion}" />
                     </p:column>
-                    <p:column headerText="Latitud" style="width: 200px; font-size: 10px;">
+                    <p:column headerText="Latitud" style="width: 200px; font-size: 12px;">
                         <h:outputText value="#{ubicacion.latitude}" />
                     </p:column>
-                    <p:column headerText="Longitud" style="width: 200px; font-size: 10px;">
+                    <p:column headerText="Longitud" style="width: 200px; font-size: 12px;">
                         <h:outputText value="#{ubicacion.logitude}" />
                     </p:column>
-                    <p:column headerText="Ubicación" style="width: 400px; font-size: 10px;">
+                    <p:column headerText="Ubicación" style="width: 400px; font-size: 12px;">
                         <h:outputText value="#{ubicacion.descripcion_ubicacion}" />
                     </p:column>
-                    <p:column headerText="Tiempo-Restante" style="width: 200px; font-size: 10px;">
+                    <p:column headerText="Tiempo-Restante" style="width: 200px; font-size: 12px;">
                         <h:outputText value="#{ubicacion.eta_hora}" />
                     </p:column>
-                    <p:column headerText="Distancia-Restante" style="width: 200px; font-size: 10px;">
+                    <p:column headerText="Distancia-Restante" style="width: 200px; font-size: 12px;">
                         <h:outputText value="#{ubicacion.eda_kms}" />
                     </p:column>
                 </p:dataTable>
-                <div class="card">
-                    <p:gmap id="mapUbicaciones" center="41.381542, 2.122893" zoom="15" type="HYBRID" style="width:100%;height:400px"/>
-                </div>
+                <p:card style="margin-bottom: 1em">
+                    <p:gmap id="mapUbicaciones" center="#{Viajes.central_map}" zoom="10" type="HYBRID" model="#{Viajes.mapa_model}" style="width:100%; height:300px;"/>
+                </p:card>
             </h:form>
         </p:dialog>    
     </ui:define>

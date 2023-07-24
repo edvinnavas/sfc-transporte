@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.primefaces.PrimeFaces;
+import org.primefaces.model.map.DefaultMapModel;
+import org.primefaces.model.map.LatLng;
+import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Marker;
 
 @ViewScoped
 @Named(value = "Viajes")
@@ -30,6 +34,8 @@ public class Viajes implements Serializable {
     private Entidades.RegTblViajes sel_reg_tbl_viajes;
     private List<Entidades.RegTblUbicaciones> lst_reg_tbl_ubicaciones;
     private Entidades.RegTblUbicaciones sel_reg_tbl_ubicaciones;
+    private MapModel<Long> mapa_model;
+    private String central_map;
     private Date fecha_inicial;
     private Date fecha_final;
     private String estado;
@@ -46,6 +52,7 @@ public class Viajes implements Serializable {
             this.estado = "ACT";
             this.tipo_flete = "CIF";
             this.rastreable = true;
+            this.mapa_model = new DefaultMapModel<>();
             this.filtrar_tabla();
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
@@ -139,16 +146,21 @@ public class Viajes implements Serializable {
             if (this.sel_reg_tbl_viajes != null) {
                 ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
                 String json_result = cliente_rest_api.lista_viajes_ubicaciones(this.sel_reg_tbl_viajes.getCodigo_pais(), this.sel_reg_tbl_viajes.getCodigo_compania(), this.sel_reg_tbl_viajes.getCodigo_planta().toString(), this.sel_reg_tbl_viajes.getNumero_viaje());
-                
+
                 Type lista_ubicacion_type = new TypeToken<List<Entidades.Ubicacion>>() {
                 }.getType();
                 List<Entidades.Ubicacion> lista_ubicaciones = new Gson().fromJson(json_result, lista_ubicacion_type);
 
                 this.lst_reg_tbl_ubicaciones = new ArrayList<>();
 
+                this.mapa_model = new DefaultMapModel<>();
+                Integer contador = 0;
+                Double sum_latitude = 0.00;
+                Double sum_longitude = 0.00;
                 for (Integer i = 0; i < lista_ubicaciones.size(); i++) {
+                    contador = i + 1;
                     Entidades.RegTblUbicaciones regtblubicaciones = new Entidades.RegTblUbicaciones();
-                    regtblubicaciones.setId_reg_tbl_ubicaciones(Long.valueOf(i.toString()));
+                    regtblubicaciones.setId_reg_tbl_ubicaciones(Long.valueOf(contador.toString()));
                     regtblubicaciones.setFecha_hora_ubicacion(lista_ubicaciones.get(i).getFecha_hora_ubicacion());
                     regtblubicaciones.setLatitude(lista_ubicaciones.get(i).getLatitude());
                     regtblubicaciones.setLogitude(lista_ubicaciones.get(i).getLogitude());
@@ -156,7 +168,15 @@ public class Viajes implements Serializable {
                     regtblubicaciones.setEta_hora(lista_ubicaciones.get(i).getEta_hora());
                     regtblubicaciones.setEda_kms(lista_ubicaciones.get(i).getEda_kms());
                     this.lst_reg_tbl_ubicaciones.add(regtblubicaciones);
+                    
+                    String desc_ubicacion = "Fecha-Hora: " + lista_ubicaciones.get(i).getFecha_hora_ubicacion() + " [" + lista_ubicaciones.get(i).getLatitude() + "," + lista_ubicaciones.get(i).getLogitude() + "]";
+                    this.mapa_model.addOverlay(new Marker<>(new LatLng(Double.parseDouble(lista_ubicaciones.get(i).getLatitude()), Double.parseDouble(lista_ubicaciones.get(i).getLogitude())), desc_ubicacion, Long.valueOf(contador.toString())));
+                    sum_latitude = sum_latitude + Double.valueOf(lista_ubicaciones.get(i).getLatitude());
+                    sum_longitude = sum_longitude + Double.valueOf(lista_ubicaciones.get(i).getLogitude());
                 }
+                Double avg_latitude = sum_latitude / contador;
+                Double avg_longitude = sum_longitude / contador;
+                this.central_map = avg_latitude.toString() + ", " + avg_longitude;
 
                 PrimeFaces.current().executeScript("PF('widvarUbicaciones').show();");
             } else {
