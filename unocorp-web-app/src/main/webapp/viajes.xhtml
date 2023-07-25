@@ -34,7 +34,7 @@
                     <f:selectItem itemLabel="FOB" itemValue="FOB"/>
                     <p:ajax event="itemSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
                 </p:selectOneMenu>
-                <p:selectBooleanCheckbox id="chkTracking" value="#{Viajes.rastreable}" itemLabel="Tracking" style="font-size: 12px;">
+                <p:selectBooleanCheckbox id="chkTracking" value="#{Viajes.rastreable}" itemLabel="Tracking" style="font-weight: bold; font-size: 12px;">
                     <p:ajax update="tblViajes" listener="#{Viajes.filtrar_tabla}"/>
                 </p:selectBooleanCheckbox>
             </p:panelGrid>
