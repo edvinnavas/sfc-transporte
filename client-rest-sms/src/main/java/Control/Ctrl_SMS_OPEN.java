@@ -1,6 +1,5 @@
 package Control;
 
-import ClienteRest.Cliente_Rest_SMS_OPEN;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import jakarta.xml.bind.JAXBContext;
@@ -40,7 +39,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                     + "</soapenv:Body>"
                     + "</soapenv:Envelope>";
 
-            Cliente_Rest_SMS_OPEN cliente_rest_sms_open = new Cliente_Rest_SMS_OPEN();
+            ClienteRest.Cliente_Rest_SMS_OPEN cliente_rest_sms_open = new ClienteRest.Cliente_Rest_SMS_OPEN();
             String response_cliente_rest_sms_open = cliente_rest_sms_open.ObtenerUbicaciones(xml_request);
             response_cliente_rest_sms_open = response_cliente_rest_sms_open.replaceAll("xmlns=\"http://localhost/SyncVehiculosunopetrol\"", "");
 
@@ -232,6 +231,58 @@ public class Ctrl_SMS_OPEN implements Serializable {
                     stmt1 = conn.createStatement();
                     stmt1.executeUpdate(cadenasql);
                     stmt1.close();
+                    // INICIO SECCION DE CAMBIOS AGREGADOS.
+                    String query_get_id_cliente_destino = "SELECT "
+                            + "V.ID_CLIENTE_DESTINO "
+                            + "FROM "
+                            + "VIAJES V "
+                            + "WHERE "
+                            + "V.ID_PAIS=" + ID_PAIS + " AND "
+                            + "V.ID_COMPANIA=" + ID_COMPANIA + " AND "
+                            + "V.ID_PLANTA=" + ID_PLANTA + " AND "
+                            + "V.NUMERO_VIAJE=" + NUMERO_VIAJE;
+                    Long ID_CLIENTE_DESTINO = control_base_datos.ObtenerLong(query_get_id_cliente_destino, conn);
+
+                    if (ID_CLIENTE_DESTINO != null) {
+                        Double ZONA_LATITUD_1 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LATITUD_1,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                        Double ZONA_LONGITUD_1 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LONGITUD_1,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                        Double ZONA_LATITUD_2 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LATITUD_2,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                        Double ZONA_LONGITUD_2 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LONGITUD_2,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                        Double ZONA_LATITUD_3 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LATITUD_3,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                        Double ZONA_LONGITUD_3 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LONGITUD_3,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                        Double ZONA_LATITUD_4 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LATITUD_4,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                        Double ZONA_LONGITUD_4 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LONGITUD_4,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                        Double ZONA_LATITUD_5 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LATITUD_5,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                        Double ZONA_LONGITUD_5 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LONGITUD_5,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+
+                        System.out.println("GEO-ZONA: {"
+                                + "(" + ZONA_LATITUD_1 + "," + ZONA_LONGITUD_1 + ");"
+                                + "(" + ZONA_LATITUD_2 + "," + ZONA_LONGITUD_2 + ");"
+                                + "(" + ZONA_LATITUD_3 + "," + ZONA_LONGITUD_3 + ");"
+                                + "(" + ZONA_LATITUD_4 + "," + ZONA_LONGITUD_4 + ");"
+                                + "(" + ZONA_LATITUD_5 + "," + ZONA_LONGITUD_5 + ")"
+                                + "}");
+                        System.out.println("UBICACIÓN-ACTUAL: {(" + Double.valueOf(LATITUDE) + "," + Double.valueOf(LONGITUDE) + ")}");
+
+                        Point geozona[] = {
+                            new Point(ZONA_LATITUD_1, ZONA_LONGITUD_1),
+                            new Point(ZONA_LATITUD_2, ZONA_LONGITUD_2),
+                            new Point(ZONA_LATITUD_3, ZONA_LONGITUD_3),
+                            new Point(ZONA_LATITUD_4, ZONA_LONGITUD_4),
+                            new Point(ZONA_LATITUD_5, ZONA_LONGITUD_5)
+                        };
+
+                        Point ubicacion_actual = new Point(Double.valueOf(LATITUDE), Double.valueOf(LONGITUDE));
+
+                        Poligono poligono = new Poligono();
+                        if (poligono.isInside(geozona, 5, ubicacion_actual)) {
+                            cadenasql = "UPDATE VIAJES SET ID_ESTADO_VIAJE=5 WHERE ID_PAIS=" + ID_PAIS + " AND ID_COMPANIA=" + ID_COMPANIA + " AND ID_PLANTA=" + ID_PLANTA + " AND NUMERO_VIAJE=" + NUMERO_VIAJE;
+                            stmt1 = conn.createStatement();
+                            stmt1.executeUpdate(cadenasql);
+                            stmt1.close();
+                        }
+                    }
+                    // FIN SECCION DE CAMBIOS AGREGADOS.
                 }
             }
             rs.close();
