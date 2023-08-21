@@ -276,7 +276,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
 
                         Poligono poligono = new Poligono();
                         if (poligono.isInside(geozona, 5, ubicacion_actual)) {
-                            cadenasql = "UPDATE VIAJES SET ID_ESTADO_VIAJE=5 WHERE ID_PAIS=" + ID_PAIS + " AND ID_COMPANIA=" + ID_COMPANIA + " AND ID_PLANTA=" + ID_PLANTA + " AND NUMERO_VIAJE=" + NUMERO_VIAJE;
+                            cadenasql = "UPDATE VIAJES SET ID_ESTADO_VIAJE=5, ESTADO='TER' WHERE ID_PAIS=" + ID_PAIS + " AND ID_COMPANIA=" + ID_COMPANIA + " AND ID_PLANTA=" + ID_PLANTA + " AND NUMERO_VIAJE=" + NUMERO_VIAJE;
                             stmt1 = conn.createStatement();
                             stmt1.executeUpdate(cadenasql);
                             stmt1.close();
