@@ -146,6 +146,16 @@ public class Viajes implements Serializable {
                 cliente_destino.setId_cliente_destino(rs.getLong(12));
                 cliente_destino.setCodigo(ctrl_base_datos.ObtenerString("SELECT A.CODIGO FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
                 cliente_destino.setNombre(ctrl_base_datos.ObtenerString("SELECT A.NOMBRE FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
+                cliente_destino.setZona_latitud_1(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_1 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
+                cliente_destino.setZona_longitud_1(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_1 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
+                cliente_destino.setZona_latitud_2(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_2 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
+                cliente_destino.setZona_longitud_2(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_2 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
+                cliente_destino.setZona_latitud_3(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_3 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
+                cliente_destino.setZona_longitud_3(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_3 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
+                cliente_destino.setZona_latitud_4(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_4 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
+                cliente_destino.setZona_longitud_4(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_4 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
+                cliente_destino.setZona_latitud_5(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_5 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
+                cliente_destino.setZona_longitud_5(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_5 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
                 cliente_destino.setCliente(cliente);
                 viaje.setCliente_destino(cliente_destino);
 
@@ -229,7 +239,7 @@ public class Viajes implements Serializable {
         return resultado;
     }
 
-    public String lista_viajes_ubicaciones(String codigo_pais, String codigo_compania, String codigo_planta, Long numero_viaje) {
+    public String lista_viajes_ubicaciones(String codigo_pais, String codigo_compania, String codigo_planta, Long numero_viaje, Long id_cliente, Long id_cliente_destino) {
         String resultado = "";
 
         Connection conn = null;
@@ -275,12 +285,37 @@ public class Viajes implements Serializable {
             }
             rs1.close();
             stmt1.close();
+            
+            Entidad.Cliente cliente = new Entidad.Cliente();
+            cliente.setId_cliente(id_cliente);
+            cliente.setCodigo(ctrl_base_datos.ObtenerString("SELECT A.CODIGO FROM CLIENTE A WHERE A.ID_CLIENTE=" + id_cliente, conn));
+            cliente.setNombre(ctrl_base_datos.ObtenerString("SELECT A.NOMBRE FROM CLIENTE A WHERE A.ID_CLIENTE=" + id_cliente, conn));
 
+            Entidad.Cliente_Destino cliente_destino = new Entidad.Cliente_Destino();
+            cliente_destino.setId_cliente_destino(id_cliente_destino);
+            cliente_destino.setCodigo(ctrl_base_datos.ObtenerString("SELECT A.CODIGO FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
+            cliente_destino.setNombre(ctrl_base_datos.ObtenerString("SELECT A.NOMBRE FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
+            cliente_destino.setZona_latitud_1(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_1 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
+            cliente_destino.setZona_longitud_1(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_1 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
+            cliente_destino.setZona_latitud_2(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_2 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
+            cliente_destino.setZona_longitud_2(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_2 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
+            cliente_destino.setZona_latitud_3(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_3 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
+            cliente_destino.setZona_longitud_3(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_3 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
+            cliente_destino.setZona_latitud_4(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_4 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
+            cliente_destino.setZona_longitud_4(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_4 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
+            cliente_destino.setZona_latitud_5(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_5 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
+            cliente_destino.setZona_longitud_5(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_5 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
+            cliente_destino.setCliente(cliente);
+            
             conn.commit();
             conn.setAutoCommit(true);
+            
+            Entidad.Viaje_Ubicacion viajes_ubicacion = new Entidad.Viaje_Ubicacion();
+            viajes_ubicacion.setLista_ubicaciones(lista_ubicaciones);
+            viajes_ubicacion.setCliente_destino(cliente_destino);
 
             Gson gson = new GsonBuilder().serializeNulls().create();
-            resultado = gson.toJson(lista_ubicaciones);
+            resultado = gson.toJson(viajes_ubicacion);
         } catch (Exception ex) {
             try {
                 if (conn != null) {

@@ -20,6 +20,7 @@ import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
+import org.primefaces.model.map.Polygon;
 
 @ViewScoped
 @Named(value = "Viajes")
@@ -147,9 +148,9 @@ public class Viajes implements Serializable {
                 ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
                 String json_result = cliente_rest_api.lista_viajes_ubicaciones(this.sel_reg_tbl_viajes.getCodigo_pais(), this.sel_reg_tbl_viajes.getCodigo_compania(), this.sel_reg_tbl_viajes.getCodigo_planta().toString(), this.sel_reg_tbl_viajes.getNumero_viaje());
 
-                Type lista_ubicacion_type = new TypeToken<List<Entidades.Ubicacion>>() {
+                Type viaje_ubicacion_type = new TypeToken<Entidades.Viaje_Ubicacion>() {
                 }.getType();
-                List<Entidades.Ubicacion> lista_ubicaciones = new Gson().fromJson(json_result, lista_ubicacion_type);
+                Entidades.Viaje_Ubicacion viaje_ubicacion = new Gson().fromJson(json_result, viaje_ubicacion_type);
 
                 this.lst_reg_tbl_ubicaciones = new ArrayList<>();
 
@@ -157,26 +158,47 @@ public class Viajes implements Serializable {
                 Integer contador = 0;
                 Double sum_latitude = 0.00;
                 Double sum_longitude = 0.00;
-                for (Integer i = 0; i < lista_ubicaciones.size(); i++) {
+                for (Integer i = 0; i < viaje_ubicacion.getLista_ubicaciones().size(); i++) {
                     contador = i + 1;
                     Entidades.RegTblUbicaciones regtblubicaciones = new Entidades.RegTblUbicaciones();
                     regtblubicaciones.setId_reg_tbl_ubicaciones(Long.valueOf(contador.toString()));
-                    regtblubicaciones.setFecha_hora_ubicacion(lista_ubicaciones.get(i).getFecha_hora_ubicacion());
-                    regtblubicaciones.setLatitude(lista_ubicaciones.get(i).getLatitude());
-                    regtblubicaciones.setLogitude(lista_ubicaciones.get(i).getLogitude());
-                    regtblubicaciones.setDescripcion_ubicacion(lista_ubicaciones.get(i).getDescripcion_ubicacion());
-                    regtblubicaciones.setEta_hora(lista_ubicaciones.get(i).getEta_hora());
-                    regtblubicaciones.setEda_kms(lista_ubicaciones.get(i).getEda_kms());
+                    regtblubicaciones.setFecha_hora_ubicacion(viaje_ubicacion.getLista_ubicaciones().get(i).getFecha_hora_ubicacion());
+                    regtblubicaciones.setLatitude(viaje_ubicacion.getLista_ubicaciones().get(i).getLatitude());
+                    regtblubicaciones.setLogitude(viaje_ubicacion.getLista_ubicaciones().get(i).getLogitude());
+                    regtblubicaciones.setDescripcion_ubicacion(viaje_ubicacion.getLista_ubicaciones().get(i).getDescripcion_ubicacion());
+                    regtblubicaciones.setEta_hora(viaje_ubicacion.getLista_ubicaciones().get(i).getEta_hora());
+                    regtblubicaciones.setEda_kms(viaje_ubicacion.getLista_ubicaciones().get(i).getEda_kms());
                     this.lst_reg_tbl_ubicaciones.add(regtblubicaciones);
                     
-                    String desc_ubicacion = "Fecha-Hora: " + lista_ubicaciones.get(i).getFecha_hora_ubicacion() + " [" + lista_ubicaciones.get(i).getLatitude() + "," + lista_ubicaciones.get(i).getLogitude() + "]";
-                    this.mapa_model.addOverlay(new Marker<>(new LatLng(Double.parseDouble(lista_ubicaciones.get(i).getLatitude()), Double.parseDouble(lista_ubicaciones.get(i).getLogitude())), desc_ubicacion, Long.valueOf(contador.toString())));
-                    sum_latitude = sum_latitude + Double.valueOf(lista_ubicaciones.get(i).getLatitude());
-                    sum_longitude = sum_longitude + Double.valueOf(lista_ubicaciones.get(i).getLogitude());
+                    String desc_ubicacion = "Fecha-Hora: " + viaje_ubicacion.getLista_ubicaciones().get(i).getFecha_hora_ubicacion() + " [" + viaje_ubicacion.getLista_ubicaciones().get(i).getLatitude() + "," + viaje_ubicacion.getLista_ubicaciones().get(i).getLogitude() + "]";
+                    this.mapa_model.addOverlay(new Marker<>(new LatLng(Double.parseDouble(viaje_ubicacion.getLista_ubicaciones().get(i).getLatitude()), Double.parseDouble(viaje_ubicacion.getLista_ubicaciones().get(i).getLogitude())), desc_ubicacion, Long.valueOf(contador.toString())));
+                    sum_latitude = sum_latitude + Double.valueOf(viaje_ubicacion.getLista_ubicaciones().get(i).getLatitude());
+                    sum_longitude = sum_longitude + Double.valueOf(viaje_ubicacion.getLista_ubicaciones().get(i).getLogitude());
                 }
                 Double avg_latitude = sum_latitude / contador;
                 Double avg_longitude = sum_longitude / contador;
                 this.central_map = avg_latitude.toString() + ", " + avg_longitude;
+                
+                LatLng coord1 = new LatLng(viaje_ubicacion.getCliente_destino().getZona_latitud_1(), viaje_ubicacion.getCliente_destino().getZona_longitud_1());
+                LatLng coord2 = new LatLng(viaje_ubicacion.getCliente_destino().getZona_latitud_2(), viaje_ubicacion.getCliente_destino().getZona_longitud_2());
+                LatLng coord3 = new LatLng(viaje_ubicacion.getCliente_destino().getZona_latitud_3(), viaje_ubicacion.getCliente_destino().getZona_longitud_3());
+                LatLng coord4 = new LatLng(viaje_ubicacion.getCliente_destino().getZona_latitud_4(), viaje_ubicacion.getCliente_destino().getZona_longitud_4());
+                LatLng coord5 = new LatLng(viaje_ubicacion.getCliente_destino().getZona_latitud_5(), viaje_ubicacion.getCliente_destino().getZona_longitud_5());
+                
+                Polygon<Long> polygon = new Polygon<>();
+                polygon.setData(1L);
+                polygon.getPaths().add(coord1);
+                polygon.getPaths().add(coord2);
+                polygon.getPaths().add(coord3);
+                polygon.getPaths().add(coord4);
+                polygon.getPaths().add(coord5);
+                
+                polygon.setStrokeColor("#FF9900");
+                polygon.setFillColor("#FF9900");
+                polygon.setStrokeOpacity(0.7);
+                polygon.setFillOpacity(0.7);
+                
+                this.mapa_model.addOverlay(polygon);
 
                 PrimeFaces.current().executeScript("PF('widvarUbicaciones').show();");
             } else {
