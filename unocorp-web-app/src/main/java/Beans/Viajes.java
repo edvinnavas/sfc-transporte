@@ -146,7 +146,7 @@ public class Viajes implements Serializable {
         try {
             if (this.sel_reg_tbl_viajes != null) {
                 ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
-                String json_result = cliente_rest_api.lista_viajes_ubicaciones(this.sel_reg_tbl_viajes.getCodigo_pais(), this.sel_reg_tbl_viajes.getCodigo_compania(), this.sel_reg_tbl_viajes.getCodigo_planta().toString(), this.sel_reg_tbl_viajes.getNumero_viaje());
+                String json_result = cliente_rest_api.lista_viajes_ubicaciones(this.sel_reg_tbl_viajes.getCodigo_pais(), this.sel_reg_tbl_viajes.getCodigo_compania(), this.sel_reg_tbl_viajes.getCodigo_planta().toString(), this.sel_reg_tbl_viajes.getNumero_viaje(), this.sel_reg_tbl_viajes.getCodigo_cliente().toString(), this.sel_reg_tbl_viajes.getCodigo_cliente_destino().toString());
 
                 Type viaje_ubicacion_type = new TypeToken<Entidades.Viaje_Ubicacion>() {
                 }.getType();

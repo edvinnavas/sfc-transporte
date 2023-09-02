@@ -67,11 +67,11 @@ public class ClienteRestApi implements Serializable {
         return resultado;
     }
     
-    public String lista_viajes_ubicaciones(String codigo_pais, String codigo_compania, String codigo_planta, Long numero_viaje) {
+    public String lista_viajes_ubicaciones(String codigo_pais, String codigo_compania, String codigo_planta, Long numero_viaje, String codigo_cliente, String codigo_cliente_destino) {
         String resultado = "";
 
         try {
-            WebTarget webTarget = this.client.target(BASE_URI).path("lista_viajes_ubicaciones/" + codigo_pais + "/" + codigo_compania + "/" + codigo_planta + "/" + numero_viaje);
+            WebTarget webTarget = this.client.target(BASE_URI).path("lista_viajes_ubicaciones/" + codigo_pais + "/" + codigo_compania + "/" + codigo_planta + "/" + numero_viaje + "/" + codigo_cliente + "/" + codigo_cliente_destino);
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
             Response response = invocationBuilder.get();
             // System.out.println("CONEXION JDE-REST-API: " + response.getStatus());

@@ -60,15 +60,15 @@ public class MyResource implements Serializable {
     }
     
     @GET
-    @Path("lista_viajes_ubicaciones/{codigo_pais}/{codigo_compania}/{codigo_planta}/{numero_viaje}/{id_cliente}/{id_cliente_destino}")
+    @Path("lista_viajes_ubicaciones/{codigo_pais}/{codigo_compania}/{codigo_planta}/{numero_viaje}/{codigo_cliente}/{codigo_cliente_destino}")
     @Produces(MediaType.APPLICATION_JSON)
     public String lista_viajes_ubicaciones(
             @PathParam("codigo_pais") String codigo_pais, 
             @PathParam("codigo_compania") String codigo_compania,
             @PathParam("codigo_planta") String codigo_planta,
             @PathParam("numero_viaje") Long numero_viaje,
-            @PathParam("id_cliente") String codigo_cliente, 
-            @PathParam("id_cliente_destino") String codigo_cliente_destino) {
+            @PathParam("codigo_cliente") String codigo_cliente, 
+            @PathParam("codigo_cliente_destino") String codigo_cliente_destino) {
         
         String resultado;
 
