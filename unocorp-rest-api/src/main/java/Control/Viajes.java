@@ -239,7 +239,7 @@ public class Viajes implements Serializable {
         return resultado;
     }
 
-    public String lista_viajes_ubicaciones(String codigo_pais, String codigo_compania, String codigo_planta, Long numero_viaje, Long id_cliente, Long id_cliente_destino) {
+    public String lista_viajes_ubicaciones(String codigo_pais, String codigo_compania, String codigo_planta, Long numero_viaje, String codigo_cliente, String codigo_cliente_destino) {
         String resultado = "";
 
         Connection conn = null;
@@ -286,11 +286,13 @@ public class Viajes implements Serializable {
             rs1.close();
             stmt1.close();
             
+            Long id_cliente = ctrl_base_datos.ObtenerLong("SELECT A.ID_CLIENTE FROM CLIENTE A WHERE A.CODIGO='" + codigo_cliente + "'", conn);
             Entidad.Cliente cliente = new Entidad.Cliente();
             cliente.setId_cliente(id_cliente);
             cliente.setCodigo(ctrl_base_datos.ObtenerString("SELECT A.CODIGO FROM CLIENTE A WHERE A.ID_CLIENTE=" + id_cliente, conn));
             cliente.setNombre(ctrl_base_datos.ObtenerString("SELECT A.NOMBRE FROM CLIENTE A WHERE A.ID_CLIENTE=" + id_cliente, conn));
 
+            Long id_cliente_destino = ctrl_base_datos.ObtenerLong("SELECT A.ID_CLIENTE_DESTINO FROM CLIENTE_DESTINO A WHERE A.CODIGO='" + codigo_cliente_destino + "'", conn);
             Entidad.Cliente_Destino cliente_destino = new Entidad.Cliente_Destino();
             cliente_destino.setId_cliente_destino(id_cliente_destino);
             cliente_destino.setCodigo(ctrl_base_datos.ObtenerString("SELECT A.CODIGO FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
