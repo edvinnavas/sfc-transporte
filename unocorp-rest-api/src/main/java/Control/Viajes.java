@@ -286,6 +286,33 @@ public class Viajes implements Serializable {
             rs1.close();
             stmt1.close();
             
+            Entidad.Pais pais = new Entidad.Pais();
+            pais.setId_pais(id_pais);
+            pais.setCodigo(ctrl_base_datos.ObtenerString("SELECT A.CODIGO FROM PAIS A WHERE A.ID_PAIS=" + id_pais, conn));
+            pais.setNombre(ctrl_base_datos.ObtenerString("SELECT A.NOMBRE FROM PAIS A WHERE A.ID_PAIS=" + id_pais, conn));
+            
+            Entidad.Compania compania = new Entidad.Compania();
+            compania.setId_compania(id_compania);
+            compania.setCodigo(ctrl_base_datos.ObtenerString("SELECT A.CODIGO FROM COMPANIA A WHERE A.ID_COMPANIA=" + id_compania, conn));
+            compania.setNombre(ctrl_base_datos.ObtenerString("SELECT A.NOMBRE FROM COMPANIA A WHERE A.ID_COMPANIA=" + id_compania, conn));
+            compania.setPais(pais);
+            
+            Entidad.Planta planta = new Entidad.Planta();
+            planta.setId_planta(id_planta);
+            planta.setCodigo(ctrl_base_datos.ObtenerString("SELECT A.CODIGO FROM PLANTA A WHERE A.ID_PLANTA=" + id_planta, conn));
+            planta.setNombre(ctrl_base_datos.ObtenerString("SELECT A.NOMBRE FROM PLANTA A WHERE A.ID_PLANTA=" + id_planta, conn));
+            planta.setCompania(compania);
+            planta.setZona_latitud_1(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_1 FROM PLANTA A WHERE A.ID_PLANTA=" + id_planta, conn));
+            planta.setZona_longitud_1(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_1 FROM PLANTA A WHERE A.ID_PLANTA=" + id_planta, conn));
+            planta.setZona_latitud_2(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_2 FROM PLANTA A WHERE A.ID_PLANTA=" + id_planta, conn));
+            planta.setZona_longitud_2(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_2 FROM PLANTA A WHERE A.ID_PLANTA=" + id_planta, conn));
+            planta.setZona_latitud_3(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_3 FROM PLANTA A WHERE A.ID_PLANTA=" + id_planta, conn));
+            planta.setZona_longitud_3(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_3 FROM PLANTA A WHERE A.ID_PLANTA=" + id_planta, conn));
+            planta.setZona_latitud_4(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_4 FROM PLANTA A WHERE A.ID_PLANTA=" + id_planta, conn));
+            planta.setZona_longitud_4(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_4 FROM PLANTA A WHERE A.ID_PLANTA=" + id_planta, conn));
+            planta.setZona_latitud_5(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_5 FROM PLANTA A WHERE A.ID_PLANTA=" + id_planta, conn));
+            planta.setZona_longitud_5(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_5 FROM PLANTA A WHERE A.ID_PLANTA=" + id_planta, conn));
+            
             Long id_cliente = ctrl_base_datos.ObtenerLong("SELECT A.ID_CLIENTE FROM CLIENTE A WHERE A.CODIGO='" + codigo_cliente + "'", conn);
             Entidad.Cliente cliente = new Entidad.Cliente();
             cliente.setId_cliente(id_cliente);
@@ -314,6 +341,7 @@ public class Viajes implements Serializable {
             
             Entidad.Viaje_Ubicacion viajes_ubicacion = new Entidad.Viaje_Ubicacion();
             viajes_ubicacion.setLista_ubicaciones(lista_ubicaciones);
+            viajes_ubicacion.setPlanta(planta);
             viajes_ubicacion.setCliente_destino(cliente_destino);
 
             Gson gson = new GsonBuilder().serializeNulls().create();

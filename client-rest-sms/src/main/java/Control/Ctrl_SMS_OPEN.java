@@ -266,16 +266,17 @@ public class Ctrl_SMS_OPEN implements Serializable {
                         Point ubicacion_actual = new Point(Double.valueOf(LATITUDE), Double.valueOf(LONGITUDE));
 
                         Poligono poligono = new Poligono();
+                        System.out.println("GEO-ZONA: {"
+                                + "(" + ZONA_LATITUD_1 + "," + ZONA_LONGITUD_1 + ");"
+                                + "(" + ZONA_LATITUD_2 + "," + ZONA_LONGITUD_2 + ");"
+                                + "(" + ZONA_LATITUD_3 + "," + ZONA_LONGITUD_3 + ");"
+                                + "(" + ZONA_LATITUD_4 + "," + ZONA_LONGITUD_4 + ");"
+                                + "(" + ZONA_LATITUD_5 + "," + ZONA_LONGITUD_5 + ")"
+                                + "}");
+                        System.out.println("UBICACIÓN-ACTUAL: {(" + Double.valueOf(LATITUDE) + "," + Double.valueOf(LONGITUDE) + ")}");
+                        System.out.println("POLIGONO-INSIDE: " + poligono.isInside(geozona, 5, ubicacion_actual));
+                        
                         if (poligono.isInside(geozona, 5, ubicacion_actual)) {
-                            System.out.println("GEO-ZONA: {"
-                                    + "(" + ZONA_LATITUD_1 + "," + ZONA_LONGITUD_1 + ");"
-                                    + "(" + ZONA_LATITUD_2 + "," + ZONA_LONGITUD_2 + ");"
-                                    + "(" + ZONA_LATITUD_3 + "," + ZONA_LONGITUD_3 + ");"
-                                    + "(" + ZONA_LATITUD_4 + "," + ZONA_LONGITUD_4 + ");"
-                                    + "(" + ZONA_LATITUD_5 + "," + ZONA_LONGITUD_5 + ")"
-                                    + "}");
-                            System.out.println("UBICACIÓN-ACTUAL: {(" + Double.valueOf(LATITUDE) + "," + Double.valueOf(LONGITUDE) + ")}");
-                            
                             cadenasql = "UPDATE VIAJES SET ID_ESTADO_VIAJE=5, ESTADO='TER' WHERE ID_PAIS=" + ID_PAIS + " AND ID_COMPANIA=" + ID_COMPANIA + " AND ID_PLANTA=" + ID_PLANTA + " AND NUMERO_VIAJE=" + NUMERO_VIAJE;
                             stmt1 = conn.createStatement();
                             System.out.println("CADENASQL-CERRAR-VIAJE: " + cadenasql);

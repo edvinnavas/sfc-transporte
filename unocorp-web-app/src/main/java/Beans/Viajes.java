@@ -179,26 +179,47 @@ public class Viajes implements Serializable {
                 Double avg_longitude = sum_longitude / contador;
                 this.central_map = avg_latitude.toString() + ", " + avg_longitude;
                 
-                LatLng coord1 = new LatLng(viaje_ubicacion.getCliente_destino().getZona_latitud_1(), viaje_ubicacion.getCliente_destino().getZona_longitud_1());
-                LatLng coord2 = new LatLng(viaje_ubicacion.getCliente_destino().getZona_latitud_2(), viaje_ubicacion.getCliente_destino().getZona_longitud_2());
-                LatLng coord3 = new LatLng(viaje_ubicacion.getCliente_destino().getZona_latitud_3(), viaje_ubicacion.getCliente_destino().getZona_longitud_3());
-                LatLng coord4 = new LatLng(viaje_ubicacion.getCliente_destino().getZona_latitud_4(), viaje_ubicacion.getCliente_destino().getZona_longitud_4());
-                LatLng coord5 = new LatLng(viaje_ubicacion.getCliente_destino().getZona_latitud_5(), viaje_ubicacion.getCliente_destino().getZona_longitud_5());
+                LatLng planta_coord1 = new LatLng(viaje_ubicacion.getPlanta().getZona_latitud_1(), viaje_ubicacion.getPlanta().getZona_longitud_1());
+                LatLng planta_coord2 = new LatLng(viaje_ubicacion.getPlanta().getZona_latitud_2(), viaje_ubicacion.getPlanta().getZona_longitud_2());
+                LatLng planta_coord3 = new LatLng(viaje_ubicacion.getPlanta().getZona_latitud_3(), viaje_ubicacion.getPlanta().getZona_longitud_3());
+                LatLng planta_coord4 = new LatLng(viaje_ubicacion.getPlanta().getZona_latitud_4(), viaje_ubicacion.getPlanta().getZona_longitud_4());
+                LatLng planta_coord5 = new LatLng(viaje_ubicacion.getPlanta().getZona_latitud_5(), viaje_ubicacion.getPlanta().getZona_longitud_5());
                 
-                Polygon<Long> polygon = new Polygon<>();
-                polygon.setData(1L);
-                polygon.getPaths().add(coord1);
-                polygon.getPaths().add(coord2);
-                polygon.getPaths().add(coord3);
-                polygon.getPaths().add(coord4);
-                polygon.getPaths().add(coord5);
+                Polygon<Long> planta_polygon = new Polygon<>();
+                planta_polygon.setData(1L);
+                planta_polygon.getPaths().add(planta_coord1);
+                planta_polygon.getPaths().add(planta_coord2);
+                planta_polygon.getPaths().add(planta_coord3);
+                planta_polygon.getPaths().add(planta_coord4);
+                planta_polygon.getPaths().add(planta_coord5);
                 
-                polygon.setStrokeColor("#FF9900");
-                polygon.setFillColor("#FF9900");
-                polygon.setStrokeOpacity(0.7);
-                polygon.setFillOpacity(0.7);
+                planta_polygon.setStrokeColor("#03386E");
+                planta_polygon.setFillColor("#03386E");
+                planta_polygon.setStrokeOpacity(0.7);
+                planta_polygon.setFillOpacity(0.7);
                 
-                this.mapa_model.addOverlay(polygon);
+                this.mapa_model.addOverlay(planta_polygon);
+                
+                LatLng cliente_destino_coord1 = new LatLng(viaje_ubicacion.getCliente_destino().getZona_latitud_1(), viaje_ubicacion.getCliente_destino().getZona_longitud_1());
+                LatLng cliente_destino_coord2 = new LatLng(viaje_ubicacion.getCliente_destino().getZona_latitud_2(), viaje_ubicacion.getCliente_destino().getZona_longitud_2());
+                LatLng cliente_destino_coord3 = new LatLng(viaje_ubicacion.getCliente_destino().getZona_latitud_3(), viaje_ubicacion.getCliente_destino().getZona_longitud_3());
+                LatLng cliente_destino_coord4 = new LatLng(viaje_ubicacion.getCliente_destino().getZona_latitud_4(), viaje_ubicacion.getCliente_destino().getZona_longitud_4());
+                LatLng cliente_destino_coord5 = new LatLng(viaje_ubicacion.getCliente_destino().getZona_latitud_5(), viaje_ubicacion.getCliente_destino().getZona_longitud_5());
+                
+                Polygon<Long> cliente_destino_polygon = new Polygon<>();
+                cliente_destino_polygon.setData(1L);
+                cliente_destino_polygon.getPaths().add(cliente_destino_coord1);
+                cliente_destino_polygon.getPaths().add(cliente_destino_coord2);
+                cliente_destino_polygon.getPaths().add(cliente_destino_coord3);
+                cliente_destino_polygon.getPaths().add(cliente_destino_coord4);
+                cliente_destino_polygon.getPaths().add(cliente_destino_coord5);
+                
+                cliente_destino_polygon.setStrokeColor("#FF9900");
+                cliente_destino_polygon.setFillColor("#FF9900");
+                cliente_destino_polygon.setStrokeOpacity(0.7);
+                cliente_destino_polygon.setFillOpacity(0.7);
+                
+                this.mapa_model.addOverlay(cliente_destino_polygon);
 
                 PrimeFaces.current().executeScript("PF('widvarUbicaciones').show();");
             } else {
