@@ -231,7 +231,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                     stmt1 = conn.createStatement();
                     stmt1.executeUpdate(cadenasql);
                     stmt1.close();
-                    // INICIO SECCION DE CAMBIOS AGREGADOS.
+                    
                     String query_get_id_cliente_destino = "SELECT "
                             + "V.ID_CLIENTE_DESTINO "
                             + "FROM "
@@ -254,16 +254,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                         Double ZONA_LONGITUD_4 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LONGITUD_4,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
                         Double ZONA_LATITUD_5 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LATITUD_5,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
                         Double ZONA_LONGITUD_5 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LONGITUD_5,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
-
-                        System.out.println("GEO-ZONA: {"
-                                + "(" + ZONA_LATITUD_1 + "," + ZONA_LONGITUD_1 + ");"
-                                + "(" + ZONA_LATITUD_2 + "," + ZONA_LONGITUD_2 + ");"
-                                + "(" + ZONA_LATITUD_3 + "," + ZONA_LONGITUD_3 + ");"
-                                + "(" + ZONA_LATITUD_4 + "," + ZONA_LONGITUD_4 + ");"
-                                + "(" + ZONA_LATITUD_5 + "," + ZONA_LONGITUD_5 + ")"
-                                + "}");
-                        System.out.println("UBICACIÓN-ACTUAL: {(" + Double.valueOf(LATITUDE) + "," + Double.valueOf(LONGITUDE) + ")}");
-
+                        
                         Point geozona[] = {
                             new Point(ZONA_LATITUD_1, ZONA_LONGITUD_1),
                             new Point(ZONA_LATITUD_2, ZONA_LONGITUD_2),
@@ -276,13 +267,22 @@ public class Ctrl_SMS_OPEN implements Serializable {
 
                         Poligono poligono = new Poligono();
                         if (poligono.isInside(geozona, 5, ubicacion_actual)) {
+                            System.out.println("GEO-ZONA: {"
+                                    + "(" + ZONA_LATITUD_1 + "," + ZONA_LONGITUD_1 + ");"
+                                    + "(" + ZONA_LATITUD_2 + "," + ZONA_LONGITUD_2 + ");"
+                                    + "(" + ZONA_LATITUD_3 + "," + ZONA_LONGITUD_3 + ");"
+                                    + "(" + ZONA_LATITUD_4 + "," + ZONA_LONGITUD_4 + ");"
+                                    + "(" + ZONA_LATITUD_5 + "," + ZONA_LONGITUD_5 + ")"
+                                    + "}");
+                            System.out.println("UBICACIÓN-ACTUAL: {(" + Double.valueOf(LATITUDE) + "," + Double.valueOf(LONGITUDE) + ")}");
+                            
                             cadenasql = "UPDATE VIAJES SET ID_ESTADO_VIAJE=5, ESTADO='TER' WHERE ID_PAIS=" + ID_PAIS + " AND ID_COMPANIA=" + ID_COMPANIA + " AND ID_PLANTA=" + ID_PLANTA + " AND NUMERO_VIAJE=" + NUMERO_VIAJE;
                             stmt1 = conn.createStatement();
+                            System.out.println("CADENASQL-CERRAR-VIAJE: " + cadenasql);
                             stmt1.executeUpdate(cadenasql);
                             stmt1.close();
                         }
                     }
-                    // FIN SECCION DE CAMBIOS AGREGADOS.
                 }
             }
             rs.close();
