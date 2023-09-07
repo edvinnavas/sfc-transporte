@@ -158,6 +158,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                     + "LEFT JOIN SMS_OPEN_DETALLE SOD ON (CD.IMEI=SOD.IMEI AND STR_TO_DATE(SOD.DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s') BETWEEN '" + dateFormat1.format(new Date()) + " 00:00:00' AND '" + dateFormat1.format(new Date()) + " 23:59:59') "
                     + "WHERE "
                     + "V.FECHA_VIAJE BETWEEN '" + dateFormat1.format(new Date()) + "' AND '" + dateFormat1.format(new Date()) + "' AND "
+                    + "V.ID_ESTADO_VIAJE NOT IN (5) AND "
                     // + "V.ESTADO='ACT' AND "
                     + "T.RASTREABLE=1 AND "
                     + "SOD.ID_SMS_OPEN IS NOT NULL";
