@@ -280,7 +280,8 @@ public class Ctrl_SMS_OPEN implements Serializable {
         try {
             String cadenasql = "SELECT "
                     + "A.LATITUDE, "
-                    + "A.LONGITUDE "
+                    + "A.LONGITUDE, "
+                    + "A.FECHA_HORA "
                     + "FROM "
                     + "VIAJE_UBICACIONES A "
                     + "WHERE "
@@ -295,6 +296,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
             while (rs.next()) {
                 Double LATITUDE = rs.getDouble(1);
                 Double LONGITUDE = rs.getDouble(2);
+                String FECHA_HORA = rs.getString(3);
 
                 if (ID_CLIENTE_DESTINO != null) {
                     Control_Base_Datos control_base_datos = new Control_Base_Datos();
@@ -330,7 +332,19 @@ public class Ctrl_SMS_OPEN implements Serializable {
                                 + "}");
                         System.out.println("UBICACIÓN-ACTUAL: {(" + LATITUDE + "," + LONGITUDE + ")}");
 
-                        cadenasql = "UPDATE VIAJES SET ID_ESTADO_VIAJE=5, ESTADO='TER' WHERE ID_PAIS=" + ID_PAIS + " AND ID_COMPANIA=" + ID_COMPANIA + " AND ID_PLANTA=" + ID_PLANTA + " AND NUMERO_VIAJE=" + NUMERO_VIAJE;
+                        cadenasql = "UPDATE "
+                                + "VIAJES "
+                                + "SET "
+                                + "ID_ESTADO_VIAJE=5, "
+                                + "ESTADO='TER', "
+                                + "FECHA_HORA_TERMINADO='" + FECHA_HORA + "' "
+                                + "WHERE "
+                                + "ID_PAIS=" + ID_PAIS + " AND "
+                                + "ID_COMPANIA=" + ID_COMPANIA + " AND "
+                                + "ID_PLANTA=" + ID_PLANTA + " AND "
+                                + "NUMERO_VIAJE=" + NUMERO_VIAJE + " AND "
+                                + "TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
+                                + "NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA;
                         Statement stmt1 = conn.createStatement();
                         System.out.println("CADENASQL-CERRAR-VIAJE: " + cadenasql);
                         stmt1.executeUpdate(cadenasql);
