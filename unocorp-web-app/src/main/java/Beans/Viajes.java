@@ -30,30 +30,48 @@ public class Viajes implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    // Página de Viajes.
     private Entidades.UsuarioSesion usuario_sesion;
     private List<Entidades.RegTblViajes> lst_reg_tbl_viajes;
     private Entidades.RegTblViajes sel_reg_tbl_viajes;
-    private List<Entidades.RegTblUbicaciones> lst_reg_tbl_ubicaciones;
-    private Entidades.RegTblUbicaciones sel_reg_tbl_ubicaciones;
-    private MapModel<Long> mapa_model;
-    private String central_map;
     private Date fecha_inicial;
     private Date fecha_final;
     private String estado;
     private String tipo_flete;
     private Boolean rastreable;
+    
+    // Dialog Viaje-Ubicaciones.
+    private List<Entidades.RegTblUbicaciones> lst_reg_tbl_ubicaciones;
+    private Entidades.RegTblUbicaciones sel_reg_tbl_ubicaciones;
+    private MapModel<Long> mapa_model;
+    private String central_map;
 
+    // Dialog Cliente-Destino.
+    private String id_cliente_destino;
+    private String codigo_cliente_destino;
+    private String nombre_cliente_destino;
+    private String padre_cliente_destino;
+    private String geozona_cliente_destino;
+    
     @PostConstruct
     public void init() {
         try {
             this.lst_reg_tbl_viajes = new ArrayList<>();
-            this.lst_reg_tbl_ubicaciones = new ArrayList<>();
             this.fecha_inicial = new Date();
             this.fecha_final = new Date();
             this.estado = "ACT";
             this.tipo_flete = "CIF";
             this.rastreable = true;
+            
+            this.lst_reg_tbl_ubicaciones = new ArrayList<>();
             this.mapa_model = new DefaultMapModel<>();
+            
+            this.id_cliente_destino = "";
+            this.codigo_cliente_destino = "";
+            this.nombre_cliente_destino = "";
+            this.padre_cliente_destino = "";
+            this.geozona_cliente_destino = "";
+            
             this.filtrar_tabla();
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
@@ -228,6 +246,37 @@ public class Viajes implements Serializable {
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
             System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: mostrar_ubicaciones(), ERRROR: " + ex.toString());
+        }
+    }
+    
+    public void mostrar_cliente_destino() {
+        try {
+            if (this.sel_reg_tbl_viajes != null) {
+                ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
+                String json_result = cliente_rest_api.obtener_cliente_destino(this.sel_reg_tbl_viajes.getCodigo_cliente_destino().toString());
+
+                Type cliente_destino_type = new TypeToken<Entidades.Cliente_Destino>() {
+                }.getType();
+                Entidades.Cliente_Destino cliente_destino = new Gson().fromJson(json_result, cliente_destino_type);
+                
+                this.id_cliente_destino = cliente_destino.getCliente().toString();
+                this.codigo_cliente_destino = cliente_destino.getCodigo();
+                this.nombre_cliente_destino = cliente_destino.getNombre();
+                this.padre_cliente_destino = cliente_destino.getCliente().getCodigo() + " - " + cliente_destino.getCliente().getNombre();
+                this.geozona_cliente_destino = "GEOZONA: {"
+                        + "(" + cliente_destino.getZona_latitud_1() + "," + cliente_destino.getZona_longitud_1() + ");"
+                        + "(" + cliente_destino.getZona_latitud_2() + "," + cliente_destino.getZona_longitud_2() + ");"
+                        + "(" + cliente_destino.getZona_latitud_3() + "," + cliente_destino.getZona_longitud_3() + ");"
+                        + "(" + cliente_destino.getZona_latitud_4() + "," + cliente_destino.getZona_longitud_4() + ");"
+                        + "(" + cliente_destino.getZona_latitud_5() + "," + cliente_destino.getZona_longitud_5() + ")}";
+
+                PrimeFaces.current().executeScript("PF('widvarClienteDestino').show();");
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Mensaje del sistema...", "Debe seleccionar un viaje."));
+            }
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
+            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: mostrar_cliente_destino(), ERRROR: " + ex.toString());
         }
     }
 

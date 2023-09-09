@@ -53,7 +53,7 @@ public class MyResource implements Serializable {
             Control.Viajes ctrl_viajes = new Control.Viajes();
             resultado = ctrl_viajes.lista_viajes(fecha_inicio, fecha_final, estado, tipo_flete, rastreable);
         } catch (Exception ex) {
-            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: autenticar(), ERRROR: " + ex.toString();
+            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: lista_viajes(), ERRROR: " + ex.toString();
         }
 
         return resultado;
@@ -76,7 +76,25 @@ public class MyResource implements Serializable {
             Control.Viajes ctrl_viajes = new Control.Viajes();
             resultado = ctrl_viajes.lista_viajes_ubicaciones(codigo_pais, codigo_compania, codigo_planta, numero_viaje, codigo_cliente, codigo_cliente_destino);
         } catch (Exception ex) {
-            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: autenticar(), ERRROR: " + ex.toString();
+            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: lista_viajes_ubicaciones(), ERRROR: " + ex.toString();
+        }
+
+        return resultado;
+    }
+    
+    @GET
+    @Path("obtener_cliente_destino/{codigo_cliente_destino}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String obtener_cliente_destino(
+            @PathParam("codigo_cliente_destino") String codigo_cliente_destino) {
+        
+        String resultado;
+
+        try {
+            Control.Viajes ctrl_viajes = new Control.Viajes();
+            resultado = ctrl_viajes.obtener_cliente_destino(codigo_cliente_destino);
+        } catch (Exception ex) {
+            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: obtener_cliente_destino(), ERRROR: " + ex.toString();
         }
 
         return resultado;

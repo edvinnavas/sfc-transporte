@@ -86,5 +86,25 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
+    
+    public String obtener_cliente_destino(String codigo_cliente_destino) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("obtener_cliente_destino/" + codigo_cliente_destino);
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.get();
+            // System.out.println("CONEXION JDE-REST-API: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: obtener_cliente_destino(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
 
 }

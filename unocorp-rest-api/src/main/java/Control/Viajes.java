@@ -146,16 +146,6 @@ public class Viajes implements Serializable {
                 cliente_destino.setId_cliente_destino(rs.getLong(12));
                 cliente_destino.setCodigo(ctrl_base_datos.ObtenerString("SELECT A.CODIGO FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
                 cliente_destino.setNombre(ctrl_base_datos.ObtenerString("SELECT A.NOMBRE FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
-                cliente_destino.setZona_latitud_1(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_1 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
-                cliente_destino.setZona_longitud_1(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_1 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
-                cliente_destino.setZona_latitud_2(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_2 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
-                cliente_destino.setZona_longitud_2(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_2 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
-                cliente_destino.setZona_latitud_3(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_3 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
-                cliente_destino.setZona_longitud_3(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_3 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
-                cliente_destino.setZona_latitud_4(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_4 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
-                cliente_destino.setZona_longitud_4(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_4 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
-                cliente_destino.setZona_latitud_5(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LATITUD_5 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
-                cliente_destino.setZona_longitud_5(ctrl_base_datos.ObtenerDouble("SELECT A.ZONA_LONGITUD_5 FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + rs.getLong(12), conn));
                 cliente_destino.setCliente(cliente);
                 viaje.setCliente_destino(cliente_destino);
 
@@ -364,6 +354,93 @@ public class Viajes implements Serializable {
                 }
             } catch (Exception ex) {
                 resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: finally-lista_viajes_ubicaciones(), ERRROR: " + ex.toString();
+            }
+        }
+
+        return resultado;
+    }
+    
+    public String obtener_cliente_destino(String codigo_cliente_destino) {
+        String resultado = "";
+
+        Connection conn = null;
+
+        try {
+            Base_Datos ctrl_base_datos = new Base_Datos();
+            conn = ctrl_base_datos.obtener_conexion_mysql();
+
+            conn.setAutoCommit(false);
+            
+            Entidad.Cliente_Destino cliente_destino = new Entidad.Cliente_Destino();
+            String cadenasql = "SELECT "
+                    + "A.ID_CLIENTE_DESTINO, "
+                    + "A.CODIGO, "
+                    + "A.NOMBRE, "
+                    + "A.ID_CLIENTE, "
+                    + "A.ZONA_LATITUD_1, "
+                    + "A.ZONA_LONGITUD_1, "
+                    + "A.ZONA_LATITUD_2, "
+                    + "A.ZONA_LONGITUD_2, "
+                    + "A.ZONA_LATITUD_3, "
+                    + "A.ZONA_LONGITUD_3, "
+                    + "A.ZONA_LATITUD_4, "
+                    + "A.ZONA_LONGITUD_4, "
+                    + "A.ZONA_LATITUD_5, "
+                    + "A.ZONA_LONGITUD_5 "
+                    + "FROM "
+                    + "CLIENTE_DESTINO A "
+                    + "WHERE "
+                    + "A.CODIGO='" + codigo_cliente_destino + "'";
+            Statement stmt1 = conn.createStatement();
+            ResultSet rs1 = stmt1.executeQuery(cadenasql);
+            while (rs1.next()) {
+                Long id_cliente = ctrl_base_datos.ObtenerLong("SELECT A.ID_CLIENTE FROM CLIENTE A WHERE A.ID_CLIENTE=" + rs1.getLong(4), conn);
+                Entidad.Cliente cliente = new Entidad.Cliente();
+                cliente.setId_cliente(ctrl_base_datos.ObtenerLong("SELECT A.ID_CLIENTE FROM CLIENTE A WHERE A.ID_CLIENTE=" + id_cliente, conn));
+                cliente.setCodigo(ctrl_base_datos.ObtenerString("SELECT A.CODIGO FROM CLIENTE A WHERE A.ID_CLIENTE=" + id_cliente, conn));
+                cliente.setNombre(ctrl_base_datos.ObtenerString("SELECT A.NOMBRE FROM CLIENTE A WHERE A.ID_CLIENTE=" + id_cliente, conn));
+                
+                cliente_destino.setId_cliente_destino(rs1.getLong(1));
+                cliente_destino.setCodigo(rs1.getString(2));
+                cliente_destino.setNombre(rs1.getString(3));
+                cliente_destino.setCliente(cliente);
+                cliente_destino.setZona_latitud_1(rs1.getDouble(5));
+                cliente_destino.setZona_longitud_1(rs1.getDouble(6));
+                cliente_destino.setZona_latitud_2(rs1.getDouble(7));
+                cliente_destino.setZona_longitud_2(rs1.getDouble(8));
+                cliente_destino.setZona_latitud_3(rs1.getDouble(9));
+                cliente_destino.setZona_longitud_3(rs1.getDouble(10));
+                cliente_destino.setZona_latitud_4(rs1.getDouble(11));
+                cliente_destino.setZona_longitud_4(rs1.getDouble(12));
+                cliente_destino.setZona_latitud_5(rs1.getDouble(13));
+                cliente_destino.setZona_longitud_5(rs1.getDouble(14));
+            }
+            rs1.close();
+            stmt1.close();
+            
+            conn.commit();
+            conn.setAutoCommit(true);
+            
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            resultado = gson.toJson(cliente_destino);
+        } catch (Exception ex) {
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                    conn.setAutoCommit(true);
+                    conn = null;
+                    resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: obtener_cliente_destino(), ERRROR: " + ex.toString();
+                }
+            } catch (Exception ex1) {
+                resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: rollback-obtener_cliente_destino(), ERRROR: " + ex.toString();
+            }
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception ex) {
+                resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: finally-obtener_cliente_destino(), ERRROR: " + ex.toString();
             }
         }
 
