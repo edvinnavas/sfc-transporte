@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.primefaces.PrimeFaces;
+import org.primefaces.event.map.PointSelectEvent;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
@@ -51,7 +52,12 @@ public class Viajes implements Serializable {
     private String codigo_cliente_destino;
     private String nombre_cliente_destino;
     private String padre_cliente_destino;
-    private String geozona_cliente_destino;
+    private MapModel<Long> mapa_model_destino_cliente;
+    private String central_map_destino_cliente;
+    private String coor_sup_izq;
+    private String coor_inf_der;
+    private Boolean editar_sup_izq;
+    private Boolean editar_inf_der;
     
     @PostConstruct
     public void init() {
@@ -70,7 +76,11 @@ public class Viajes implements Serializable {
             this.codigo_cliente_destino = "";
             this.nombre_cliente_destino = "";
             this.padre_cliente_destino = "";
-            this.geozona_cliente_destino = "";
+            this.mapa_model_destino_cliente = new DefaultMapModel<>();
+            this.coor_sup_izq = "";
+            this.coor_inf_der = "";
+            this.editar_sup_izq = false;
+            this.editar_inf_der = false;
             
             this.filtrar_tabla();
         } catch (Exception ex) {
@@ -259,16 +269,43 @@ public class Viajes implements Serializable {
                 }.getType();
                 Entidades.Cliente_Destino cliente_destino = new Gson().fromJson(json_result, cliente_destino_type);
                 
-                this.id_cliente_destino = cliente_destino.getCliente().toString();
+                this.id_cliente_destino = cliente_destino.getCliente().getId_cliente().toString();
                 this.codigo_cliente_destino = cliente_destino.getCodigo();
                 this.nombre_cliente_destino = cliente_destino.getNombre();
                 this.padre_cliente_destino = cliente_destino.getCliente().getCodigo() + " - " + cliente_destino.getCliente().getNombre();
-                this.geozona_cliente_destino = "GEOZONA: {"
-                        + "(" + cliente_destino.getZona_latitud_1() + "," + cliente_destino.getZona_longitud_1() + ");"
-                        + "(" + cliente_destino.getZona_latitud_2() + "," + cliente_destino.getZona_longitud_2() + ");"
-                        + "(" + cliente_destino.getZona_latitud_3() + "," + cliente_destino.getZona_longitud_3() + ");"
-                        + "(" + cliente_destino.getZona_latitud_4() + "," + cliente_destino.getZona_longitud_4() + ");"
-                        + "(" + cliente_destino.getZona_latitud_5() + "," + cliente_destino.getZona_longitud_5() + ")}";
+                this.coor_sup_izq = cliente_destino.getZona_latitud_1() + "," + cliente_destino.getZona_longitud_1();
+                this.coor_inf_der = cliente_destino.getZona_latitud_3() + "," + cliente_destino.getZona_longitud_3();
+                this.editar_sup_izq = false;
+                this.editar_inf_der = false;
+                
+                Double sum_latitude = cliente_destino.getZona_latitud_1() + cliente_destino.getZona_latitud_2() + cliente_destino.getZona_latitud_3() + cliente_destino.getZona_latitud_4() + cliente_destino.getZona_latitud_5();
+                Double sum_longitude = cliente_destino.getZona_longitud_1() + cliente_destino.getZona_longitud_2() + cliente_destino.getZona_longitud_3() + cliente_destino.getZona_longitud_4() + cliente_destino.getZona_longitud_5();
+                
+                Double avg_latitude = sum_latitude / 5;
+                Double avg_longitude = sum_longitude / 5;
+                
+                this.central_map_destino_cliente = avg_latitude.toString() + ", " + avg_longitude;
+                
+                LatLng planta_coord1 = new LatLng(cliente_destino.getZona_latitud_1(), cliente_destino.getZona_longitud_1());
+                LatLng planta_coord2 = new LatLng(cliente_destino.getZona_latitud_2(), cliente_destino.getZona_longitud_2());
+                LatLng planta_coord3 = new LatLng(cliente_destino.getZona_latitud_3(), cliente_destino.getZona_longitud_3());
+                LatLng planta_coord4 = new LatLng(cliente_destino.getZona_latitud_4(), cliente_destino.getZona_longitud_4());
+                LatLng planta_coord5 = new LatLng(cliente_destino.getZona_latitud_5(), cliente_destino.getZona_longitud_5());
+                
+                Polygon<Long> planta_polygon = new Polygon<>();
+                planta_polygon.setData(1L);
+                planta_polygon.getPaths().add(planta_coord1);
+                planta_polygon.getPaths().add(planta_coord2);
+                planta_polygon.getPaths().add(planta_coord3);
+                planta_polygon.getPaths().add(planta_coord4);
+                planta_polygon.getPaths().add(planta_coord5);
+                
+                planta_polygon.setStrokeColor("#FF9900");
+                planta_polygon.setFillColor("#FF9900");
+                planta_polygon.setStrokeOpacity(0.7);
+                planta_polygon.setFillOpacity(0.7);
+                
+                this.mapa_model_destino_cliente.addOverlay(planta_polygon);
 
                 PrimeFaces.current().executeScript("PF('widvarClienteDestino').show();");
             } else {
@@ -277,6 +314,48 @@ public class Viajes implements Serializable {
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
             System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: mostrar_cliente_destino(), ERRROR: " + ex.toString());
+        }
+    }
+    
+    public void selecionar_coordenada(PointSelectEvent event) {
+        try {
+            LatLng latlng = event.getLatLng();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Coordenada selecionada.","Latitud:" + latlng.getLat() + ", Longitud:" + latlng.getLng()));
+            
+            if(this.editar_sup_izq) {
+                this.coor_sup_izq = latlng.getLat() + "," + latlng.getLng();
+                this.editar_sup_izq = false;
+                this.editar_inf_der = false;
+            }
+            
+            if(this.editar_inf_der) {
+                this.coor_inf_der = latlng.getLat() + "," + latlng.getLng();
+                this.editar_sup_izq = false;
+                this.editar_inf_der = false;
+            }
+        } catch(Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
+            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: selecionar_coordenada(), ERRROR: " + ex.toString());
+        }
+    }
+    
+    public void actualizar_destino() {
+        try {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente-Destino.","Cliente-Destino actualizado."));
+        } catch(Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
+            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: selecionar_coordenada(), ERRROR: " + ex.toString());
+        }
+    }
+    
+    public void selecionar_checkbox() {
+        if(this.editar_sup_izq) {
+            this.editar_sup_izq = true;
+            this.editar_inf_der = false;
+        }
+        if(this.editar_inf_der) {
+            this.editar_sup_izq = false;
+            this.editar_inf_der = true;
         }
     }
 
