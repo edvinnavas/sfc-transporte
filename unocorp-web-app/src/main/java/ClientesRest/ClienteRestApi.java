@@ -116,7 +116,7 @@ public class ClienteRestApi implements Serializable {
             String data = parametros_cliente_destino;
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.TEXT_PLAIN);
             Response response = invocationBuilder.put(Entity.text(data));
-            System.out.println("CLIENTE-DESTINO-MODIFICAR-GEOZONA: " + response.getStatus());
+            // System.out.println("CLIENTE-DESTINO-MODIFICAR-GEOZONA: " + response.getStatus());
             if (response.getStatus() == 200) {
                 resultado = response.readEntity(String.class);
             } else {
