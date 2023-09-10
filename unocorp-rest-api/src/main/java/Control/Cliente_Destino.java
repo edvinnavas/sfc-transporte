@@ -144,7 +144,6 @@ public class Cliente_Destino implements Serializable {
                     + "WHERE "
                     + "ID_CLIENTE_DESTINO=" + id_cliente_destino;
             Statement stmt1 = conn.createStatement();
-            System.out.println("CADENASQL: " + cadenasql);
             stmt1.executeUpdate(cadenasql);
             stmt1.close();
             

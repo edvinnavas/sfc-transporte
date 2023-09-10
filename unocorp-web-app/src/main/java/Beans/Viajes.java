@@ -269,7 +269,7 @@ public class Viajes implements Serializable {
                 }.getType();
                 Entidades.Cliente_Destino cliente_destino = new Gson().fromJson(json_result, cliente_destino_type);
                 
-                this.id_cliente_destino = cliente_destino.getCliente().getId_cliente().toString();
+                this.id_cliente_destino = cliente_destino.getId_cliente_destino().toString();
                 this.codigo_cliente_destino = cliente_destino.getCodigo();
                 this.nombre_cliente_destino = cliente_destino.getNombre();
                 this.padre_cliente_destino = cliente_destino.getCliente().getCodigo() + " - " + cliente_destino.getCliente().getNombre();
