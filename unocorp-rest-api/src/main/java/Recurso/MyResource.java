@@ -103,9 +103,7 @@ public class MyResource implements Serializable {
     
     @PUT
     @Path("cliente_destino/modificar_geozona")
-    @Produces(MediaType.APPLICATION_JSON)
     public String cliente_destino_modificar_geozona(String parametros_cliente_destino) {
-        
         String resultado;
 
         try {

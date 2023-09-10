@@ -114,9 +114,9 @@ public class ClienteRestApi implements Serializable {
         try {
             WebTarget webTarget = this.client.target(BASE_URI).path("cliente_destino/modificar_geozona");
             String data = parametros_cliente_destino;
-            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.TEXT_PLAIN);
             Response response = invocationBuilder.put(Entity.text(data));
-            // System.out.println("CLIENTE-DESTINO-MODIFICAR-GEOZONA: " + response.getStatus());
+            System.out.println("CLIENTE-DESTINO-MODIFICAR-GEOZONA: " + response.getStatus());
             if (response.getStatus() == 200) {
                 resultado = response.readEntity(String.class);
             } else {

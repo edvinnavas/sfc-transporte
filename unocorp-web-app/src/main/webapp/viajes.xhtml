@@ -156,10 +156,9 @@
             </p:dataTable>
             <p:contextMenu for="tblViajes">
                 <p:menuitem value="Viaje-Ubicaciones" actionListener="#{Viajes.mostrar_ubicaciones}" icon="pi pi-map" update="formPlantilla:formUbicaciones:tblUbicaciones,formPlantilla:formUbicaciones:mapUbicaciones"/>
-                <p:menuitem value="Cliente-Destino" actionListener="#{Viajes.mostrar_cliente_destino}"  icon="pi pi-map" update="formPlantilla:formClienteDestino"/>
+                <p:menuitem value="Cliente-Destino" actionListener="#{Viajes.mostrar_cliente_destino}" icon="pi pi-map" update="formPlantilla:formClienteDestino"/>
             </p:contextMenu>
         </p:panel>
-        
         <p:dialog id="dlgUbicaciones" widgetVar="widvarUbicaciones" modal="true" appendTo="@(body)" resizable="false" closable="true" closeOnEscape="true" width="1000" style="font-size:12px; font-weight:bold;">
             <h:form id="formUbicaciones">
                 <p:dataTable 
@@ -200,7 +199,6 @@
                 </p:card>
             </h:form>
         </p:dialog>
-        
         <p:dialog id="dlgClienteDestino" widgetVar="widvarClienteDestino" modal="true" appendTo="@(body)" resizable="false" closable="true" closeOnEscape="true" style="font-size:12px; font-weight:bold;">
             <h:form id="formClienteDestino">
                 <p:panelGrid columns="4">
@@ -225,20 +223,21 @@
                         <p:ajax update="chkSupIzqEdit,chkInfDerEdit" listener="#{Viajes.selecionar_checkbox}"/>
                     </p:selectBooleanCheckbox>
                 </p:panelGrid>
-                <p:commandButton id="btnActClienteDestino" value="Actualizar" actionListener="#{Viajes.destino_cliente_actualizar_geozona}" icon="pi pi-send" update="formPlantilla:msgViajes,mapUbicaciones">
-                    <p:confirm header="Confirmación" message="Seguro desea realizar esta acción?" icon="pi pi-exclamation-triangle"/>
-                </p:commandButton>
-                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
-                    <p:commandButton value="SI" type="button" styleClass="ui-confirmdialog-yes" />
-                    <p:commandButton value="NO" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
-                </p:confirmDialog>
                 <p:card style="margin-bottom: 1em;">
                     <p:gmap id="mapUbicaciones" center="#{Viajes.central_map_destino_cliente}" zoom="18" type="HYBRID" model="#{Viajes.mapa_model_destino_cliente}" style="width:100%; height:450px;">
                         <p:ajax event="pointSelect" listener="#{Viajes.selecionar_coordenada}" update="formPlantilla:msgViajes,txtSuperiorIzquierda,txtInferiorDerecha,chkSupIzqEdit,chkInfDerEdit"/>
                     </p:gmap>
                 </p:card>
             </h:form>
+            <div align="right">
+                <p:commandButton id="btnActClienteDestino" value="Actualizar" action="#{Viajes.destino_cliente_actualizar_geozona}" icon="pi pi-send" update="formPlantilla:msgViajes,formPlantilla:formClienteDestino:mapUbicaciones">
+                    <p:confirm header="Confirmación" message="Seguro desea realizar esta acción?" icon="pi pi-exclamation-triangle"/>
+                </p:commandButton>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                    <p:commandButton value="SI" type="button" styleClass="ui-confirmdialog-yes" />
+                    <p:commandButton value="NO" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                </p:confirmDialog>
+            </div>
         </p:dialog>
-        
     </ui:define>
 </ui:composition>
