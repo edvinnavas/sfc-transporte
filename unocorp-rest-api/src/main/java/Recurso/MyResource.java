@@ -109,6 +109,7 @@ public class MyResource implements Serializable {
         String resultado;
 
         try {
+            System.out.println("PARAMETROS: " + parametros_cliente_destino);
             String[] parametros = parametros_cliente_destino.split("♣");
             
             Long id_cliente_destino = Long.valueOf(parametros[0]);
