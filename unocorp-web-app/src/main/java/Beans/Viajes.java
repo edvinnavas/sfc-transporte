@@ -339,12 +339,57 @@ public class Viajes implements Serializable {
         }
     }
     
-    public void actualizar_destino() {
+    public void destino_cliente_actualizar_geozona() {
         try {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente-Destino.","Cliente-Destino actualizado."));
-        } catch(Exception ex) {
+            if (this.sel_reg_tbl_viajes != null) {
+                String parametros_cliente_destino = this.id_cliente_destino + "♣" + this.coor_sup_izq + "♣" + this.coor_inf_der;
+
+                ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
+                String json_result = cliente_rest_api.cliente_destino_modificar_geozona(parametros_cliente_destino);
+                String respuesta_json_result = json_result;
+
+                json_result = cliente_rest_api.obtener_cliente_destino(this.sel_reg_tbl_viajes.getCodigo_cliente_destino().toString());
+
+                Type cliente_destino_type = new TypeToken<Entidades.Cliente_Destino>() {
+                }.getType();
+                Entidades.Cliente_Destino cliente_destino = new Gson().fromJson(json_result, cliente_destino_type);
+
+                Double sum_latitude = cliente_destino.getZona_latitud_1() + cliente_destino.getZona_latitud_2() + cliente_destino.getZona_latitud_3() + cliente_destino.getZona_latitud_4() + cliente_destino.getZona_latitud_5();
+                Double sum_longitude = cliente_destino.getZona_longitud_1() + cliente_destino.getZona_longitud_2() + cliente_destino.getZona_longitud_3() + cliente_destino.getZona_longitud_4() + cliente_destino.getZona_longitud_5();
+
+                Double avg_latitude = sum_latitude / 5;
+                Double avg_longitude = sum_longitude / 5;
+
+                this.central_map_destino_cliente = avg_latitude.toString() + ", " + avg_longitude;
+
+                LatLng planta_coord1 = new LatLng(cliente_destino.getZona_latitud_1(), cliente_destino.getZona_longitud_1());
+                LatLng planta_coord2 = new LatLng(cliente_destino.getZona_latitud_2(), cliente_destino.getZona_longitud_2());
+                LatLng planta_coord3 = new LatLng(cliente_destino.getZona_latitud_3(), cliente_destino.getZona_longitud_3());
+                LatLng planta_coord4 = new LatLng(cliente_destino.getZona_latitud_4(), cliente_destino.getZona_longitud_4());
+                LatLng planta_coord5 = new LatLng(cliente_destino.getZona_latitud_5(), cliente_destino.getZona_longitud_5());
+
+                Polygon<Long> planta_polygon = new Polygon<>();
+                planta_polygon.setData(1L);
+                planta_polygon.getPaths().add(planta_coord1);
+                planta_polygon.getPaths().add(planta_coord2);
+                planta_polygon.getPaths().add(planta_coord3);
+                planta_polygon.getPaths().add(planta_coord4);
+                planta_polygon.getPaths().add(planta_coord5);
+
+                planta_polygon.setStrokeColor("#FF9900");
+                planta_polygon.setFillColor("#FF9900");
+                planta_polygon.setStrokeOpacity(0.7);
+                planta_polygon.setFillOpacity(0.7);
+
+                this.mapa_model_destino_cliente.addOverlay(planta_polygon);
+
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente-Destino.", respuesta_json_result));
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Mensaje del sistema...", "Debe seleccionar un viaje."));
+            }
+        } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
-            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: selecionar_coordenada(), ERRROR: " + ex.toString());
+            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: destino_cliente_actualizar_geozona(), ERRROR: " + ex.toString());
         }
     }
     

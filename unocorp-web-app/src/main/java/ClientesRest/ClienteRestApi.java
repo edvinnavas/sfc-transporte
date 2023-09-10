@@ -2,6 +2,7 @@ package ClientesRest;
 
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
@@ -34,7 +35,7 @@ public class ClienteRestApi implements Serializable {
             WebTarget webTarget = this.client.target(BASE_URI).path("autenticar/" + usuario + "/" + contrasena);
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
             Response response = invocationBuilder.get();
-            // System.out.println("CONEXION JDE-REST-API: " + response.getStatus());
+            // System.out.println("CONEXION AUTENTICAR: " + response.getStatus());
             if (response.getStatus() == 200) {
                 resultado = response.readEntity(String.class);
             } else {
@@ -54,7 +55,7 @@ public class ClienteRestApi implements Serializable {
             WebTarget webTarget = this.client.target(BASE_URI).path("lista_viajes/" + fecha_inicio + "/" + fecha_final + "/" + estado + "/" + tipo_flete + "/" + rastreable);
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
             Response response = invocationBuilder.get();
-            // System.out.println("CONEXION JDE-REST-API: " + response.getStatus());
+            // System.out.println("LISTA-VIAJES: " + response.getStatus());
             if (response.getStatus() == 200) {
                 resultado = response.readEntity(String.class);
             } else {
@@ -74,7 +75,7 @@ public class ClienteRestApi implements Serializable {
             WebTarget webTarget = this.client.target(BASE_URI).path("lista_viajes_ubicaciones/" + codigo_pais + "/" + codigo_compania + "/" + codigo_planta + "/" + numero_viaje + "/" + codigo_cliente + "/" + codigo_cliente_destino);
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
             Response response = invocationBuilder.get();
-            // System.out.println("CONEXION JDE-REST-API: " + response.getStatus());
+            // System.out.println("LISTA-VIAJES-UBICACIONES: " + response.getStatus());
             if (response.getStatus() == 200) {
                 resultado = response.readEntity(String.class);
             } else {
@@ -94,7 +95,7 @@ public class ClienteRestApi implements Serializable {
             WebTarget webTarget = this.client.target(BASE_URI).path("obtener_cliente_destino/" + codigo_cliente_destino);
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
             Response response = invocationBuilder.get();
-            // System.out.println("CONEXION JDE-REST-API: " + response.getStatus());
+            // System.out.println("OBTENER-CLIENTE-DESTINO: " + response.getStatus());
             if (response.getStatus() == 200) {
                 resultado = response.readEntity(String.class);
             } else {
@@ -102,6 +103,27 @@ public class ClienteRestApi implements Serializable {
             }
         } catch (Exception ex) {
             System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: obtener_cliente_destino(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+    
+    public String cliente_destino_modificar_geozona(String parametros_cliente_destino) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("cliente_destino/modificar_geozona");
+            String data = parametros_cliente_destino;
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.put(Entity.text(data));
+            // System.out.println("CLIENTE-DESTINO-MODIFICAR-GEOZONA: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: cliente_destino_modificar_geozona(), ERRROR: " + ex.toString());
         }
 
         return resultado;

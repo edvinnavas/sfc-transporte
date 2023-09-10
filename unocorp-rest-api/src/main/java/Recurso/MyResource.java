@@ -1,6 +1,7 @@
 package Recurso;
 
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -91,8 +92,31 @@ public class MyResource implements Serializable {
         String resultado;
 
         try {
-            Control.Viajes ctrl_viajes = new Control.Viajes();
-            resultado = ctrl_viajes.obtener_cliente_destino(codigo_cliente_destino);
+            Control.Cliente_Destino ctrl_cliente_destino = new Control.Cliente_Destino();
+            resultado = ctrl_cliente_destino.obtener_cliente_destino(codigo_cliente_destino);
+        } catch (Exception ex) {
+            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: obtener_cliente_destino(), ERRROR: " + ex.toString();
+        }
+
+        return resultado;
+    }
+    
+    @PUT
+    @Path("cliente_destino/modificar_geozona")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String cliente_destino_modificar_geozona(String parametros_cliente_destino) {
+        
+        String resultado;
+
+        try {
+            String[] parametros = parametros_cliente_destino.split("♣");
+            
+            Long id_cliente_destino = Long.valueOf(parametros[0]);
+            String coordenada1 = parametros[1]; 
+            String coordenada2 = parametros[2];
+            
+            Control.Cliente_Destino ctrl_cliente_destino = new Control.Cliente_Destino();
+            resultado = ctrl_cliente_destino.modificar_geozona(id_cliente_destino, coordenada1, coordenada2);
         } catch (Exception ex) {
             resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: obtener_cliente_destino(), ERRROR: " + ex.toString();
         }

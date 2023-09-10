@@ -225,7 +225,7 @@
                         <p:ajax update="chkSupIzqEdit,chkInfDerEdit" listener="#{Viajes.selecionar_checkbox}"/>
                     </p:selectBooleanCheckbox>
                 </p:panelGrid>
-                <p:commandButton id="btnActClienteDestino" value="Actualizar" actionListener="#{Viajes.actualizar_destino}" icon="pi pi-send" update="formPlantilla:msgViajes,formClienteDestino">
+                <p:commandButton id="btnActClienteDestino" value="Actualizar" actionListener="#{Viajes.destino_cliente_actualizar_geozona}" icon="pi pi-send" update="formPlantilla:msgViajes,mapUbicaciones">
                     <p:confirm header="Confirmación" message="Seguro desea realizar esta acción?" icon="pi pi-exclamation-triangle"/>
                 </p:commandButton>
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
