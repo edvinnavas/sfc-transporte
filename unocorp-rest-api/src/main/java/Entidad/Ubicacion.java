@@ -15,10 +15,10 @@ public class Ubicacion implements Serializable {
     private String latitude;
     private String logitude;
     private String descripcion_ubicacion;
-    private Double eta_hora;
-    private Double eda_kms;
+    private String eta_hora;
+    private String eda_kms;
 
-    public Ubicacion(String fecha_hora_ubicacion, String imei, String latitude, String logitude, String descripcion_ubicacion, Double eta_hora, Double eda_kms) {
+    public Ubicacion(String fecha_hora_ubicacion, String imei, String latitude, String logitude, String descripcion_ubicacion, String eta_hora, String eda_kms) {
         this.fecha_hora_ubicacion = fecha_hora_ubicacion;
         this.imei = imei;
         this.latitude = latitude;

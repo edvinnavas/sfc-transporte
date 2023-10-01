@@ -15,10 +15,10 @@ public class RegTblUbicaciones implements Serializable {
     private String latitude;
     private String logitude;
     private String descripcion_ubicacion;
-    private Double eta_hora;
-    private Double eda_kms;
+    private String eta_hora;
+    private String eda_kms;
 
-    public RegTblUbicaciones(Long id_reg_tbl_ubicaciones, String fecha_hora_ubicacion, String latitude, String logitude, String descripcion_ubicacion, Double eta_hora, Double eda_kms) {
+    public RegTblUbicaciones(Long id_reg_tbl_ubicaciones, String fecha_hora_ubicacion, String latitude, String logitude, String descripcion_ubicacion, String eta_hora, String eda_kms) {
         this.id_reg_tbl_ubicaciones = id_reg_tbl_ubicaciones;
         this.fecha_hora_ubicacion = fecha_hora_ubicacion;
         this.latitude = latitude;

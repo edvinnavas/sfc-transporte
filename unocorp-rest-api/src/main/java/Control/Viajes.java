@@ -269,8 +269,8 @@ public class Viajes implements Serializable {
                 ubicacion.setLatitude(rs1.getString(3));
                 ubicacion.setLogitude(rs1.getString(4));
                 ubicacion.setDescripcion_ubicacion(rs1.getString(5));
-                ubicacion.setEta_hora(rs1.getDouble(6));
-                ubicacion.setEda_kms(rs1.getDouble(7));
+                ubicacion.setEta_hora(rs1.getString(6));
+                ubicacion.setEda_kms(rs1.getString(7));
                 lista_ubicaciones.add(ubicacion);
             }
             rs1.close();

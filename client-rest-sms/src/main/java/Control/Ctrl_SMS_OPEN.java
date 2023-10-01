@@ -3,12 +3,14 @@ package Control;
 import ClienteRest.Cliente_Rest_Google_Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
 import jakarta.xml.soap.MessageFactory;
 import jakarta.xml.soap.SOAPMessage;
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -179,8 +181,8 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 String LONGITUDE = rs.getString(10);
                 String LOCATIONDESCRIPTION = rs.getString(11);
                 Long ID_CLIENTE_DESTINO = rs.getLong(12);
-                Double ETA_HORAS = 0.00;
-                Double EDA_KMS = 0.00;
+                String ETA_HORAS = "0.00";
+                String EDA_KMS = "0.00";
 
                 Boolean no_existe = true;
                 cadenasql = "SELECT "
@@ -229,9 +231,9 @@ public class Ctrl_SMS_OPEN implements Serializable {
                             + IMEI + "','"
                             + LATITUDE + "','"
                             + LONGITUDE + "','"
-                            + LOCATIONDESCRIPTION + "',"
-                            + ETA_HORAS + ","
-                            + EDA_KMS + ")";
+                            + LOCATIONDESCRIPTION + "','"
+                            + ETA_HORAS + "','"
+                            + EDA_KMS + "')";
                     stmt1 = conn.createStatement();
                     stmt1.executeUpdate(cadenasql);
                     stmt1.close();
@@ -364,8 +366,14 @@ public class Ctrl_SMS_OPEN implements Serializable {
         String resultado = "";
         try {
             Cliente_Rest_Google_Maps cliente_rest_google_maps = new Cliente_Rest_Google_Maps();
-            resultado = cliente_rest_google_maps.distancematrix(departure_time, origins, destinations, key);
+            String json_result = cliente_rest_google_maps.distancematrix(departure_time, origins, destinations, key);
             
+            Type google_distance_matrix_type = new TypeToken<Entidad.GoogleDistanceMatrix>() {
+            }.getType();
+            Entidad.GoogleDistanceMatrix google_distance_matrix = new Gson().fromJson(json_result, google_distance_matrix_type);
+            
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            resultado = gson.toJson(google_distance_matrix);
         } catch (Exception ex) {
             System.out.println("PROYECTO:client-rest-sms|CLASE:" + this.getClass().getName() + "|METODO:distancematrix()|ERROR:" + ex.toString());
         }
