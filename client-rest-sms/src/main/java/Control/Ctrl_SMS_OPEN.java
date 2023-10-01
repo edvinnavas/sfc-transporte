@@ -364,7 +364,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
         String resultado = "";
         try {
             Cliente_Rest_Google_Maps cliente_rest_google_maps = new Cliente_Rest_Google_Maps();
-            String jsonResult = cliente_rest_google_maps.distancematrix(departure_time, origins, destinations, key);
+            resultado = cliente_rest_google_maps.distancematrix(departure_time, origins, destinations, key);
             
         } catch (Exception ex) {
             System.out.println("PROYECTO:client-rest-sms|CLASE:" + this.getClass().getName() + "|METODO:distancematrix()|ERROR:" + ex.toString());
