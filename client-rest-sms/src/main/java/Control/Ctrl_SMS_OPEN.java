@@ -1,5 +1,6 @@
 package Control;
 
+import ClienteRest.Cliente_Rest_Google_Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import jakarta.xml.bind.JAXBContext;
@@ -357,6 +358,19 @@ public class Ctrl_SMS_OPEN implements Serializable {
         } catch (Exception ex) {
             System.out.println("PROYECTO:client-rest-sms|CLASE:" + this.getClass().getName() + "|METODO:validar_viajes_cerrados()|ERROR:" + ex.toString());
         }
+    }
+    
+    public String distancematrix(String departure_time, String origins, String destinations, String key) {
+        String resultado = "";
+        try {
+            Cliente_Rest_Google_Maps cliente_rest_google_maps = new Cliente_Rest_Google_Maps();
+            String jsonResult = cliente_rest_google_maps.distancematrix(departure_time, origins, destinations, key);
+            
+        } catch (Exception ex) {
+            System.out.println("PROYECTO:client-rest-sms|CLASE:" + this.getClass().getName() + "|METODO:distancematrix()|ERROR:" + ex.toString());
+        }
+        
+        return resultado;
     }
 
 }

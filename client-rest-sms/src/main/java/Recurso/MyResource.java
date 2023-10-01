@@ -34,5 +34,22 @@ public class MyResource implements Serializable {
 
         return resultado;
     }
+    
+    @GET
+    @Path("GoogleDistanceMatrix")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String distancematrix() {
+        String resultado;
+
+        try {
+            Ctrl_SMS_OPEN ctrl_sms_open = new Ctrl_SMS_OPEN();
+            resultado = ctrl_sms_open.distancematrix("now", "14.601372%2C-90.515170", "13.931052%2C-90.797667", "AIzaSyCKLDaTjpMnm-reYkJpAiW2jrl0L4IzyF0");
+        } catch (Exception ex) {
+            resultado = "PROYECTO:client-rest-sms|CLASE:" + this.getClass().getName() + "|METODO:distancematrix()|ERROR:" + ex.toString();
+            System.out.println("PROYECTO:client-rest-sms|CLASE:" + this.getClass().getName() + "|METODO:distancematrix()|ERROR:" + ex.toString());
+        }
+
+        return resultado;
+    }
 
 }
