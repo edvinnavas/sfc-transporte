@@ -206,8 +206,20 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 String ETA_HORAS = "0.00";
                 String EDA_KMS = "0.00";
                 if(google_distance_matrix != null) {
-                    ETA_HORAS = google_distance_matrix.getRows().get(0).getElements().get(0).getDuration_in_traffic().getText();
-                    EDA_KMS = google_distance_matrix.getRows().get(0).getElements().get(0).getDistance().getText();
+                    try {
+                        ETA_HORAS = google_distance_matrix.getRows().get(0).getElements().get(0).getDuration_in_traffic().getText();
+                    } catch(Exception traffic_ex) {
+                        ETA_HORAS = "0.0";
+                        System.out.println("DURATION-IN-TRAFFIC-GET-TEXT");
+                        System.out.println("JSON-RESULT: " + json_result);
+                    }
+                    try {
+                        EDA_KMS = google_distance_matrix.getRows().get(0).getElements().get(0).getDistance().getText();
+                    } catch(Exception traffic_ex) {
+                        EDA_KMS = "0.0";
+                        System.out.println("DISTANCE-GET-TEXT");
+                        System.out.println("JSON-RESULT: " + json_result);
+                    }
                 }
                 System.out.println("ETA_HORAS:" + ETA_HORAS);
                 System.out.println("EDA_KMS:" + EDA_KMS);
