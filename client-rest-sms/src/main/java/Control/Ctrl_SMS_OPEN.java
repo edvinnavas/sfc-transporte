@@ -189,15 +189,22 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 String LONGITUDE_DESTINO = control_base_datos.ObtenerString("SELECT (A.ZONA_LONGITUD_1 + A.ZONA_LONGITUD_2 + A.ZONA_LONGITUD_3 + A.ZONA_LONGITUD_4 + A.ZONA_LONGITUD_5) / 5 AVG_LONGITUD FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
                 String destinations = LATITUDE_DESTINO + "%2C" + LONGITUDE_DESTINO;
                 String key = control_base_datos.ObtenerString("SELECT A.VALOR FROM PARAMETROS_GPS A WHERE A.ID_PARAMETRO=2", conn);
-                Cliente_Rest_Google_Maps cliente_rest_google_maps = new Cliente_Rest_Google_Maps();
-                String json_result = cliente_rest_google_maps.distancematrix(departure_time, origins, destinations, key);
-            
-                Type google_distance_matrix_type = new TypeToken<Entidad.GoogleDistanceMatrix>() {
-                }.getType();
-                Entidad.GoogleDistanceMatrix google_distance_matrix = new Gson().fromJson(json_result, google_distance_matrix_type);
                 
-                String ETA_HORAS = google_distance_matrix.getRows().get(0).getElements().get(0).getDuration_in_traffic().getText();
-                String EDA_KMS = google_distance_matrix.getRows().get(0).getElements().get(0).getDistance().getText();
+                System.out.println("DEPARTURE-TIME:" + departure_time);
+                System.out.println("ORIGINS:" + origins);
+                System.out.println("DESTINATIONS:" + destinations);
+                System.out.println("KEY:" + key);
+                // Cliente_Rest_Google_Maps cliente_rest_google_maps = new Cliente_Rest_Google_Maps();
+                // String json_result = cliente_rest_google_maps.distancematrix(departure_time, origins, destinations, key);
+            
+                // Type google_distance_matrix_type = new TypeToken<Entidad.GoogleDistanceMatrix>() {
+                // }.getType();
+                // Entidad.GoogleDistanceMatrix google_distance_matrix = new Gson().fromJson(json_result, google_distance_matrix_type);
+                
+                // String ETA_HORAS = google_distance_matrix.getRows().get(0).getElements().get(0).getDuration_in_traffic().getText();
+                // String EDA_KMS = google_distance_matrix.getRows().get(0).getElements().get(0).getDistance().getText();
+                String ETA_HORAS = "0.00";
+                String EDA_KMS = "0.00";
 
                 Boolean no_existe = true;
                 cadenasql = "SELECT "
