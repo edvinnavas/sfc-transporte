@@ -185,8 +185,8 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 /* CONSUMIR API GOOGLE-DISTANCE-MATRIX */
                 String departure_time = control_base_datos.ObtenerString("SELECT A.VALOR FROM PARAMETROS_GPS A WHERE A.ID_PARAMETRO=3", conn);
                 String origins = LATITUDE + "%2C" + LONGITUDE;
-                String LATITUDE_DESTINO = control_base_datos.ObtenerString("SELECT (A.ZONA_LATITUD_1 + A.ZONA_LATITUD_2 + A.ZONA_LATITUD_3 + A.ZONA_LATITUD_4 + A.ZONA_LATITUD_5) / 5 AVG_LATITUD FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
-                String LONGITUDE_DESTINO = control_base_datos.ObtenerString("SELECT (A.ZONA_LONGITUD_1 + A.ZONA_LONGITUD_2 + A.ZONA_LONGITUD_3 + A.ZONA_LONGITUD_4 + A.ZONA_LONGITUD_5) / 5 AVG_LONGITUD FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                String LATITUDE_DESTINO = control_base_datos.ObtenerString("SELECT FORMAT((A.ZONA_LATITUD_1 + A.ZONA_LATITUD_2 + A.ZONA_LATITUD_3 + A.ZONA_LATITUD_4 + A.ZONA_LATITUD_5) / 5, 6) AVG_LATITUD FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                String LONGITUDE_DESTINO = control_base_datos.ObtenerString("SELECT FORMAT((A.ZONA_LONGITUD_1 + A.ZONA_LONGITUD_2 + A.ZONA_LONGITUD_3 + A.ZONA_LONGITUD_4 + A.ZONA_LONGITUD_5) / 5, 6) AVG_LONGITUD FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
                 String destinations = LATITUDE_DESTINO + "%2C" + LONGITUDE_DESTINO;
                 String key = control_base_datos.ObtenerString("SELECT A.VALOR FROM PARAMETROS_GPS A WHERE A.ID_PARAMETRO=2", conn);
                 
@@ -194,8 +194,9 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 System.out.println("ORIGINS:" + origins);
                 System.out.println("DESTINATIONS:" + destinations);
                 System.out.println("KEY:" + key);
-                // Cliente_Rest_Google_Maps cliente_rest_google_maps = new Cliente_Rest_Google_Maps();
-                // String json_result = cliente_rest_google_maps.distancematrix(departure_time, origins, destinations, key);
+                Cliente_Rest_Google_Maps cliente_rest_google_maps = new Cliente_Rest_Google_Maps();
+                String json_result = cliente_rest_google_maps.distancematrix(departure_time, origins, destinations, key);
+                System.out.println("JSON-RESULT: " + json_result);
             
                 // Type google_distance_matrix_type = new TypeToken<Entidad.GoogleDistanceMatrix>() {
                 // }.getType();
