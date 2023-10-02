@@ -3,6 +3,7 @@ package Control;
 import ClienteRest.Cliente_Rest_Google_Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
@@ -182,7 +183,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 String LOCATIONDESCRIPTION = rs.getString(11);
                 Long ID_CLIENTE_DESTINO = rs.getLong(12);
                 
-                /* CONSUMIR API GOOGLE-DISTANCE-MATRIX */
+                /* CONSUME API-GOOGLE-DISTANCE-MATRIX */
                 String departure_time = control_base_datos.ObtenerString("SELECT A.VALOR FROM PARAMETROS_GPS A WHERE A.ID_PARAMETRO=3", conn);
                 String origins = LATITUDE + "%2C" + LONGITUDE;
                 String LATITUDE_DESTINO = control_base_datos.ObtenerString("SELECT FORMAT((A.ZONA_LATITUD_1 + A.ZONA_LATITUD_2 + A.ZONA_LATITUD_3 + A.ZONA_LATITUD_4 + A.ZONA_LATITUD_5) / 5, 6) AVG_LATITUD FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
@@ -190,23 +191,28 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 String destinations = LATITUDE_DESTINO + "%2C" + LONGITUDE_DESTINO;
                 String key = control_base_datos.ObtenerString("SELECT A.VALOR FROM PARAMETROS_GPS A WHERE A.ID_PARAMETRO=2", conn);
                 
-                System.out.println("DEPARTURE-TIME:" + departure_time);
-                System.out.println("ORIGINS:" + origins);
-                System.out.println("DESTINATIONS:" + destinations);
-                System.out.println("KEY:" + key);
                 Cliente_Rest_Google_Maps cliente_rest_google_maps = new Cliente_Rest_Google_Maps();
                 String json_result = cliente_rest_google_maps.distancematrix(departure_time, origins, destinations, key);
-                System.out.println("JSON-RESULT: " + json_result);
             
-                // Type google_distance_matrix_type = new TypeToken<Entidad.GoogleDistanceMatrix>() {
-                // }.getType();
-                // Entidad.GoogleDistanceMatrix google_distance_matrix = new Gson().fromJson(json_result, google_distance_matrix_type);
+                Entidad.GoogleDistanceMatrix google_distance_matrix = null;
+                try {
+                    Type google_distance_matrix_type = new TypeToken<Entidad.GoogleDistanceMatrix>() {
+                    }.getType();
+                    google_distance_matrix = new Gson().fromJson(json_result, google_distance_matrix_type);
+                } catch(JsonSyntaxException json_ex) {
+                    System.out.println("ERROR GSON-CONVERT JSON-RESULTA: " + json_ex.toString());
+                }
                 
-                // String ETA_HORAS = google_distance_matrix.getRows().get(0).getElements().get(0).getDuration_in_traffic().getText();
-                // String EDA_KMS = google_distance_matrix.getRows().get(0).getElements().get(0).getDistance().getText();
                 String ETA_HORAS = "0.00";
                 String EDA_KMS = "0.00";
+                if(google_distance_matrix != null) {
+                    ETA_HORAS = google_distance_matrix.getRows().get(0).getElements().get(0).getDuration_in_traffic().getText();
+                    EDA_KMS = google_distance_matrix.getRows().get(0).getElements().get(0).getDistance().getText();
+                }
+                System.out.println("ETA_HORAS:" + ETA_HORAS);
+                System.out.println("EDA_KMS:" + EDA_KMS);
 
+                /* VALIDA SI LA UBICACIÓN YA EXISTE EN LA TABLA VIAJE_UBICACIONES */
                 Boolean no_existe = true;
                 cadenasql = "SELECT "
                         + "A.LATITUDE, A.LONGITUDE "
