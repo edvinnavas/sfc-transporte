@@ -3,7 +3,7 @@ package Control;
 import ClienteRest.Cliente_Rest_Google_Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
+// import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
@@ -191,39 +191,39 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 String destinations = LATITUDE_DESTINO + "%2C" + LONGITUDE_DESTINO;
                 String key = control_base_datos.ObtenerString("SELECT A.VALOR FROM PARAMETROS_GPS A WHERE A.ID_PARAMETRO=2", conn);
                 
-                Cliente_Rest_Google_Maps cliente_rest_google_maps = new Cliente_Rest_Google_Maps();
-                String json_result = cliente_rest_google_maps.distancematrix(departure_time, origins, destinations, key);
-            
-                Entidad.GoogleDistanceMatrix google_distance_matrix = null;
-                try {
-                    Type google_distance_matrix_type = new TypeToken<Entidad.GoogleDistanceMatrix>() {
-                    }.getType();
-                    google_distance_matrix = new Gson().fromJson(json_result, google_distance_matrix_type);
-                } catch(JsonSyntaxException json_ex) {
-                    System.out.println("ERROR GSON-CONVERT JSON-RESULTA: " + json_ex.toString());
-                }
+                // Cliente_Rest_Google_Maps cliente_rest_google_maps = new Cliente_Rest_Google_Maps();
+                // String json_result = cliente_rest_google_maps.distancematrix(departure_time, origins, destinations, key);
+                
+                // Entidad.GoogleDistanceMatrix google_distance_matrix = null;
+                // try {
+                //     Type google_distance_matrix_type = new TypeToken<Entidad.GoogleDistanceMatrix>() {
+                //     }.getType();
+                //     google_distance_matrix = new Gson().fromJson(json_result, google_distance_matrix_type);
+                // } catch(JsonSyntaxException json_ex) {
+                //     System.out.println("ERROR GSON-CONVERT JSON-RESULTA: " + json_ex.toString());
+                // }
                 
                 String ETA_HORAS = "0.00";
                 String EDA_KMS = "0.00";
-                if(google_distance_matrix != null) {
-                    try {
-                        ETA_HORAS = google_distance_matrix.getRows().get(0).getElements().get(0).getDuration_in_traffic().getText();
-                    } catch(Exception traffic_ex) {
-                        ETA_HORAS = "0.0";
-                        System.out.println("DURATION-IN-TRAFFIC-GET-TEXT");
-                        System.out.println("JSON-RESULT: " + json_result);
-                    }
-                    try {
-                        EDA_KMS = google_distance_matrix.getRows().get(0).getElements().get(0).getDistance().getText();
-                    } catch(Exception traffic_ex) {
-                        EDA_KMS = "0.0";
-                        System.out.println("DISTANCE-GET-TEXT");
-                        System.out.println("JSON-RESULT: " + json_result);
-                    }
-                }
-                System.out.println("ETA_HORAS:" + ETA_HORAS);
-                System.out.println("EDA_KMS:" + EDA_KMS);
-
+                // if(google_distance_matrix != null) {
+                //     try {
+                //         ETA_HORAS = google_distance_matrix.getRows().get(0).getElements().get(0).getDuration_in_traffic().getText();
+                //     } catch(Exception traffic_ex) {
+                //         ETA_HORAS = "0.0";
+                //         System.out.println("DURATION-IN-TRAFFIC-GET-TEXT");
+                //         System.out.println("JSON-RESULT: " + json_result);
+                //     }
+                //     try {
+                //         EDA_KMS = google_distance_matrix.getRows().get(0).getElements().get(0).getDistance().getText();
+                //     } catch(Exception traffic_ex) {
+                //         EDA_KMS = "0.0";
+                //         System.out.println("DISTANCE-GET-TEXT");
+                //         System.out.println("JSON-RESULT: " + json_result);
+                //     }
+                // }
+                // System.out.println("ETA_HORAS:" + ETA_HORAS);
+                // System.out.println("EDA_KMS:" + EDA_KMS);
+                
                 /* VALIDA SI LA UBICACIÓN YA EXISTE EN LA TABLA VIAJE_UBICACIONES */
                 Boolean no_existe = true;
                 cadenasql = "SELECT "
