@@ -179,7 +179,7 @@ public class Usuario implements Serializable {
 
                 List<Long> lst_id_predio = ctrl_base_datos.ObtenerVectorLong("SELECT DISTINCT P.ID_PREDIO FROM USUARIO_PREDIO UP LEFT JOIN USUARIO U ON (UP.ID_USUARIO=U.ID_USUARIO) LEFT JOIN PREDIO P ON (UP.ID_PREDIO=P.ID_PREDIO) LEFT JOIN TRANSPORTISTA T ON (P.ID_TRANSPORTISTA=T.ID_TRANSPORTISTA) WHERE U.ID_USUARIO=" + id_usuario + " AND T.ID_TRANSPORTISTA=" + lst_id_transportista.get(i), conn);
                 List<Entidad.Usuario_Transportista_Predio> lst_predio = new ArrayList<>();
-                for (Integer j = 0; j < lst_id_transportista.size(); j++) {
+                for (Integer j = 0; j < lst_id_predio.size(); j++) {
                     Entidad.Usuario_Transportista_Predio usuario_transportista_predio = new Entidad.Usuario_Transportista_Predio();
                     usuario_transportista_predio.setId_predio(lst_id_predio.get(j));
                     usuario_transportista_predio.setNombre_predio(ctrl_base_datos.ObtenerString("SELECT P.NOMBRE FROM PREDIO P WHERE P.ID_PREDIO=" + lst_id_predio.get(j), conn));
