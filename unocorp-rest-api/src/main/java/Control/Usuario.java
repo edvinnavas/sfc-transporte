@@ -154,5 +154,70 @@ public class Usuario implements Serializable {
 
         return resultado;
     }
+    
+    public String usuario_predio(Long id_usuario) {
+        String resultado = "";
+
+        Connection conn = null;
+
+        try {
+            Base_Datos ctrl_base_datos = new Base_Datos();
+            conn = ctrl_base_datos.obtener_conexion_mysql();
+
+            conn.setAutoCommit(false);
+
+            Entidad.Usuario_Predio usuario_predio = new Entidad.Usuario_Predio();
+            usuario_predio.setId_usuario(ctrl_base_datos.ObtenerLong("SELECT U.ID_USUARIO FROM USUARIO U WHERE U.ID_USUARIO=" + id_usuario, conn));
+            usuario_predio.setNombre_usuario(ctrl_base_datos.ObtenerString("SELECT U.NOMBRE_USUARIO FROM USUARIO U WHERE U.ID_USUARIO=" + id_usuario, conn));
+
+            List<Long> lst_id_transportista = ctrl_base_datos.ObtenerVectorLong("SELECT DISTINCT T.ID_TRANSPORTISTA FROM USUARIO_PREDIO UP LEFT JOIN USUARIO U ON (UP.ID_USUARIO=U.ID_USUARIO) LEFT JOIN PREDIO P ON (UP.ID_PREDIO=P.ID_PREDIO) LEFT JOIN TRANSPORTISTA T ON (P.ID_TRANSPORTISTA=T.ID_TRANSPORTISTA) WHERE U.ID_USUARIO=" + id_usuario, conn);
+            List<Entidad.Usuario_Predio_Transportista> lst_transportista = new ArrayList<>();
+            for (Integer i = 0; i < lst_id_transportista.size(); i++) {
+                Entidad.Usuario_Predio_Transportista usuario_predio_transportista = new Entidad.Usuario_Predio_Transportista();
+                usuario_predio_transportista.setId_transportista(lst_id_transportista.get(i));
+                usuario_predio_transportista.setNombre_transportista(ctrl_base_datos.ObtenerString("SELECT T.NOMBRE FROM TRANSPORTISTA T WHERE T.ID_TRANSPORTISTA=" + lst_id_transportista.get(i), conn));
+
+                List<Long> lst_id_predio = ctrl_base_datos.ObtenerVectorLong("SELECT DISTINCT P.ID_PREDIO FROM USUARIO_PREDIO UP LEFT JOIN USUARIO U ON (UP.ID_USUARIO=U.ID_USUARIO) LEFT JOIN PREDIO P ON (UP.ID_PREDIO=P.ID_PREDIO) LEFT JOIN TRANSPORTISTA T ON (P.ID_TRANSPORTISTA=T.ID_TRANSPORTISTA) WHERE U.ID_USUARIO=" + id_usuario + " AND T.ID_TRANSPORTISTA=" + lst_id_transportista.get(i), conn);
+                List<Entidad.Usuario_Transportista_Predio> lst_predio = new ArrayList<>();
+                for (Integer j = 0; j < lst_id_transportista.size(); j++) {
+                    Entidad.Usuario_Transportista_Predio usuario_transportista_predio = new Entidad.Usuario_Transportista_Predio();
+                    usuario_transportista_predio.setId_predio(lst_id_predio.get(j));
+                    usuario_transportista_predio.setNombre_predio(ctrl_base_datos.ObtenerString("SELECT P.NOMBRE FROM PREDIO P WHERE P.ID_PREDIO=" + lst_id_predio.get(j), conn));
+                    lst_predio.add(usuario_transportista_predio);
+                }
+                usuario_predio_transportista.setLst_predio(lst_predio);
+                
+                lst_transportista.add(usuario_predio_transportista);
+            }
+            usuario_predio.setLst_transportista(lst_transportista);
+
+            conn.commit();
+            conn.setAutoCommit(true);
+
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            resultado = gson.toJson(usuario_predio);
+        } catch (Exception ex) {
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                    conn.setAutoCommit(true);
+                    conn = null;
+                    resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: usuario_predio(), ERRROR: " + ex.toString();
+                }
+            } catch (Exception ex1) {
+                resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: rollback-usuario_predio(), ERRROR: " + ex.toString();
+            }
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception ex) {
+                resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: finally-usuario_predio(), ERRROR: " + ex.toString();
+            }
+        }
+
+        return resultado;
+    }
 
 }

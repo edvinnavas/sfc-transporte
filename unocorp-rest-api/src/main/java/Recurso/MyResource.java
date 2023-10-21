@@ -121,5 +121,43 @@ public class MyResource implements Serializable {
 
         return resultado;
     }
+    
+    @GET
+    @Path("disponibilidad/{id_transportista}/{id_predio}/{fecha}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String disponibilidad(
+            @PathParam("id_transportista") Long id_transportista,
+            @PathParam("id_predio") Long id_predio,
+            @PathParam("fecha") String fecha) {
+
+        String resultado;
+
+        try {
+            Control.Viajes ctrl_viajes = new Control.Viajes();
+            resultado = ctrl_viajes.disponibilidad(id_transportista, id_predio, fecha);
+        } catch (Exception ex) {
+            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: disponibilidad(), ERRROR: " + ex.toString();
+        }
+
+        return resultado;
+    }
+    
+    @GET
+    @Path("usuario_predio/{id_usuario}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String usuario_predio(
+            @PathParam("id_usuario") Long id_usuario) {
+
+        String resultado;
+
+        try {
+            Control.Usuario ctrl_usuario = new Control.Usuario();
+            resultado = ctrl_usuario.usuario_predio(id_usuario);
+        } catch (Exception ex) {
+            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: disponibilidad(), ERRROR: " + ex.toString();
+        }
+
+        return resultado;
+    }
 
 }

@@ -20,7 +20,7 @@
             <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Roles')}" value="Roles" icon="pi pi-unlock" action="roles.xhtml" update=":formPlantilla"/>
             <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Usuarios')}" value="Usuarios" icon="pi pi-user" action="usuarios.xhtml" update=":formPlantilla"/>
         </p:submenu>
-        <p:submenu rendered="#{Plantilla.render_menu('menu-Transporte')}" label="Transporte" icon="pi pi-file">
+        <p:submenu rendered="#{Plantilla.render_menu('menu-Catálogos')}" label="Catálogos" icon="pi pi-file">
             <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Países')}" value="Países" icon="pi pi-unlock" action="paises.xhtml" update=":formPlantilla"/>
             <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Compañías')}" value="Compañías" icon="pi pi-unlock" action="companias.xhtml" update=":formPlantilla"/>
             <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Plantas')}" value="Plantas" icon="pi pi-unlock" action="plantas.xhtml" update=":formPlantilla"/>
@@ -29,7 +29,9 @@
             <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Vehículos')}" value="Vehículos" icon="pi pi-unlock" action="vehiculos.xhtml" update=":formPlantilla"/>
             <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Clientes')}" value="Clientes" icon="pi pi-unlock" action="clientes.xhtml" update=":formPlantilla"/>
             <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Clientes-Destino')}" value="Clientes-Destino" icon="pi pi-unlock" action="clientes_destino.xhtml" update=":formPlantilla"/>
-            <p:divider/>
+        </p:submenu>
+        <p:submenu rendered="#{Plantilla.render_menu('menu-Viajes')}" label="Viajes" icon="pi pi-file">
+            <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Disponibilidad')}" value="Disponibilidad" icon="pi pi-unlock" action="disponibilidad.xhtml" actionListener="#{Disponibilidad.cargar_vista(Plantilla.usuario_sesion)}" update=":formPlantilla"/>
             <p:menuitem rendered="#{Plantilla.render_menu('menuItem-Viajes')}" value="Viajes" icon="pi pi-unlock" action="viajes.xhtml" actionListener="#{Viajes.cargar_vista(Plantilla.usuario_sesion)}" update=":formPlantilla"/>
         </p:submenu>
         <p:divider layout="vertical"/>

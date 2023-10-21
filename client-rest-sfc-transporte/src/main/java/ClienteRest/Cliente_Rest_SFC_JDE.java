@@ -38,7 +38,7 @@ public class Cliente_Rest_SFC_JDE implements Serializable {
             WebTarget webTarget = this.client.target(BASE_URI).path("obtener_viajes/" + fecha);
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
             Response response = invocationBuilder.get();
-            System.out.println("RESPONSE-STATUS: " + response.getStatus());
+            // System.out.println("RESPONSE-STATUS: " + response.getStatus());
             if (response.getStatus() == 200) {
                 resultado = response.readEntity(String.class);
             } else {

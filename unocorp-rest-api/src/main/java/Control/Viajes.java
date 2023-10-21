@@ -360,4 +360,88 @@ public class Viajes implements Serializable {
         return resultado;
     }
     
+    public String disponibilidad(Long id_tranasportista, Long id_predio, String fecha) {
+        String resultado = "";
+
+        Connection conn = null;
+
+        try {
+            SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
+
+            Base_Datos ctrl_base_datos = new Base_Datos();
+            conn = ctrl_base_datos.obtener_conexion_mysql();
+
+            conn.setAutoCommit(false);
+
+            List<Entidad.Disponibilidad> lista_disponibilidad = new ArrayList<>();
+            
+            String cadenasql = "SELECT "
+                    + "T.ID_TRANSPORTISTA ID_TRANSPORTISTA, "
+                    + "T.NOMBRE TRANSPORTISTA, "
+                    + "P.ID_PREDIO ID_PREDIO, "
+                    + "P.NOMBRE PREDIO, "
+                    + "V.ID_VEHICULO ID_CISTERNA, "
+                    + "V.CODIGO CISTERNA, "
+                    + "C.ID_CABEZAL ID_CABEZAL,"
+                    + "C.CODIGO CABEZAL, "
+                    + "A.FECHA FECHA "
+                    + "FROM "
+                    + "DISPONIBILIDAD A "
+                    + "LEFT JOIN TRANSPORTISTA T ON (A.ID_TRANSPORTISTA=T.ID_TRANSPORTISTA) "
+                    + "LEFT JOIN VEHICULO V ON (A.ID_VEHICULO=V.ID_VEHICULO) "
+                    + "LEFT JOIN CABEZAL C ON (A.ID_CABEZAL=C.ID_CABEZAL) "
+                    + "LEFT JOIN PREDIO P ON (C.ID_PREDIO=P.ID_PREDIO) "
+                    + "WHERE "
+                    + "A.ID_TRANSPORTISTA=" + id_tranasportista + " AND "
+                    + "C.ID_PREDIO=" + id_predio + " AND "
+                    + "A.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "'";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(cadenasql);
+            while (rs.next()) {
+                Entidad.Disponibilidad disponibilidad = new Entidad.Disponibilidad();
+                disponibilidad.setId_transportista(rs.getLong(1));
+                disponibilidad.setNombre_transportista(rs.getString(2));
+                disponibilidad.setId_predio(rs.getLong(3));
+                disponibilidad.setNombre_predio(rs.getString(4));
+                disponibilidad.setId_cisterna(rs.getLong(5));
+                disponibilidad.setNombre_cisterna(rs.getString(6));
+                disponibilidad.setId_cabezal(rs.getLong(7));
+                disponibilidad.setNombre_cabezal(rs.getString(8));
+                disponibilidad.setFecha(rs.getString(9));
+                
+                lista_disponibilidad.add(disponibilidad);
+            }
+            rs.close();
+            stmt.close();
+
+            conn.commit();
+            conn.setAutoCommit(true);
+
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            resultado = gson.toJson(lista_disponibilidad);
+        } catch (Exception ex) {
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                    conn.setAutoCommit(true);
+                    conn = null;
+                    resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: disponibilidad(), ERRROR: " + ex.toString();
+                }
+            } catch (Exception ex1) {
+                resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: rollback-disponibilidad(), ERRROR: " + ex.toString();
+            }
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception ex) {
+                resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: finally-disponibilidad(), ERRROR: " + ex.toString();
+            }
+        }
+
+        return resultado;
+    }
+    
 }

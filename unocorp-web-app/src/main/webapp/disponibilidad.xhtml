@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="WEB-INF/plantilla/plantilla.xhtml">
+    <ui:define name="contenido">
+        <p:panel id="panelDisponibilidad" header="Disponibilidad">
+            <p:growl id="msgDisponibilidad" showDetail="true"/>
+            <p:panelGrid columns="4">
+                <p:outputLabel value="Transportista" style="font-weight: bold; font-size: 12px;"/>
+                <p:selectOneMenu id="cbxTransportista" value="#{Disponibilidad.id_transportista}" style="font-size: 12px;">
+                    <f:selectItems value="#{Disponibilidad.lst_transportista}"/>
+                    <p:ajax event="itemSelect" listener="#{Disponibilidad.filtrar_tabla}" update="tblViajes"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="Predio" style="font-weight: bold; font-size: 12px;"/>
+                <p:selectOneMenu id="cbxPredio" value="#{Disponibilidad.id_predio}" style="font-size: 12px;">
+                    <f:selectItems value="#{Disponibilidad.lst_predio}"/>
+                    <p:ajax event="itemSelect" listener="#{Disponibilidad.filtrar_tabla}" update="tblViajes"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="Fecha" style="font-weight: bold; font-size: 12px;"/>
+                <p:calendar id="calFechaInicial" value="#{Disponibilidad.fecha}" pattern="dd/MM/yyyy" style="font-size: 12px;" />
+            </p:panelGrid>
+            <p:dataTable 
+                id="tblDisponibilidad" 
+                var="registro_tabla" 
+                value="#{Disponibilidad.lst_reg_tbl_disponibilidad}"
+                style="font-size: 12px;">
+                <p:column headerText="Id">
+                    <h:outputText value="#{registro_tabla.id_reg_tbl_disponibilidad}" />
+                </p:column>
+                <p:column headerText="Cisterna">
+                    <h:outputText value="#{registro_tabla.cisterna}" />
+                </p:column>
+                <p:column headerText="Cabezal">
+                    <h:outputText value="#{registro_tabla.cabezal}" />
+                </p:column>
+            </p:dataTable>
+        </p:panel>
+    </ui:define>
+</ui:composition>
