@@ -379,7 +379,7 @@ public class Viajes implements Serializable {
             
             List<Entidad.Disponibilidad> lista_disponibilidad = new ArrayList<>();
             
-            String cadenasql = "SELECT V.ID_VEHICULO, V.COCIGO FROM VEHICULO V WHERE V.ID_TRANSPORTISTA=" + id_tranasportista + " AND V.ID_PREDIO=" + id_predio;
+            String cadenasql = "SELECT V.ID_VEHICULO, V.CODIGO FROM VEHICULO V WHERE V.ID_TRANSPORTISTA=" + id_tranasportista + " AND V.ID_PREDIO=" + id_predio;
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
             while (rs.next()) {
