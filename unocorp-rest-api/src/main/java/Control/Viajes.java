@@ -375,7 +375,7 @@ public class Viajes implements Serializable {
             conn.setAutoCommit(false);
 
             String nombre_transportista = ctrl_base_datos.ObtenerString("SELECT T.NOMBRE FROM TRANSPORTISTA T WHERE T.ID_TRANSPORTISTA=" + id_tranasportista, conn);
-            String nombre_predio = ctrl_base_datos.ObtenerString("SELECT P.NOMBRE FROM PREDIO WHERE P.ID_PREDIO=" + id_predio, conn);
+            String nombre_predio = ctrl_base_datos.ObtenerString("SELECT P.NOMBRE FROM PREDIO P WHERE P.ID_PREDIO=" + id_predio, conn);
             
             List<Entidad.Disponibilidad> lista_disponibilidad = new ArrayList<>();
             
