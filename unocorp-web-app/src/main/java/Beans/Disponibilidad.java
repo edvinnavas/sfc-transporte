@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,12 +41,14 @@ public class Disponibilidad implements Serializable {
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             this.usuario_sesion = (Entidades.UsuarioSesion) session.getAttribute("usuario_sesion");
 
+            this.fecha = new Date();
+            
             ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
             String json_result = cliente_rest_api.usuario_predio(this.usuario_sesion.getId_usuario());
 
-            Type lista_usuario_predio_type = new TypeToken<Entidades.Usuario_Predio>() {
+            Type usuario_predio_type = new TypeToken<Entidades.Usuario_Predio>() {
             }.getType();
-            Entidades.Usuario_Predio usuario_predio = new Gson().fromJson(json_result, lista_usuario_predio_type);
+            Entidades.Usuario_Predio usuario_predio = new Gson().fromJson(json_result, usuario_predio_type);
 
             this.lst_transportista = new ArrayList<>();
             for (Integer i = 0; i < usuario_predio.getLst_transportista().size(); i++) {
@@ -55,8 +58,6 @@ public class Disponibilidad implements Serializable {
                 this.id_transportista = Long.valueOf(this.lst_transportista.get(0).getValue().toString());
                 this.actualizar_lista_predio();
             }
-
-            this.fecha = new Date();
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
             System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: init(), ERRROR: " + ex.toString());
@@ -78,9 +79,9 @@ public class Disponibilidad implements Serializable {
             ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
             String json_result = cliente_rest_api.usuario_predio(this.usuario_sesion.getId_usuario());
 
-            Type lista_usuario_predio_type = new TypeToken<Entidades.Usuario_Predio>() {
+            Type usuario_predio_type = new TypeToken<Entidades.Usuario_Predio>() {
             }.getType();
-            Entidades.Usuario_Predio usuario_predio = new Gson().fromJson(json_result, lista_usuario_predio_type);
+            Entidades.Usuario_Predio usuario_predio = new Gson().fromJson(json_result, usuario_predio_type);
 
             this.lst_predio = new ArrayList<>();
             for (Integer i = 0; i < usuario_predio.getLst_transportista().size(); i++) {
@@ -103,16 +104,19 @@ public class Disponibilidad implements Serializable {
 
     public void filtrar_tabla() {
         try {
+            SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
+            
+            ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
+            String json_result = cliente_rest_api.disponibilidad(this.id_transportista, this.id_predio, dateFormat1.format(this.fecha));
+
+            Type lista_disponibilidad_type = new TypeToken<List<Entidades.Disponibilidad>>() {
+            }.getType();
+            List<Entidades.Disponibilidad> lista_disponibilidad = new Gson().fromJson(json_result, lista_disponibilidad_type);
+            
             this.lst_reg_tbl_disponibilidad = new ArrayList<>();
-            for (Integer i = 0; i < 10; i++) {
-                this.lst_reg_tbl_disponibilidad.add(new Entidades.RegTblDisponibilidad(Long.valueOf(i.toString()), "Cisterna-" + i.toString(), "Cabezal-" + i.toString()));
+            for (Integer i = 0; i < lista_disponibilidad.size(); i++) {
+                this.lst_reg_tbl_disponibilidad.add(new Entidades.RegTblDisponibilidad(Long.valueOf(i.toString()), lista_disponibilidad.get(i).getNombre_cisterna(), lista_disponibilidad.get(i).getNombre_cabezal()));
             }
-            // SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
-            // String json_result = cliente_rest_api.disponibilidad(this.id_transportista, this.id_predio, dateFormat1.format(this.fecha));
-            // Type lista_viaje_type = new TypeToken<List<Entidades.Viaje>>() {
-            // }.getType();
-            // List<Entidades.Viaje> lista_viajes = new Gson().fromJson(json_result, lista_viaje_type);
-            // this.lst_reg_tbl_viajes = new ArrayList<>();
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
             System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: filtrar_tabla(), ERRROR: " + ex.toString());
