@@ -374,6 +374,87 @@ public class Viajes implements Serializable {
 
             conn.setAutoCommit(false);
 
+            String nombre_transportista = ctrl_base_datos.ObtenerString("SELECT T.NOMBRE FROM TRANSPORTISTA T WHERE T.ID_TRANSPORTISTA=" + id_tranasportista, conn);
+            String nombre_predio = ctrl_base_datos.ObtenerString("SELECT P.NOMBRE FROM PREDIO WHERE P.ID_PREDIO=" + id_predio, conn);
+            
+            List<Entidad.Disponibilidad> lista_disponibilidad = new ArrayList<>();
+            
+            String cadenasql = "SELECT V.ID_VEHICULO, V.COCIGO FROM VEHICULO V WHERE V.ID_TRANSPORTISTA=" + id_tranasportista + " AND V.ID_PREDIO=" + id_predio;
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(cadenasql);
+            while (rs.next()) {
+                Entidad.Disponibilidad disponibilidad = new Entidad.Disponibilidad();
+                disponibilidad.setId_transportista(id_tranasportista);
+                disponibilidad.setNombre_transportista(nombre_transportista);
+                disponibilidad.setId_predio(id_predio);
+                disponibilidad.setNombre_predio(nombre_predio);
+                disponibilidad.setId_cisterna(rs.getLong(1));
+                disponibilidad.setNombre_cisterna(rs.getString(2));
+                disponibilidad.setId_cabezal(null);
+                disponibilidad.setNombre_cabezal(null);
+                disponibilidad.setFecha(dateFormat2.format(dateFormat1.parse(fecha)));
+                
+                lista_disponibilidad.add(disponibilidad);
+            }
+            rs.close();
+            stmt.close();
+            
+            for(Integer i = 0; i < lista_disponibilidad.size(); i++) {
+                Long id_cabezal = ctrl_base_datos.ObtenerLong("SELECT D.ID_CABEZAL FROM DISPONIBILIDAD D LEFT JOIN CABEZAL C ON (D.ID_CABEZAL=C.ID_CABEZAL) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
+                String nombre_cabezal = ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM DISPONIBILIDAD D LEFT JOIN CABEZAL C ON (D.ID_CABEZAL=C.ID_CABEZAL) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
+                if(id_cabezal == null) {
+                    id_cabezal = Long.valueOf("0");
+                }
+                if(nombre_cabezal == null) {
+                    nombre_cabezal = "-";
+                }
+                lista_disponibilidad.get(i).setId_cabezal(id_cabezal);
+                lista_disponibilidad.get(i).setNombre_cabezal(nombre_cabezal);
+            }
+
+            conn.commit();
+            conn.setAutoCommit(true);
+
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            resultado = gson.toJson(lista_disponibilidad);
+        } catch (Exception ex) {
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                    conn.setAutoCommit(true);
+                    conn = null;
+                    resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: disponibilidad(), ERRROR: " + ex.toString();
+                }
+            } catch (Exception ex1) {
+                resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: rollback-disponibilidad(), ERRROR: " + ex.toString();
+            }
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception ex) {
+                resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: finally-disponibilidad(), ERRROR: " + ex.toString();
+            }
+        }
+
+        return resultado;
+    }
+    
+    public String disponibilidad2(Long id_tranasportista, Long id_predio, String fecha) {
+        String resultado = "";
+
+        Connection conn = null;
+
+        try {
+            SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
+
+            Base_Datos ctrl_base_datos = new Base_Datos();
+            conn = ctrl_base_datos.obtener_conexion_mysql();
+
+            conn.setAutoCommit(false);
+
             List<Entidad.Disponibilidad> lista_disponibilidad = new ArrayList<>();
             
             String cadenasql = "SELECT "
@@ -426,10 +507,10 @@ public class Viajes implements Serializable {
                     conn.rollback();
                     conn.setAutoCommit(true);
                     conn = null;
-                    resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: disponibilidad(), ERRROR: " + ex.toString();
+                    resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: disponibilidad2(), ERRROR: " + ex.toString();
                 }
             } catch (Exception ex1) {
-                resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: rollback-disponibilidad(), ERRROR: " + ex.toString();
+                resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: rollback-disponibilidad2(), ERRROR: " + ex.toString();
             }
         } finally {
             try {
@@ -437,7 +518,7 @@ public class Viajes implements Serializable {
                     conn.close();
                 }
             } catch (Exception ex) {
-                resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: finally-disponibilidad(), ERRROR: " + ex.toString();
+                resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: finally-disponibilidad2(), ERRROR: " + ex.toString();
             }
         }
 
