@@ -5,6 +5,7 @@ import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
+import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 import lombok.Setter;
 import java.io.Serializable;
@@ -25,6 +26,9 @@ public class Plantilla implements Serializable {
             if (usuario_sesion.getId_usuario() != null) {
                 this.usuario_sesion = usuario_sesion;
                 this.nombre_sesion_usuario = "Usuario: " + this.usuario_sesion.getNombre_sesion_usuario();
+                
+                HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+                session.setAttribute("usuario_sesion", this.usuario_sesion);
             } else {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
             }

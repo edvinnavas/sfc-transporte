@@ -8,19 +8,21 @@
     <ui:define name="contenido">
         <p:panel id="panelDisponibilidad" header="Disponibilidad">
             <p:growl id="msgDisponibilidad" showDetail="true"/>
-            <p:panelGrid columns="4">
+            <p:panelGrid columns="6">
                 <p:outputLabel value="Transportista" style="font-weight: bold; font-size: 12px;"/>
                 <p:selectOneMenu id="cbxTransportista" value="#{Disponibilidad.id_transportista}" style="font-size: 12px;">
                     <f:selectItems value="#{Disponibilidad.lst_transportista}"/>
-                    <p:ajax event="itemSelect" listener="#{Disponibilidad.filtrar_tabla}" update="tblViajes"/>
+                    <p:ajax event="itemSelect" listener="#{Disponibilidad.actualizar_lista_predio}" update="cbxPredio,tblDisponibilidad"/>
                 </p:selectOneMenu>
                 <p:outputLabel value="Predio" style="font-weight: bold; font-size: 12px;"/>
                 <p:selectOneMenu id="cbxPredio" value="#{Disponibilidad.id_predio}" style="font-size: 12px;">
                     <f:selectItems value="#{Disponibilidad.lst_predio}"/>
-                    <p:ajax event="itemSelect" listener="#{Disponibilidad.filtrar_tabla}" update="tblViajes"/>
+                    <p:ajax event="itemSelect" listener="#{Disponibilidad.filtrar_tabla}" update="tblDisponibilidad"/>
                 </p:selectOneMenu>
                 <p:outputLabel value="Fecha" style="font-weight: bold; font-size: 12px;"/>
-                <p:calendar id="calFechaInicial" value="#{Disponibilidad.fecha}" pattern="dd/MM/yyyy" style="font-size: 12px;" />
+                <p:calendar id="calFechaInicial" value="#{Disponibilidad.fecha}" pattern="dd/MM/yyyy" style="font-size: 12px;">
+                    <p:ajax event="dateSelect" listener="#{Disponibilidad.filtrar_tabla}" update="tblDisponibilidad"/>
+                </p:calendar>
             </p:panelGrid>
             <p:dataTable 
                 id="tblDisponibilidad" 
