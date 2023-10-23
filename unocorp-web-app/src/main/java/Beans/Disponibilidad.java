@@ -34,6 +34,7 @@ public class Disponibilidad implements Serializable {
     private Long id_predio;
     private List<SelectItem> lst_predio;
     private Date fecha;
+    private List<SelectItem> lst_cabezal;
 
     @PostConstruct
     public void init() {
@@ -94,6 +95,12 @@ public class Disponibilidad implements Serializable {
             if (!lst_predio.isEmpty()) {
                 this.id_predio = Long.valueOf(this.lst_predio.get(0).getValue().toString());
             }
+            
+            this.lst_cabezal = new ArrayList<>();
+            
+            cliente_rest_api = new ClientesRest.ClienteRestApi();
+            json_result = cliente_rest_api.lista_cabezales(this.id_transportista, this.id_predio);
+            
 
             this.filtrar_tabla();
         } catch (Exception ex) {

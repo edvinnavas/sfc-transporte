@@ -27,7 +27,10 @@
             <p:dataTable 
                 id="tblDisponibilidad" 
                 var="registro_tabla" 
+                widgetVar="widgetTblDisponibilidad"
                 value="#{Disponibilidad.lst_reg_tbl_disponibilidad}"
+                editable="true"
+                editMode="cell"
                 style="font-size: 12px;">
                 <p:column headerText="Id">
                     <h:outputText value="#{registro_tabla.id_reg_tbl_disponibilidad}" />
@@ -36,7 +39,16 @@
                     <h:outputText value="#{registro_tabla.cisterna}" />
                 </p:column>
                 <p:column headerText="Cabezal">
-                    <h:outputText value="#{registro_tabla.cabezal}" />
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{registro_tabla.cabezal}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:selectOneMenu id="cbxCabezal" value="#{registro_tabla.cabezal}" style="font-size: 12px;">
+                                <f:selectItems value="#{Disponibilidad.lst_cabezal}"/>
+                            </h:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
                 </p:column>
             </p:dataTable>
         </p:panel>

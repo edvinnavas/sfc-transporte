@@ -159,5 +159,24 @@ public class MyResource implements Serializable {
 
         return resultado;
     }
+    
+    @GET
+    @Path("lista_cabezales/{id_transportista}/{id_predio}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String lista_cabezales(
+            @PathParam("id_transportista") Long id_transportista,
+            @PathParam("id_predio") Long id_predio) {
+
+        String resultado;
+
+        try {
+            Control.Cabezal ctrl_cabezal = new Control.Cabezal();
+            resultado = ctrl_cabezal.lista_cabezales(id_transportista, id_predio);
+        } catch (Exception ex) {
+            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: disponibilidad(), ERRROR: " + ex.toString();
+        }
+
+        return resultado;
+    }
 
 }

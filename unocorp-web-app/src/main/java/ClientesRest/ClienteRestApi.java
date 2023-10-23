@@ -168,5 +168,25 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
+    
+    public String lista_cabezales(Long id_transportista, Long id_predio) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("lista_cabezales/" + id_transportista + "/" + id_predio);
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.get();
+            // System.out.println("LISTA-VIAJES: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: disponibilidad(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
 
 }
