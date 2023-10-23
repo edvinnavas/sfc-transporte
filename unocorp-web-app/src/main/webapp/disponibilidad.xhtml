@@ -32,6 +32,9 @@
                 editable="true"
                 editMode="cell"
                 style="font-size: 12px;">
+                
+                <p:ajax event="cellEdit" listener="#{Disponibilidad.onCellEdit}" update=":formPlantilla:msgDisponibilidad"/>
+                
                 <p:column headerText="Id">
                     <h:outputText value="#{registro_tabla.id_reg_tbl_disponibilidad}" />
                 </p:column>
@@ -44,7 +47,7 @@
                             <h:outputText value="#{registro_tabla.cabezal}" />
                         </f:facet>
                         <f:facet name="input">
-                            <h:selectOneMenu id="cbxCabezal" value="#{registro_tabla.cabezal}" style="font-size: 12px;">
+                            <h:selectOneMenu id="cbxCabezal" value="#{registro_tabla.cabezal}" style="font-size: 12px; width: 100%;">
                                 <f:selectItems value="#{Disponibilidad.lst_cabezal}"/>
                             </h:selectOneMenu>
                         </f:facet>

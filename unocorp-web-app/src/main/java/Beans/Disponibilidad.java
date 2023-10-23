@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.primefaces.event.CellEditEvent;
 
 @ViewScoped
 @Named(value = "Disponibilidad")
@@ -101,6 +102,14 @@ public class Disponibilidad implements Serializable {
             cliente_rest_api = new ClientesRest.ClienteRestApi();
             json_result = cliente_rest_api.lista_cabezales(this.id_transportista, this.id_predio);
             
+            Type lista_cabezal_type = new TypeToken<List<Entidades.Cabezal>>() {
+            }.getType();
+            List<Entidades.Cabezal> lista_cabezal = new Gson().fromJson(json_result, lista_cabezal_type);
+            
+            this.lst_cabezal.add(new SelectItem("-", "-"));
+            for(Integer i = 0; i < lista_cabezal.size(); i++) {
+                this.lst_cabezal.add(new SelectItem(lista_cabezal.get(i).getCodigo(), lista_cabezal.get(i).getCodigo()));
+            }
 
             this.filtrar_tabla();
         } catch (Exception ex) {
@@ -127,6 +136,16 @@ public class Disponibilidad implements Serializable {
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
             System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: filtrar_tabla(), ERRROR: " + ex.toString());
+        }
+    }
+    
+    public void onCellEdit(CellEditEvent event) {
+        Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+
+        if (newValue != null && !newValue.equals(oldValue)) {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }
 
