@@ -1,9 +1,13 @@
 package Entidades;
 
 import java.io.Serializable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class Usuario_Transportista_Predio implements Serializable {
@@ -12,14 +16,6 @@ public class Usuario_Transportista_Predio implements Serializable {
     
     private Long id_predio;
     private String nombre_predio;
-
-    public Usuario_Transportista_Predio(Long id_predio, String nombre_predio) {
-        this.id_predio = id_predio;
-        this.nombre_predio = nombre_predio;
-    }
-
-    public Usuario_Transportista_Predio() {
-    }
 
     @Override
     public String toString() {

@@ -163,7 +163,7 @@ public class ClienteRestApi implements Serializable {
                 resultado = response.getStatus() + ": " + response.getStatusInfo();
             }
         } catch (Exception ex) {
-            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: disponibilidad(), ERRROR: " + ex.toString());
+            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: usuario_predio(), ERRROR: " + ex.toString());
         }
 
         return resultado;
@@ -183,7 +183,27 @@ public class ClienteRestApi implements Serializable {
                 resultado = response.getStatus() + ": " + response.getStatusInfo();
             }
         } catch (Exception ex) {
-            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: disponibilidad(), ERRROR: " + ex.toString());
+            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: lista_cabezales(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
+    
+    public String lista_plantas(Long id_transportista) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("lista_plantas/" + id_transportista);
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.get();
+            // System.out.println("LISTA-VIAJES: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: lista_plantas(), ERRROR: " + ex.toString());
         }
 
         return resultado;

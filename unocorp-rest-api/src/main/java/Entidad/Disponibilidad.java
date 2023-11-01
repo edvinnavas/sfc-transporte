@@ -1,9 +1,13 @@
 package Entidad;
 
 import java.io.Serializable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class Disponibilidad implements Serializable {
@@ -16,28 +20,22 @@ public class Disponibilidad implements Serializable {
     private String nombre_predio;
     private Long id_cisterna;
     private String nombre_cisterna;
+    private Long id_tipo_carga_cisterna;
+    private String nombre_tipo_carga_cisterna;
+    private String bomba_cisterna;
     private Long id_cabezal;
     private String nombre_cabezal;
     private String fecha;
-
-    public Disponibilidad(Long id_transportista, String nombre_transportista, Long id_predio, String nombre_predio, Long id_cisterna, String nombre_cisterna, Long id_cabezal, String nombre_cabezal, String fecha) {
-        this.id_transportista = id_transportista;
-        this.nombre_transportista = nombre_transportista;
-        this.id_predio = id_predio;
-        this.nombre_predio = nombre_predio;
-        this.id_cisterna = id_cisterna;
-        this.nombre_cisterna = nombre_cisterna;
-        this.id_cabezal = id_cabezal;
-        this.nombre_cabezal = nombre_cabezal;
-        this.fecha = fecha;
-    }
-
-    public Disponibilidad() {
-    }
+    private String hora_inicio;
+    private String hora_final;
+    private Long id_planta;
+    private String codigo_planta;
+    private String nombre_planta;
+    private String disponibilida;
 
     @Override
     public String toString() {
-        return "Disponibilidad{" + "id_transportista=" + id_transportista + ", nombre_transportista=" + nombre_transportista + ", id_predio=" + id_predio + ", nombre_predio=" + nombre_predio + ", id_cisterna=" + id_cisterna + ", nombre_cisterna=" + nombre_cisterna + ", id_cabezal=" + id_cabezal + ", nombre_cabezal=" + nombre_cabezal + ", fecha=" + fecha + '}';
+        return "Disponibilidad{" + "id_transportista=" + id_transportista + ", nombre_transportista=" + nombre_transportista + ", id_predio=" + id_predio + ", nombre_predio=" + nombre_predio + ", id_cisterna=" + id_cisterna + ", nombre_cisterna=" + nombre_cisterna + ", id_tipo_carga_cisterna=" + id_tipo_carga_cisterna + ", nombre_tipo_carga_cisterna=" + nombre_tipo_carga_cisterna + ", bomba_cisterna=" + bomba_cisterna + ", id_cabezal=" + id_cabezal + ", nombre_cabezal=" + nombre_cabezal + ", fecha=" + fecha + ", hora_inicio=" + hora_inicio + ", hora_final=" + hora_final + ", id_planta=" + id_planta + ", codigo_planta=" + codigo_planta + ", nombre_planta=" + nombre_planta + ", disponibilida=" + disponibilida + '}';
     }
     
 }

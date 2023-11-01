@@ -1,9 +1,13 @@
 package Entidades;
 
 import java.io.Serializable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class RegTblUbicaciones implements Serializable {
@@ -17,19 +21,6 @@ public class RegTblUbicaciones implements Serializable {
     private String descripcion_ubicacion;
     private String eta_hora;
     private String eda_kms;
-
-    public RegTblUbicaciones(Long id_reg_tbl_ubicaciones, String fecha_hora_ubicacion, String latitude, String logitude, String descripcion_ubicacion, String eta_hora, String eda_kms) {
-        this.id_reg_tbl_ubicaciones = id_reg_tbl_ubicaciones;
-        this.fecha_hora_ubicacion = fecha_hora_ubicacion;
-        this.latitude = latitude;
-        this.logitude = logitude;
-        this.descripcion_ubicacion = descripcion_ubicacion;
-        this.eta_hora = eta_hora;
-        this.eda_kms = eda_kms;
-    }
-
-    public RegTblUbicaciones() {
-    }
 
     @Override
     public String toString() {

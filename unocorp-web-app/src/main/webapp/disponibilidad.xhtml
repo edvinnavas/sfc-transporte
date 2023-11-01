@@ -41,6 +41,12 @@
                 <p:column headerText="Cisterna">
                     <h:outputText value="#{registro_tabla.cisterna}" />
                 </p:column>
+                <p:column headerText="Tipo Carga">
+                    <h:outputText value="#{registro_tabla.tipo_carga}" />
+                </p:column>
+                <p:column headerText="Bomba">
+                    <h:outputText value="#{registro_tabla.bomba}" />
+                </p:column>
                 <p:column headerText="Cabezal">
                     <p:cellEditor>
                         <f:facet name="output">
@@ -49,6 +55,50 @@
                         <f:facet name="input">
                             <h:selectOneMenu id="cbxCabezal" value="#{registro_tabla.cabezal}" style="font-size: 12px; width: 100%;">
                                 <f:selectItems value="#{Disponibilidad.lst_cabezal}"/>
+                            </h:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Hora-Inicio">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{registro_tabla.hora_inicio}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputMask id="imHoraInicio" value="#{registro_tabla.hora_inicio}" mask="99:99" />
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Hora-Final">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{registro_tabla.hora_final}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputMask id="imHoraFinal" value="#{registro_tabla.hora_final}" mask="99:99" />
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Disponibilidad">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{registro_tabla.disponibilidad}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:selectOneMenu id="cbxCabezal" value="#{registro_tabla.disponibilidad}" style="font-size: 12px; width: 100%;">
+                                <f:selectItems value="#{Disponibilidad.lst_disponibilidad}"/>
+                            </h:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Planta">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{registro_tabla.planta}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:selectOneMenu id="cbxCabezal" value="#{registro_tabla.planta}" style="font-size: 12px; width: 100%;">
+                                <f:selectItems value="#{Disponibilidad.lst_planta}"/>
                             </h:selectOneMenu>
                         </f:facet>
                     </p:cellEditor>

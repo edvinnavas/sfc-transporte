@@ -1,9 +1,13 @@
 package Entidades;
 
 import java.io.Serializable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class Transportista implements Serializable {
@@ -15,17 +19,6 @@ public class Transportista implements Serializable {
     private String nombre;
     private Pais pais;
     private Integer rastreable;
-
-    public Transportista(Long id_transportista, String codigo, String nombre, Pais pais, Integer rastreable) {
-        this.id_transportista = id_transportista;
-        this.codigo = codigo;
-        this.nombre = nombre;
-        this.pais = pais;
-        this.rastreable = rastreable;
-    }
-
-    public Transportista() {
-    }
 
     @Override
     public String toString() {

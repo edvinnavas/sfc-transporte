@@ -1,9 +1,13 @@
 package Entidades;
 
 import java.io.Serializable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class Vehiculo implements Serializable {
@@ -14,16 +18,6 @@ public class Vehiculo implements Serializable {
     private String codigo;
     private String placa;
     private Transportista transportista;
-
-    public Vehiculo(Long id_vehiculo, String codigo, String placa, Transportista transportista) {
-        this.id_vehiculo = id_vehiculo;
-        this.codigo = codigo;
-        this.placa = placa;
-        this.transportista = transportista;
-    }
-
-    public Vehiculo() {
-    }
 
     @Override
     public String toString() {

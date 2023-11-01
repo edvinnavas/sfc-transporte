@@ -1,9 +1,13 @@
 package Entidad;
 
 import java.io.Serializable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class Pais implements Serializable {
@@ -13,16 +17,7 @@ public class Pais implements Serializable {
     private Long id_pais;
     private String codigo;
     private String nombre;
-
-    public Pais(Long id_pais, String codigo, String nombre) {
-        this.id_pais = id_pais;
-        this.codigo = codigo;
-        this.nombre = nombre;
-    }
-
-    public Pais() {
-    }
-
+    
     @Override
     public String toString() {
         return "Pais{" + "id_pais=" + id_pais + ", codigo=" + codigo + ", nombre=" + nombre + '}';

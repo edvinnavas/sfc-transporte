@@ -379,7 +379,7 @@ public class Viajes implements Serializable {
             
             List<Entidad.Disponibilidad> lista_disponibilidad = new ArrayList<>();
             
-            String cadenasql = "SELECT V.ID_VEHICULO, V.CODIGO FROM VEHICULO V WHERE V.ID_TRANSPORTISTA=" + id_tranasportista + " AND V.ID_PREDIO=" + id_predio;
+            String cadenasql = "SELECT V.ID_VEHICULO, V.CODIGO, V.ID_TIPO_CARGA, V.BOMBA FROM VEHICULO V WHERE V.ID_TRANSPORTISTA=" + id_tranasportista + " AND V.ID_PREDIO=" + id_predio;
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
             while (rs.next()) {
@@ -390,6 +390,9 @@ public class Viajes implements Serializable {
                 disponibilidad.setNombre_predio(nombre_predio);
                 disponibilidad.setId_cisterna(rs.getLong(1));
                 disponibilidad.setNombre_cisterna(rs.getString(2));
+                disponibilidad.setId_tipo_carga_cisterna(rs.getLong(3));
+                disponibilidad.setNombre_tipo_carga_cisterna(ctrl_base_datos.ObtenerString("SELECT TC.NOMBRE FROM TIPO_CARGA TC WHERE TC.ID_TIPO_CARGA=" + rs.getLong(3), conn));
+                disponibilidad.setBomba_cisterna(rs.getString(4));
                 disponibilidad.setId_cabezal(null);
                 disponibilidad.setNombre_cabezal(null);
                 disponibilidad.setFecha(dateFormat2.format(dateFormat1.parse(fecha)));
@@ -402,14 +405,44 @@ public class Viajes implements Serializable {
             for(Integer i = 0; i < lista_disponibilidad.size(); i++) {
                 Long id_cabezal = ctrl_base_datos.ObtenerLong("SELECT D.ID_CABEZAL FROM DISPONIBILIDAD D LEFT JOIN CABEZAL C ON (D.ID_CABEZAL=C.ID_CABEZAL) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
                 String nombre_cabezal = ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM DISPONIBILIDAD D LEFT JOIN CABEZAL C ON (D.ID_CABEZAL=C.ID_CABEZAL) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
+                String hora_inicio = ctrl_base_datos.ObtenerString("SELECT D.HORA_INICIO FROM DISPONIBILIDAD D WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
+                String hora_final = ctrl_base_datos.ObtenerString("SELECT D.HORA_FINAL FROM DISPONIBILIDAD D WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
+                Long id_planta = ctrl_base_datos.ObtenerLong("SELECT D.ID_PLANTA FROM DISPONIBILIDAD D LEFT JOIN PLANTA P ON (D.ID_PLANTA=P.ID_PLANTA) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
+                String codigo_planta = ctrl_base_datos.ObtenerString("SELECT P.CODIGO FROM DISPONIBILIDAD D LEFT JOIN PLANTA P ON (D.ID_PLANTA=P.ID_PLANTA) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
+                String nombre_planta = ctrl_base_datos.ObtenerString("SELECT P.NOMBRE FROM DISPONIBILIDAD D LEFT JOIN PLANTA P ON (D.ID_PLANTA=P.ID_PLANTA) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
+                String disponibilida = "Puede viajar";
+                
                 if(id_cabezal == null) {
                     id_cabezal = Long.valueOf("0");
+                    disponibilida = "-";
                 }
                 if(nombre_cabezal == null) {
                     nombre_cabezal = "-";
                 }
+                if(hora_inicio == null) {
+                    hora_inicio = "-";
+                }
+                if(hora_final == null) {
+                    hora_final = "-";
+                }
+                if(id_planta == null) {
+                    id_planta = Long.valueOf("0");
+                }
+                if(codigo_planta == null) {
+                    codigo_planta = "-";
+                }
+                if(nombre_planta == null) {
+                    nombre_planta = "-";
+                }
+                
                 lista_disponibilidad.get(i).setId_cabezal(id_cabezal);
                 lista_disponibilidad.get(i).setNombre_cabezal(nombre_cabezal);
+                lista_disponibilidad.get(i).setHora_inicio(hora_inicio);
+                lista_disponibilidad.get(i).setHora_final(hora_final);
+                lista_disponibilidad.get(i).setId_planta(id_planta);
+                lista_disponibilidad.get(i).setCodigo_planta(codigo_planta);
+                lista_disponibilidad.get(i).setNombre_planta(nombre_planta);
+                lista_disponibilidad.get(i).setDisponibilida(disponibilida);
             }
 
             conn.commit();

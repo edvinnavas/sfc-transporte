@@ -36,6 +36,8 @@ public class Disponibilidad implements Serializable {
     private List<SelectItem> lst_predio;
     private Date fecha;
     private List<SelectItem> lst_cabezal;
+    private List<SelectItem> lst_disponibilidad;
+    private List<SelectItem> lst_planta;
 
     @PostConstruct
     public void init() {
@@ -60,6 +62,13 @@ public class Disponibilidad implements Serializable {
                 this.id_transportista = Long.valueOf(this.lst_transportista.get(0).getValue().toString());
                 this.actualizar_lista_predio();
             }
+            
+            this.lst_disponibilidad = new ArrayList<>();
+            this.lst_disponibilidad.add(new SelectItem("-", "-"));
+            this.lst_disponibilidad.add(new SelectItem("Puede viajar", "Puede viajar"));
+            this.lst_disponibilidad.add(new SelectItem("No puede viajar", "No puede viajar"));
+            
+            
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
             System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: init(), ERRROR: " + ex.toString());
@@ -110,6 +119,9 @@ public class Disponibilidad implements Serializable {
             for(Integer i = 0; i < lista_cabezal.size(); i++) {
                 this.lst_cabezal.add(new SelectItem(lista_cabezal.get(i).getCodigo(), lista_cabezal.get(i).getCodigo()));
             }
+            
+            this.lst_planta = new ArrayList<>();
+            
 
             this.filtrar_tabla();
         } catch (Exception ex) {
@@ -131,7 +143,16 @@ public class Disponibilidad implements Serializable {
             
             this.lst_reg_tbl_disponibilidad = new ArrayList<>();
             for (Integer i = 0; i < lista_disponibilidad.size(); i++) {
-                this.lst_reg_tbl_disponibilidad.add(new Entidades.RegTblDisponibilidad(Long.valueOf(i.toString()), lista_disponibilidad.get(i).getNombre_cisterna(), lista_disponibilidad.get(i).getNombre_cabezal()));
+                this.lst_reg_tbl_disponibilidad.add(new Entidades.RegTblDisponibilidad(
+                        Long.valueOf(i.toString()), 
+                        lista_disponibilidad.get(i).getNombre_cisterna(), 
+                        lista_disponibilidad.get(i).getNombre_tipo_carga_cisterna(),
+                        lista_disponibilidad.get(i).getBomba_cisterna(),
+                        lista_disponibilidad.get(i).getNombre_cabezal(),
+                        lista_disponibilidad.get(i).getHora_inicio(),
+                        lista_disponibilidad.get(i).getHora_final(),
+                        lista_disponibilidad.get(i).getDisponibilida(),
+                        lista_disponibilidad.get(i).getCodigo_planta() + " - " + lista_disponibilidad.get(i).getNombre_planta()));
             }
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));

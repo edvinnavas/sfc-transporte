@@ -1,9 +1,13 @@
 package Entidades;
 
 import java.io.Serializable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class Cliente implements Serializable {
@@ -13,15 +17,6 @@ public class Cliente implements Serializable {
     private Long id_cliente;
     private String codigo;
     private String nombre;
-
-    public Cliente(Long id_cliente, String codigo, String nombre) {
-        this.id_cliente = id_cliente;
-        this.codigo = codigo;
-        this.nombre = nombre;
-    }
-
-    public Cliente() {
-    }
 
     @Override
     public String toString() {

@@ -1,9 +1,13 @@
 package Entidad;
 
 import java.io.Serializable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class Viaje implements Serializable {
@@ -30,32 +34,6 @@ public class Viaje implements Serializable {
     private Vehiculo cisterna_disponibilidad;
     private Cabezal cabezal_disponibilidad;
     private Integer numero_ubicaciones_gps;
-
-    public Viaje(Pais pais, Compania compania, Planta planta, Long numero_viaje, String fecha_viaje, Estado_Viaje estado_viaje, Vehiculo vehiculo, Transportista transportista, String tipo_orden_venta, Long numero_orden_venta, Cliente cliente, Cliente_Destino cliente_destino, String tipo_flete_viaje, String fecha_hora, String estado, String fecha_hora_terminado, String disponibilidad, Vehiculo cisterna_disponibilidad, Cabezal cabezal_disponibilidad, Integer numero_ubicaciones_gps) {
-        this.pais = pais;
-        this.compania = compania;
-        this.planta = planta;
-        this.numero_viaje = numero_viaje;
-        this.fecha_viaje = fecha_viaje;
-        this.estado_viaje = estado_viaje;
-        this.vehiculo = vehiculo;
-        this.transportista = transportista;
-        this.tipo_orden_venta = tipo_orden_venta;
-        this.numero_orden_venta = numero_orden_venta;
-        this.cliente = cliente;
-        this.cliente_destino = cliente_destino;
-        this.tipo_flete_viaje = tipo_flete_viaje;
-        this.fecha_hora = fecha_hora;
-        this.estado = estado;
-        this.fecha_hora_terminado = fecha_hora_terminado;
-        this.disponibilidad = disponibilidad;
-        this.cisterna_disponibilidad = cisterna_disponibilidad;
-        this.cabezal_disponibilidad = cabezal_disponibilidad;
-        this.numero_ubicaciones_gps = numero_ubicaciones_gps;
-    }
-
-    public Viaje() {
-    }
 
     @Override
     public String toString() {

@@ -64,10 +64,10 @@ public class Cabezal implements Serializable {
                     conn.rollback();
                     conn.setAutoCommit(true);
                     conn = null;
-                    resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: usuario_predio(), ERRROR: " + ex.toString();
+                    resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: lista_cabezales(), ERRROR: " + ex.toString();
                 }
             } catch (Exception ex1) {
-                resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: rollback-usuario_predio(), ERRROR: " + ex.toString();
+                resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: rollback-lista_cabezales(), ERRROR: " + ex.toString();
             }
         } finally {
             try {
@@ -75,7 +75,7 @@ public class Cabezal implements Serializable {
                     conn.close();
                 }
             } catch (Exception ex) {
-                resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: finally-usuario_predio(), ERRROR: " + ex.toString();
+                resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: finally-lista_cabezales(), ERRROR: " + ex.toString();
             }
         }
 

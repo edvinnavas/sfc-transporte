@@ -116,7 +116,7 @@ public class MyResource implements Serializable {
             Control.Cliente_Destino ctrl_cliente_destino = new Control.Cliente_Destino();
             resultado = ctrl_cliente_destino.modificar_geozona(id_cliente_destino, coordenada1, coordenada2);
         } catch (Exception ex) {
-            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: obtener_cliente_destino(), ERRROR: " + ex.toString();
+            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: cliente_destino_modificar_geozona(), ERRROR: " + ex.toString();
         }
 
         return resultado;
@@ -154,7 +154,7 @@ public class MyResource implements Serializable {
             Control.Usuario ctrl_usuario = new Control.Usuario();
             resultado = ctrl_usuario.usuario_predio(id_usuario);
         } catch (Exception ex) {
-            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: disponibilidad(), ERRROR: " + ex.toString();
+            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: usuario_predio(), ERRROR: " + ex.toString();
         }
 
         return resultado;
@@ -173,7 +173,25 @@ public class MyResource implements Serializable {
             Control.Cabezal ctrl_cabezal = new Control.Cabezal();
             resultado = ctrl_cabezal.lista_cabezales(id_transportista, id_predio);
         } catch (Exception ex) {
-            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: disponibilidad(), ERRROR: " + ex.toString();
+            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: lista_cabezales(), ERRROR: " + ex.toString();
+        }
+
+        return resultado;
+    }
+    
+    @GET
+    @Path("lista_plantas/{id_transportista}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String lista_plantas(
+            @PathParam("id_transportista") Long id_transportista) {
+
+        String resultado;
+
+        try {
+            Control.Planta ctrl_planta = new Control.Planta();
+            resultado = ctrl_planta.lista_plantas(id_transportista);
+        } catch (Exception ex) {
+            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: lista_plantas(), ERRROR: " + ex.toString();
         }
 
         return resultado;
