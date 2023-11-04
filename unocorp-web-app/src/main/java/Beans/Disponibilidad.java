@@ -1,6 +1,7 @@
 package Beans;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
@@ -56,7 +57,10 @@ public class Disponibilidad implements Serializable {
 
             this.lst_transportista = new ArrayList<>();
             for (Integer i = 0; i < usuario_predio.getLst_transportista().size(); i++) {
-                this.lst_transportista.add(new SelectItem(usuario_predio.getLst_transportista().get(i).getId_transportista(), usuario_predio.getLst_transportista().get(i).getNombre_transportista()));
+                SelectItem select_item = new SelectItem(usuario_predio.getLst_transportista().get(i).getId_transportista(), usuario_predio.getLst_transportista().get(i).getNombre_transportista());
+                if(!this.lst_transportista.contains(select_item)) {
+                    this.lst_transportista.add(select_item);
+                }
             }
             if (!lst_transportista.isEmpty()) {
                 this.id_transportista = Long.valueOf(this.lst_transportista.get(0).getValue().toString());
@@ -67,7 +71,6 @@ public class Disponibilidad implements Serializable {
             this.lst_disponibilidad.add(new SelectItem("-", "-"));
             this.lst_disponibilidad.add(new SelectItem("Puede viajar", "Puede viajar"));
             this.lst_disponibilidad.add(new SelectItem("No puede viajar", "No puede viajar"));
-            
             
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
@@ -88,6 +91,7 @@ public class Disponibilidad implements Serializable {
     public void actualizar_lista_predio() {
         try {
             ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
+            
             String json_result = cliente_rest_api.usuario_predio(this.usuario_sesion.getId_usuario());
 
             Type usuario_predio_type = new TypeToken<Entidades.Usuario_Predio>() {
@@ -108,7 +112,6 @@ public class Disponibilidad implements Serializable {
             
             this.lst_cabezal = new ArrayList<>();
             
-            cliente_rest_api = new ClientesRest.ClienteRestApi();
             json_result = cliente_rest_api.lista_cabezales(this.id_transportista, this.id_predio);
             
             Type lista_cabezal_type = new TypeToken<List<Entidades.Cabezal>>() {
@@ -122,6 +125,16 @@ public class Disponibilidad implements Serializable {
             
             this.lst_planta = new ArrayList<>();
             
+            json_result = cliente_rest_api.lista_plantas(this.id_transportista);
+            
+            Type lista_planta_type = new TypeToken<List<Entidades.Planta>>() {
+            }.getType();
+            List<Entidades.Planta> lista_planta = new Gson().fromJson(json_result, lista_planta_type);
+            
+            this.lst_planta.add(new SelectItem("-", "-"));
+            for(Integer i = 0; i < lista_planta.size(); i++) {
+                this.lst_planta.add(new SelectItem(lista_planta.get(i).getCodigo(), lista_planta.get(i).getCodigo()));
+            }
 
             this.filtrar_tabla();
         } catch (Exception ex) {
@@ -152,7 +165,7 @@ public class Disponibilidad implements Serializable {
                         lista_disponibilidad.get(i).getHora_inicio(),
                         lista_disponibilidad.get(i).getHora_final(),
                         lista_disponibilidad.get(i).getDisponibilida(),
-                        lista_disponibilidad.get(i).getCodigo_planta() + " - " + lista_disponibilidad.get(i).getNombre_planta()));
+                        lista_disponibilidad.get(i).getCodigo_planta()));
             }
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
@@ -165,8 +178,49 @@ public class Disponibilidad implements Serializable {
         Object newValue = event.getNewValue();
 
         if (newValue != null && !newValue.equals(oldValue)) {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
-            FacesContext.getCurrentInstance().addMessage(null, msg);
+            // FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje del sistema.", "Old: " + oldValue + ", New:" + newValue + ", Columna:" + event.getColumn().getHeaderText()));
+        }
+    }
+    
+    public void guardar_disponibilidad() {
+        try {
+            SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+            
+            List<Entidades.Disponibilidad> lista_disponibilidad = new ArrayList<>();
+            
+            for (Integer i = 0; i < this.lst_reg_tbl_disponibilidad.size(); i++) {
+                Entidades.Disponibilidad disponibilidad = new Entidades.Disponibilidad();
+                disponibilidad.setId_transportista(this.id_transportista);
+                disponibilidad.setNombre_transportista(null);
+                disponibilidad.setId_predio(this.id_predio);
+                disponibilidad.setNombre_predio(null);
+                disponibilidad.setId_cisterna(null);
+                disponibilidad.setNombre_cisterna(this.lst_reg_tbl_disponibilidad.get(i).getCisterna());
+                disponibilidad.setId_tipo_carga_cisterna(null);
+                disponibilidad.setNombre_tipo_carga_cisterna(this.lst_reg_tbl_disponibilidad.get(i).getTipo_carga());
+                disponibilidad.setBomba_cisterna(this.lst_reg_tbl_disponibilidad.get(i).getBomba());
+                disponibilidad.setId_cabezal(null);
+                disponibilidad.setNombre_cabezal(this.lst_reg_tbl_disponibilidad.get(i).getCabezal());
+                disponibilidad.setFecha(dateFormat1.format(this.fecha));
+                disponibilidad.setHora_inicio(this.lst_reg_tbl_disponibilidad.get(i).getHora_inicio());
+                disponibilidad.setHora_final(this.lst_reg_tbl_disponibilidad.get(i).getHora_final());
+                disponibilidad.setId_planta(null);
+                disponibilidad.setCodigo_planta(this.lst_reg_tbl_disponibilidad.get(i).getPlanta());
+                disponibilidad.setNombre_planta(null);
+                disponibilidad.setDisponibilida(this.lst_reg_tbl_disponibilidad.get(i).getDisponibilidad());
+                
+                lista_disponibilidad.add(disponibilidad);
+            }
+            
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            String jsonString = gson.toJson(lista_disponibilidad);
+            
+            ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
+            String result = cliente_rest_api.guardar_disponibilidad(jsonString);
+
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
+            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: filtrar_tabla(), ERRROR: " + ex.toString());
         }
     }
 

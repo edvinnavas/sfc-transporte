@@ -208,5 +208,25 @@ public class ClienteRestApi implements Serializable {
 
         return resultado;
     }
+    
+    public String guardar_disponibilidad(String jsonString) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI).path("guardar_disponibilidad");
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.post(Entity.json(jsonString));
+            // System.out.println("LISTA-VIAJES: " + response.getStatus());
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: guardar_disponibilidad(), ERRROR: " + ex.toString());
+        }
+
+        return resultado;
+    }
 
 }

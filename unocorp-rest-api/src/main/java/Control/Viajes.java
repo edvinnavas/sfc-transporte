@@ -2,7 +2,9 @@ package Control;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -410,6 +412,7 @@ public class Viajes implements Serializable {
                 Long id_planta = ctrl_base_datos.ObtenerLong("SELECT D.ID_PLANTA FROM DISPONIBILIDAD D LEFT JOIN PLANTA P ON (D.ID_PLANTA=P.ID_PLANTA) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
                 String codigo_planta = ctrl_base_datos.ObtenerString("SELECT P.CODIGO FROM DISPONIBILIDAD D LEFT JOIN PLANTA P ON (D.ID_PLANTA=P.ID_PLANTA) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
                 String nombre_planta = ctrl_base_datos.ObtenerString("SELECT P.NOMBRE FROM DISPONIBILIDAD D LEFT JOIN PLANTA P ON (D.ID_PLANTA=P.ID_PLANTA) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
+                String bomba = ctrl_base_datos.ObtenerString("SELECT D.BOMBA FROM DISPONIBILIDAD D WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
                 String disponibilida = "Puede viajar";
                 
                 if(id_cabezal == null) {
@@ -442,6 +445,7 @@ public class Viajes implements Serializable {
                 lista_disponibilidad.get(i).setId_planta(id_planta);
                 lista_disponibilidad.get(i).setCodigo_planta(codigo_planta);
                 lista_disponibilidad.get(i).setNombre_planta(nombre_planta);
+                lista_disponibilidad.get(i).setBomba(bomba);
                 lista_disponibilidad.get(i).setDisponibilida(disponibilida);
             }
 
@@ -468,6 +472,95 @@ public class Viajes implements Serializable {
                 }
             } catch (Exception ex) {
                 resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: finally-disponibilidad(), ERRROR: " + ex.toString();
+            }
+        }
+
+        return resultado;
+    }
+    
+    public String guardar_disponibilidad(String jsonString) {
+        String resultado = "";
+
+        Connection conn = null;
+
+        try {
+            Base_Datos ctrl_base_datos = new Base_Datos();
+            conn = ctrl_base_datos.obtener_conexion_mysql();
+
+            conn.setAutoCommit(false);
+
+            Type lista_disponibilidad_type = new TypeToken<List<Entidad.Disponibilidad>>() {
+            }.getType();
+            List<Entidad.Disponibilidad> lista_disponibilidad = new Gson().fromJson(jsonString, lista_disponibilidad_type);
+            
+            for(Integer i=0; i < lista_disponibilidad.size(); i++) {
+                Long ID_TRANSPORTISTA = lista_disponibilidad.get(i).getId_transportista();
+                Long ID_VEHICULO = ctrl_base_datos.ObtenerLong("SELECT C.ID_VEHICULO V FROM VEHICULO V WHERE V.CODIGO='" + lista_disponibilidad.get(i).getNombre_cisterna() + "'", conn);
+                Long ID_CABEZAL = ctrl_base_datos.ObtenerLong("SELECT C.ID_CABEZAL FROM CABEZAL C WHERE C.CODIGO='" + lista_disponibilidad.get(i).getNombre_cabezal() + "'", conn);
+                String FECHA = lista_disponibilidad.get(i).getFecha();
+                String HORA_INICIO = lista_disponibilidad.get(i).getHora_inicio();
+                String HORA_FINAL = lista_disponibilidad.get(i).getHora_final();
+                Long ID_PLANTA = ctrl_base_datos.ObtenerLong("SELECT P.ID_PLANTA FROM PLANTA P WHERE P.CODIGO='" + lista_disponibilidad.get(i).getCodigo_planta() + "'", conn);
+                
+                Integer existe = ctrl_base_datos.ObtenerEntero("SELECT 1 FROM DISPONIBILIDAD D WHERE D.ID_TRANSPORTISTA=" + ID_TRANSPORTISTA + " AND D.ID_VEHICULO=" + ID_VEHICULO + " AND D.ID_CABEZAL=" + ID_CABEZAL + " AND D.FECHA='" + FECHA + "'", conn);
+                if(existe == null) {
+                    existe = 0;
+                }
+                
+                System.out.println("EXISTE: " + existe);
+                if(existe == 1) {
+                    String sql = "DELETE FROM DISPONIBILIDAD WHERE ID_TRANSPORTISTA=" + ID_TRANSPORTISTA + " AND ID_VEHICULO=" + ID_VEHICULO + " AND ID_CABEZAL=" + ID_CABEZAL + " AND FECHA='" + FECHA + "'";
+                    // Statement stmt = conn.createStatement();
+                    System.out.println("CADENASQL: " + sql);
+                    // stmt.executeUpdate(sql);
+                    // stmt.close();
+                }
+                
+                String sql = "INSERT INTO DISPONIBILIDAD ("
+                        + "ID_TRANSPORTISTA, "
+                        + "ID_VEHICULO, "
+                        + "ID_CABEZAL, "
+                        + "FECHA, "
+                        + "FECHA_HORA, "
+                        + "HORA_INICIO, "
+                        + "HORA_FINAL, "
+                        + "ID_PLANTA) VALUES ("
+                        + ID_TRANSPORTISTA + ","
+                        + ID_VEHICULO + ","
+                        + ID_CABEZAL + ",'"
+                        + FECHA + "',"
+                        + "CURRENT_TIMESTAMP" + ","
+                        + HORA_INICIO + "','"
+                        + HORA_FINAL + "',"
+                        + ID_PLANTA + ")";
+                // Statement stmt = conn.createStatement();
+                System.out.println("CADENASQL: " + sql);
+                /// stmt.executeUpdate(sql);
+                // stmt.close();
+            }
+
+            conn.commit();
+            conn.setAutoCommit(true);
+
+            resultado = "Disponibilidad cargada en el sistema.";
+        } catch (Exception ex) {
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                    conn.setAutoCommit(true);
+                    conn = null;
+                    resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: guardar_disponibilidad(), ERRROR: " + ex.toString();
+                }
+            } catch (Exception ex1) {
+                resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: rollback-guardar_disponibilidad(), ERRROR: " + ex.toString();
+            }
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception ex) {
+                resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: finally-guardar_disponibilidad(), ERRROR: " + ex.toString();
             }
         }
 

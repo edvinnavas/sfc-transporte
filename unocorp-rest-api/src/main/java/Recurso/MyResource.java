@@ -1,10 +1,12 @@
 package Recurso;
 
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.core.MediaType;
 import java.io.Serializable;
 
@@ -192,6 +194,23 @@ public class MyResource implements Serializable {
             resultado = ctrl_planta.lista_plantas(id_transportista);
         } catch (Exception ex) {
             resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: lista_plantas(), ERRROR: " + ex.toString();
+        }
+
+        return resultado;
+    }
+    
+    @POST
+    @Path("guardar_disponibilidad")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String guardar_disponibilidad(String jsonString) {
+        String resultado;
+
+        try {
+            Control.Viajes ctrl_viajes = new Control.Viajes();
+            resultado = ctrl_viajes.guardar_disponibilidad(jsonString);
+        } catch (Exception ex) {
+            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: guardar_disponibilidad(), ERRROR: " + ex.toString();
         }
 
         return resultado;

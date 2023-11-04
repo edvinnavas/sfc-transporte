@@ -8,7 +8,7 @@
     <ui:define name="contenido">
         <p:panel id="panelDisponibilidad" header="Disponibilidad">
             <p:growl id="msgDisponibilidad" showDetail="true"/>
-            <p:panelGrid columns="6">
+            <p:panelGrid columns="9">
                 <p:outputLabel value="Transportista" style="font-weight: bold; font-size: 12px;"/>
                 <p:selectOneMenu id="cbxTransportista" value="#{Disponibilidad.id_transportista}" style="font-size: 12px;">
                     <f:selectItems value="#{Disponibilidad.lst_transportista}"/>
@@ -23,6 +23,11 @@
                 <p:calendar id="calFechaInicial" value="#{Disponibilidad.fecha}" pattern="dd/MM/yyyy" style="font-size: 12px;">
                     <p:ajax event="dateSelect" listener="#{Disponibilidad.filtrar_tabla}" update="tblDisponibilidad"/>
                 </p:calendar>
+                <p:commandButton value="Descargar" styleClass="mr-2 mb-2" icon="pi pi-download">
+                    <p:dataExporter type="xlsxstream" target="tblDisponibilidad" fileName="Disponibilidad" />
+                </p:commandButton>
+                <p:commandButton value="Cargar" styleClass="mr-2 mb-2" icon="pi pi-upload"/>
+                <p:commandButton value="Guardar" styleClass="mr-2 mb-2" icon="pi pi-save"/>
             </p:panelGrid>
             <p:dataTable 
                 id="tblDisponibilidad" 
@@ -35,19 +40,34 @@
                 
                 <p:ajax event="cellEdit" listener="#{Disponibilidad.onCellEdit}" update=":formPlantilla:msgDisponibilidad"/>
                 
-                <p:column headerText="Id">
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id" />
+                    </f:facet>
                     <h:outputText value="#{registro_tabla.id_reg_tbl_disponibilidad}" />
                 </p:column>
-                <p:column headerText="Cisterna">
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Cisterna" />
+                    </f:facet>
                     <h:outputText value="#{registro_tabla.cisterna}" />
                 </p:column>
-                <p:column headerText="Tipo Carga">
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Tipo Carga" />
+                    </f:facet>
                     <h:outputText value="#{registro_tabla.tipo_carga}" />
                 </p:column>
-                <p:column headerText="Bomba">
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Bomba" />
+                    </f:facet>
                     <h:outputText value="#{registro_tabla.bomba}" />
                 </p:column>
-                <p:column headerText="Cabezal">
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Cabezal" />
+                    </f:facet>
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{registro_tabla.cabezal}" />
@@ -59,7 +79,10 @@
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
-                <p:column headerText="Hora-Inicio">
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Hora-Inicio" />
+                    </f:facet>
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{registro_tabla.hora_inicio}" />
@@ -69,7 +92,10 @@
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
-                <p:column headerText="Hora-Final">
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Hora-Final" />
+                    </f:facet>
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{registro_tabla.hora_final}" />
@@ -79,25 +105,31 @@
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
-                <p:column headerText="Disponibilidad">
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Disponibilidad" />
+                    </f:facet>
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{registro_tabla.disponibilidad}" />
                         </f:facet>
                         <f:facet name="input">
-                            <h:selectOneMenu id="cbxCabezal" value="#{registro_tabla.disponibilidad}" style="font-size: 12px; width: 100%;">
+                            <h:selectOneMenu id="cbxDisponibilidad" value="#{registro_tabla.disponibilidad}" style="font-size: 12px; width: 100%;">
                                 <f:selectItems value="#{Disponibilidad.lst_disponibilidad}"/>
                             </h:selectOneMenu>
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
-                <p:column headerText="Planta">
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Planta" />
+                    </f:facet>
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{registro_tabla.planta}" />
                         </f:facet>
                         <f:facet name="input">
-                            <h:selectOneMenu id="cbxCabezal" value="#{registro_tabla.planta}" style="font-size: 12px; width: 100%;">
+                            <h:selectOneMenu id="cbxPlanta" value="#{registro_tabla.planta}" style="font-size: 12px; width: 100%;">
                                 <f:selectItems value="#{Disponibilidad.lst_planta}"/>
                             </h:selectOneMenu>
                         </f:facet>

@@ -32,10 +32,11 @@ public class Disponibilidad implements Serializable {
     private String codigo_planta;
     private String nombre_planta;
     private String disponibilida;
+    private String bomba;
 
     @Override
     public String toString() {
-        return "Disponibilidad{" + "id_transportista=" + id_transportista + ", nombre_transportista=" + nombre_transportista + ", id_predio=" + id_predio + ", nombre_predio=" + nombre_predio + ", id_cisterna=" + id_cisterna + ", nombre_cisterna=" + nombre_cisterna + ", id_tipo_carga_cisterna=" + id_tipo_carga_cisterna + ", nombre_tipo_carga_cisterna=" + nombre_tipo_carga_cisterna + ", bomba_cisterna=" + bomba_cisterna + ", id_cabezal=" + id_cabezal + ", nombre_cabezal=" + nombre_cabezal + ", fecha=" + fecha + ", hora_inicio=" + hora_inicio + ", hora_final=" + hora_final + ", id_planta=" + id_planta + ", codigo_planta=" + codigo_planta + ", nombre_planta=" + nombre_planta + ", disponibilida=" + disponibilida + '}';
+        return "Disponibilidad{" + "id_transportista=" + id_transportista + ", nombre_transportista=" + nombre_transportista + ", id_predio=" + id_predio + ", nombre_predio=" + nombre_predio + ", id_cisterna=" + id_cisterna + ", nombre_cisterna=" + nombre_cisterna + ", id_tipo_carga_cisterna=" + id_tipo_carga_cisterna + ", nombre_tipo_carga_cisterna=" + nombre_tipo_carga_cisterna + ", bomba_cisterna=" + bomba_cisterna + ", id_cabezal=" + id_cabezal + ", nombre_cabezal=" + nombre_cabezal + ", fecha=" + fecha + ", hora_inicio=" + hora_inicio + ", hora_final=" + hora_final + ", id_planta=" + id_planta + ", codigo_planta=" + codigo_planta + ", nombre_planta=" + nombre_planta + ", disponibilida=" + disponibilida + ", bomba=" + bomba + '}';
     }
     
 }
