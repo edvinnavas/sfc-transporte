@@ -437,6 +437,9 @@ public class Viajes implements Serializable {
                 if(nombre_planta == null) {
                     nombre_planta = "-";
                 }
+                if(bomba == null) {
+                    bomba = "-";
+                }
                 
                 lista_disponibilidad.get(i).setId_cabezal(id_cabezal);
                 lista_disponibilidad.get(i).setNombre_cabezal(nombre_cabezal);
