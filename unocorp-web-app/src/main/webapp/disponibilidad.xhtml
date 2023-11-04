@@ -62,7 +62,16 @@
                     <f:facet name="header">
                         <h:outputText value="Bomba" />
                     </f:facet>
-                    <h:outputText value="#{registro_tabla.bomba}" />
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{registro_tabla.bomba}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:selectOneMenu id="cbxBomba" value="#{registro_tabla.bomba}" style="font-size: 12px; width: 100%;">
+                                <f:selectItems value="#{Disponibilidad.lst_bomba}"/>
+                            </h:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
                 </p:column>
                 <p:column>
                     <f:facet name="header">

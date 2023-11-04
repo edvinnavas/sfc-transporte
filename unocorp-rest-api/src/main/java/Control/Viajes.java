@@ -412,8 +412,9 @@ public class Viajes implements Serializable {
                 Long id_planta = ctrl_base_datos.ObtenerLong("SELECT D.ID_PLANTA FROM DISPONIBILIDAD D LEFT JOIN PLANTA P ON (D.ID_PLANTA=P.ID_PLANTA) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
                 String codigo_planta = ctrl_base_datos.ObtenerString("SELECT P.CODIGO FROM DISPONIBILIDAD D LEFT JOIN PLANTA P ON (D.ID_PLANTA=P.ID_PLANTA) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
                 String nombre_planta = ctrl_base_datos.ObtenerString("SELECT P.NOMBRE FROM DISPONIBILIDAD D LEFT JOIN PLANTA P ON (D.ID_PLANTA=P.ID_PLANTA) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
-                String bomba = ctrl_base_datos.ObtenerString("SELECT D.BOMBA FROM DISPONIBILIDAD D WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
                 String disponibilida = "Puede viajar";
+                Long id_tipo_carga = ctrl_base_datos.ObtenerLong("SELECT D.ID_TIPO_CARGA FROM DISPONIBILIDAD D LEFT JOIN TIPO_CARGA TC ON (D.ID_TIPO_CARGA=TC.ID_TIPO_CARGA) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
+                String nombre_tipo_carga = ctrl_base_datos.ObtenerString("SELECT TC.NOMBRE FROM DISPONIBILIDAD D LEFT JOIN TIPO_CARGA TC ON (D.ID_TIPO_CARGA=TC.ID_TIPO_CARGA) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
                 
                 if(id_cabezal == null) {
                     id_cabezal = Long.valueOf("0");
@@ -437,8 +438,8 @@ public class Viajes implements Serializable {
                 if(nombre_planta == null) {
                     nombre_planta = "-";
                 }
-                if(bomba == null) {
-                    bomba = "-";
+                if(id_tipo_carga == null) {
+                    id_tipo_carga = Long.valueOf("0");
                 }
                 
                 lista_disponibilidad.get(i).setId_cabezal(id_cabezal);
@@ -448,8 +449,9 @@ public class Viajes implements Serializable {
                 lista_disponibilidad.get(i).setId_planta(id_planta);
                 lista_disponibilidad.get(i).setCodigo_planta(codigo_planta);
                 lista_disponibilidad.get(i).setNombre_planta(nombre_planta);
-                lista_disponibilidad.get(i).setBomba(bomba);
                 lista_disponibilidad.get(i).setDisponibilida(disponibilida);
+                lista_disponibilidad.get(i).setId_tipo_carga_cisterna(id_tipo_carga);
+                lista_disponibilidad.get(i).setNombre_tipo_carga_cisterna(nombre_tipo_carga);
             }
 
             conn.commit();

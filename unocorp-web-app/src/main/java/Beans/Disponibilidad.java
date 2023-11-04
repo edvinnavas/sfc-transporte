@@ -38,6 +38,7 @@ public class Disponibilidad implements Serializable {
     private Date fecha;
     private List<SelectItem> lst_cabezal;
     private List<SelectItem> lst_disponibilidad;
+    private List<SelectItem> lst_bomba;
     private List<SelectItem> lst_planta;
 
     @PostConstruct
@@ -71,6 +72,11 @@ public class Disponibilidad implements Serializable {
             this.lst_disponibilidad.add(new SelectItem("-", "-"));
             this.lst_disponibilidad.add(new SelectItem("Puede viajar", "Puede viajar"));
             this.lst_disponibilidad.add(new SelectItem("No puede viajar", "No puede viajar"));
+            
+            this.lst_bomba = new ArrayList<>();
+            this.lst_bomba.add(new SelectItem("-", "-"));
+            this.lst_bomba.add(new SelectItem("Puede viajar", "Puede viajar"));
+            this.lst_bomba.add(new SelectItem("No puede viajar", "No puede viajar"));
             
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
