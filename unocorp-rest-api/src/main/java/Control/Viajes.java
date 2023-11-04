@@ -441,6 +441,9 @@ public class Viajes implements Serializable {
                 if(id_tipo_carga == null) {
                     id_tipo_carga = Long.valueOf("0");
                 }
+                if(nombre_tipo_carga == null) {
+                    nombre_tipo_carga = "-";
+                }
                 
                 lista_disponibilidad.get(i).setId_cabezal(id_cabezal);
                 lista_disponibilidad.get(i).setNombre_cabezal(nombre_cabezal);
