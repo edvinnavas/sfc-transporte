@@ -200,7 +200,7 @@ public class MyResource implements Serializable {
     
     @POST
     @Path("guardar_disponibilidad")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public String guardar_disponibilidad(String jsonString) {
         String resultado;
 
