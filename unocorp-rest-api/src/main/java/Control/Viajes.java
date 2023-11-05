@@ -509,6 +509,7 @@ public class Viajes implements Serializable {
                 String HORA_INICIO = lista_disponibilidad.get(i).getHora_inicio();
                 String HORA_FINAL = lista_disponibilidad.get(i).getHora_final();
                 Long ID_PLANTA = ctrl_base_datos.ObtenerLong("SELECT P.ID_PLANTA FROM PLANTA P WHERE P.CODIGO='" + lista_disponibilidad.get(i).getCodigo_planta() + "'", conn);
+                Long ID_TIPO_CARGA = ctrl_base_datos.ObtenerLong("SELECT TC.ID_TIPO_CARGA FROM TIPO_CARGA TC WHERE TC.NOMBRE='" + lista_disponibilidad.get(i).getNombre_tipo_carga_cisterna() + "'", conn);
                 
                 Integer existe = ctrl_base_datos.ObtenerEntero("SELECT 1 FROM DISPONIBILIDAD D WHERE D.ID_TRANSPORTISTA=" + ID_TRANSPORTISTA + " AND D.ID_VEHICULO=" + ID_VEHICULO + " AND D.ID_CABEZAL=" + ID_CABEZAL + " AND D.FECHA='" + FECHA + "'", conn);
                 if(existe == null) {
@@ -532,7 +533,8 @@ public class Viajes implements Serializable {
                         + "FECHA_HORA, "
                         + "HORA_INICIO, "
                         + "HORA_FINAL, "
-                        + "ID_PLANTA) VALUES ("
+                        + "ID_PLANTA,"
+                        + "ID_TIPO_CARGA) VALUES ("
                         + ID_TRANSPORTISTA + ","
                         + ID_VEHICULO + ","
                         + ID_CABEZAL + ",'"
@@ -540,7 +542,8 @@ public class Viajes implements Serializable {
                         + "CURRENT_TIMESTAMP" + ","
                         + HORA_INICIO + "','"
                         + HORA_FINAL + "',"
-                        + ID_PLANTA + ")";
+                        + ID_PLANTA + ","
+                        + ID_TIPO_CARGA + ")";
                 // Statement stmt = conn.createStatement();
                 System.out.println("CADENASQL: " + sql);
                 /// stmt.executeUpdate(sql);

@@ -54,21 +54,21 @@
                 </p:column>
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Tipo Carga" />
+                        <h:outputText value="Bomba" />
                     </f:facet>
-                    <h:outputText value="#{registro_tabla.tipo_carga}" />
+                    <h:outputText value="#{registro_tabla.bomba}" />
                 </p:column>
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Bomba" />
+                        <h:outputText value="Tipo Carga" />
                     </f:facet>
                     <p:cellEditor>
                         <f:facet name="output">
-                            <h:outputText value="#{registro_tabla.bomba}" />
+                            <h:outputText value="#{registro_tabla.tipo_carga}" />
                         </f:facet>
                         <f:facet name="input">
-                            <h:selectOneMenu id="cbxBomba" value="#{registro_tabla.bomba}" style="font-size: 12px; width: 100%;">
-                                <f:selectItems value="#{Disponibilidad.lst_bomba}"/>
+                            <h:selectOneMenu id="cbxTipoCarga" value="#{registro_tabla.tipo_carga}" style="font-size: 12px; width: 100%;">
+                                <f:selectItems value="#{Disponibilidad.lst_tipo_carga}"/>
                             </h:selectOneMenu>
                         </f:facet>
                     </p:cellEditor>
