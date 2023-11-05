@@ -224,7 +224,10 @@ public class Disponibilidad implements Serializable {
             
             ClientesRest.ClienteRestApi cliente_rest_api = new ClientesRest.ClienteRestApi();
             String result = cliente_rest_api.guardar_disponibilidad(jsonString);
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje del sistema.", result));
 
+            this.filtrar_tabla();
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
             System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: filtrar_tabla(), ERRROR: " + ex.toString());

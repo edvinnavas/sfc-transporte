@@ -6,7 +6,6 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.core.MediaType;
 import java.io.Serializable;
 
@@ -201,7 +200,6 @@ public class MyResource implements Serializable {
     
     @POST
     @Path("guardar_disponibilidad")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String guardar_disponibilidad(String jsonString) {
         String resultado;

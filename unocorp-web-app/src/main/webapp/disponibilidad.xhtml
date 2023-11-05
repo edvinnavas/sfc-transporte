@@ -27,7 +27,7 @@
                     <p:dataExporter type="xlsxstream" target="tblDisponibilidad" fileName="Disponibilidad" />
                 </p:commandButton>
                 <p:commandButton value="Cargar" styleClass="mr-2 mb-2" icon="pi pi-upload"/>
-                <p:commandButton value="Guardar" styleClass="mr-2 mb-2" icon="pi pi-save"/>
+                <p:commandButton value="Guardar" actionListener="#{Disponibilidad.guardar_disponibilidad}" update="msgDisponibilidad,tblDisponibilidad" styleClass="mr-2 mb-2" icon="pi pi-save"/>
             </p:panelGrid>
             <p:dataTable 
                 id="tblDisponibilidad" 
