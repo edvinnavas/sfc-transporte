@@ -215,7 +215,6 @@ public class ClienteRestApi implements Serializable {
         try {
             WebTarget webTarget = this.client.target(BASE_URI).path("guardar_disponibilidad");
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
-            System.out.println("JSON-STRING: " + jsonString);
             Response response = invocationBuilder.post(Entity.text(jsonString));
             // System.out.println("LISTA-VIAJES: " + response.getStatus());
             if (response.getStatus() == 200) {
