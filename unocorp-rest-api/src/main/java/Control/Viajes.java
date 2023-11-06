@@ -519,8 +519,8 @@ public class Viajes implements Serializable {
                     ID_TIPO_CARGA = null;
                 } else {
                     ID_CABEZAL = ctrl_base_datos.ObtenerLong("SELECT C.ID_CABEZAL FROM CABEZAL C WHERE C.CODIGO='" + lista_disponibilidad.get(i).getNombre_cabezal() + "'", conn);
-                    HORA_INICIO = "'" + lista_disponibilidad.get(i).getHora_inicio() + "'";
-                    HORA_FINAL = "'" + lista_disponibilidad.get(i).getHora_final() + "'";
+                    HORA_INICIO = "'" + lista_disponibilidad.get(i).getFecha() + " " + lista_disponibilidad.get(i).getHora_inicio() + ":00'";
+                    HORA_FINAL = "'" + lista_disponibilidad.get(i).getFecha() + " " + lista_disponibilidad.get(i).getHora_final() + ":00'";
                     ID_PLANTA = ctrl_base_datos.ObtenerLong("SELECT P.ID_PLANTA FROM PLANTA P WHERE P.CODIGO='" + lista_disponibilidad.get(i).getCodigo_planta() + "'", conn);
                     ID_TIPO_CARGA = ctrl_base_datos.ObtenerLong("SELECT TC.ID_TIPO_CARGA FROM TIPO_CARGA TC WHERE TC.NOMBRE='" + lista_disponibilidad.get(i).getNombre_tipo_carga_cisterna() + "'", conn);
                 }
