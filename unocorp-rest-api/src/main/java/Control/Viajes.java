@@ -407,8 +407,8 @@ public class Viajes implements Serializable {
             for(Integer i = 0; i < lista_disponibilidad.size(); i++) {
                 Long id_cabezal = ctrl_base_datos.ObtenerLong("SELECT D.ID_CABEZAL FROM DISPONIBILIDAD D LEFT JOIN CABEZAL C ON (D.ID_CABEZAL=C.ID_CABEZAL) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
                 String nombre_cabezal = ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM DISPONIBILIDAD D LEFT JOIN CABEZAL C ON (D.ID_CABEZAL=C.ID_CABEZAL) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
-                String hora_inicio = ctrl_base_datos.ObtenerString("SELECT D.HORA_INICIO FROM DISPONIBILIDAD D WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
-                String hora_final = ctrl_base_datos.ObtenerString("SELECT D.HORA_FINAL FROM DISPONIBILIDAD D WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
+                String hora_inicio = ctrl_base_datos.ObtenerString("SELECT DATE_FORMAT(D.HORA_INICIO,'%H:%i') FROM DISPONIBILIDAD D WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
+                String hora_final = ctrl_base_datos.ObtenerString("SELECT DATE_FORMAT(D.HORA_FINAL,'%H:%i') FROM DISPONIBILIDAD D WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
                 Long id_planta = ctrl_base_datos.ObtenerLong("SELECT D.ID_PLANTA FROM DISPONIBILIDAD D LEFT JOIN PLANTA P ON (D.ID_PLANTA=P.ID_PLANTA) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
                 String codigo_planta = ctrl_base_datos.ObtenerString("SELECT P.CODIGO FROM DISPONIBILIDAD D LEFT JOIN PLANTA P ON (D.ID_PLANTA=P.ID_PLANTA) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
                 String nombre_planta = ctrl_base_datos.ObtenerString("SELECT P.NOMBRE FROM DISPONIBILIDAD D LEFT JOIN PLANTA P ON (D.ID_PLANTA=P.ID_PLANTA) WHERE D.FECHA='" + dateFormat2.format(dateFormat1.parse(fecha)) + "' AND D.ID_VEHICULO=" + lista_disponibilidad.get(i).getId_cisterna(), conn);
@@ -521,7 +521,7 @@ public class Viajes implements Serializable {
                     if (existe == 1) {
                         String sql = "DELETE FROM DISPONIBILIDAD WHERE ID_TRANSPORTISTA=" + ID_TRANSPORTISTA + " AND ID_VEHICULO=" + ID_VEHICULO + " AND ID_CABEZAL=" + ID_CABEZAL + " AND FECHA='" + FECHA + "'";
                         Statement stmt = conn.createStatement();
-                        // System.out.println("CADENASQL: " + sql);
+                        System.out.println("CADENASQL: " + sql);
                         stmt.executeUpdate(sql);
                         stmt.close();
                     }
@@ -546,7 +546,7 @@ public class Viajes implements Serializable {
                             + ID_PLANTA + ","
                             + ID_TIPO_CARGA + ")";
                     Statement stmt = conn.createStatement();
-                    // System.out.println("CADENASQL: " + sql);
+                    System.out.println("CADENASQL: " + sql);
                     stmt.executeUpdate(sql);
                     stmt.close();
                 }
