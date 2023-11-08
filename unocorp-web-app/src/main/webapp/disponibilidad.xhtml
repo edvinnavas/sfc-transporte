@@ -8,7 +8,7 @@
     <ui:define name="contenido">
         <p:panel id="panelDisponibilidad" header="Disponibilidad">
             <p:growl id="msgDisponibilidad" showDetail="true"/>
-            <p:panelGrid columns="9">
+            <p:panelGrid columns="8">
                 <p:outputLabel value="Transportista" style="font-weight: bold; font-size: 12px;"/>
                 <p:selectOneMenu id="cbxTransportista" value="#{Disponibilidad.id_transportista}" style="font-size: 12px;">
                     <f:selectItems value="#{Disponibilidad.lst_transportista}"/>
@@ -26,8 +26,10 @@
                 <p:commandButton value="Descargar" styleClass="mr-2 mb-2" icon="pi pi-download">
                     <p:dataExporter type="xlsxstream" target="tblDisponibilidad" fileName="Disponibilidad" />
                 </p:commandButton>
-                <p:commandButton value="Cargar" styleClass="mr-2 mb-2" icon="pi pi-upload"/>
                 <p:commandButton value="Guardar" actionListener="#{Disponibilidad.guardar_disponibilidad}" update="msgDisponibilidad,tblDisponibilidad" styleClass="mr-2 mb-2" icon="pi pi-save"/>
+            </p:panelGrid>
+            <p:panelGrid columns="1">
+                <p:fileUpload id="fupExcel" listener="#{Disponibilidad.handleFileUpload}" auto="true" mode="advanced" allowTypes="/(\.|\/)(xlsx)$/" accept=".xlsx" update="msgDisponibilidad" style="font-size:12px;"/>
             </p:panelGrid>
             <p:dataTable 
                 id="tblDisponibilidad" 

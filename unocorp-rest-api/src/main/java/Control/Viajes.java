@@ -500,33 +500,26 @@ public class Viajes implements Serializable {
             Type lista_disponibilidad_type = new TypeToken<List<Entidad.Disponibilidad>>() {
             }.getType();
             List<Entidad.Disponibilidad> lista_disponibilidad = new Gson().fromJson(jsonString, lista_disponibilidad_type);
-            
-            for(Integer i=0; i < lista_disponibilidad.size(); i++) {
+
+            for (Integer i = 0; i < lista_disponibilidad.size(); i++) {
                 Long ID_TRANSPORTISTA = lista_disponibilidad.get(i).getId_transportista();
                 Long ID_VEHICULO = ctrl_base_datos.ObtenerLong("SELECT V.ID_VEHICULO V FROM VEHICULO V WHERE V.CODIGO='" + lista_disponibilidad.get(i).getNombre_cisterna() + "'", conn);
                 String FECHA = lista_disponibilidad.get(i).getFecha();
-                
-                if(!lista_disponibilidad.get(i).getNombre_cabezal().trim().equals("-")) {
+
+                String sql = "DELETE FROM DISPONIBILIDAD WHERE ID_TRANSPORTISTA=" + ID_TRANSPORTISTA + " AND ID_VEHICULO=" + ID_VEHICULO + " AND FECHA='" + FECHA + "'";
+                Statement stmt = conn.createStatement();
+                System.out.println("CADENASQL: " + sql);
+                stmt.executeUpdate(sql);
+                stmt.close();
+
+                if (!lista_disponibilidad.get(i).getNombre_cabezal().trim().equals("-")) {
                     Long ID_CABEZAL = ctrl_base_datos.ObtenerLong("SELECT C.ID_CABEZAL FROM CABEZAL C WHERE C.CODIGO='" + lista_disponibilidad.get(i).getNombre_cabezal() + "'", conn);
                     String HORA_INICIO = "'" + FECHA + " " + lista_disponibilidad.get(i).getHora_inicio() + ":00'";
                     String HORA_FINAL = "'" + FECHA + " " + lista_disponibilidad.get(i).getHora_final() + ":00'";
                     Long ID_PLANTA = ctrl_base_datos.ObtenerLong("SELECT P.ID_PLANTA FROM PLANTA P WHERE P.CODIGO='" + lista_disponibilidad.get(i).getCodigo_planta() + "'", conn);
                     Long ID_TIPO_CARGA = ctrl_base_datos.ObtenerLong("SELECT TC.ID_TIPO_CARGA FROM TIPO_CARGA TC WHERE TC.NOMBRE='" + lista_disponibilidad.get(i).getNombre_tipo_carga_cisterna() + "'", conn);
-                    
-                    Integer existe = ctrl_base_datos.ObtenerEntero("SELECT 1 FROM DISPONIBILIDAD D WHERE D.ID_TRANSPORTISTA=" + ID_TRANSPORTISTA + " AND D.ID_VEHICULO=" + ID_VEHICULO + " AND D.ID_CABEZAL=" + ID_CABEZAL + " AND D.FECHA='" + FECHA + "'", conn);
-                    if(existe == null) {
-                        existe = 0;
-                    }
-                    
-                    if (existe == 1) {
-                        String sql = "DELETE FROM DISPONIBILIDAD WHERE ID_TRANSPORTISTA=" + ID_TRANSPORTISTA + " AND ID_VEHICULO=" + ID_VEHICULO + " AND ID_CABEZAL=" + ID_CABEZAL + " AND FECHA='" + FECHA + "'";
-                        Statement stmt = conn.createStatement();
-                        System.out.println("CADENASQL: " + sql);
-                        stmt.executeUpdate(sql);
-                        stmt.close();
-                    }
-                    
-                    String sql = "INSERT INTO DISPONIBILIDAD ("
+
+                    sql = "INSERT INTO DISPONIBILIDAD ("
                             + "ID_TRANSPORTISTA, "
                             + "ID_VEHICULO, "
                             + "ID_CABEZAL, "
@@ -545,7 +538,7 @@ public class Viajes implements Serializable {
                             + HORA_FINAL + ","
                             + ID_PLANTA + ","
                             + ID_TIPO_CARGA + ")";
-                    Statement stmt = conn.createStatement();
+                    stmt = conn.createStatement();
                     System.out.println("CADENASQL: " + sql);
                     stmt.executeUpdate(sql);
                     stmt.close();

@@ -10,6 +10,7 @@ import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpSession;
+import java.io.File;
 import lombok.Getter;
 import lombok.Setter;
 import java.io.Serializable;
@@ -17,8 +18,15 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.FileUploadEvent;
 
 @ViewScoped
 @Named(value = "Disponibilidad")
@@ -231,6 +239,33 @@ public class Disponibilidad implements Serializable {
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
             System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: filtrar_tabla(), ERRROR: " + ex.toString());
+        }
+    }
+    
+    public void handleFileUpload(FileUploadEvent event) {
+        try {
+            File temp_file = File.createTempFile("temp", "xlsx");
+            temp_file.deleteOnExit();
+            FileUtils.copyInputStreamToFile(event.getFile().getInputStream(), temp_file);
+
+            XSSFWorkbook wb = new XSSFWorkbook(temp_file);
+            XSSFSheet ws = wb.getSheetAt(0);
+            
+            Iterator<Row> rowIterator = ws.iterator();
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                Iterator<Cell> cellIterator = row.cellIterator();
+                while (cellIterator.hasNext()) {
+                    Cell cell = cellIterator.next();
+                    System.out.println(cell.getStringCellValue());
+                }
+            }
+
+            FacesMessage message = new FacesMessage("Successful", event.getFile().getFileName() + " is uploaded.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
+            System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: handleFileUpload(), ERRROR: " + ex.toString());
         }
     }
 
