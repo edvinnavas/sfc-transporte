@@ -508,7 +508,7 @@ public class Viajes implements Serializable {
 
                 String sql = "DELETE FROM DISPONIBILIDAD WHERE ID_TRANSPORTISTA=" + ID_TRANSPORTISTA + " AND ID_VEHICULO=" + ID_VEHICULO + " AND FECHA='" + FECHA + "'";
                 Statement stmt = conn.createStatement();
-                System.out.println("CADENASQL: " + sql);
+                // System.out.println("CADENASQL: " + sql);
                 stmt.executeUpdate(sql);
                 stmt.close();
 
@@ -539,7 +539,7 @@ public class Viajes implements Serializable {
                             + ID_PLANTA + ","
                             + ID_TIPO_CARGA + ")";
                     stmt = conn.createStatement();
-                    System.out.println("CADENASQL: " + sql);
+                    // System.out.println("CADENASQL: " + sql);
                     stmt.executeUpdate(sql);
                     stmt.close();
                 }

@@ -3,7 +3,6 @@ package Control;
 import ClienteRest.Cliente_Rest_Google_Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-// import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
@@ -367,14 +366,14 @@ public class Ctrl_SMS_OPEN implements Serializable {
 
                     Poligono poligono = new Poligono();
                     if (poligono.isInside(geozona, 5, ubicacion_actual)) {
-                        System.out.println("GEO-ZONA: {"
-                                + "(" + ZONA_LATITUD_1 + "," + ZONA_LONGITUD_1 + ");"
-                                + "(" + ZONA_LATITUD_2 + "," + ZONA_LONGITUD_2 + ");"
-                                + "(" + ZONA_LATITUD_3 + "," + ZONA_LONGITUD_3 + ");"
-                                + "(" + ZONA_LATITUD_4 + "," + ZONA_LONGITUD_4 + ");"
-                                + "(" + ZONA_LATITUD_5 + "," + ZONA_LONGITUD_5 + ")"
-                                + "}");
-                        System.out.println("UBICACIÓN-ACTUAL: {(" + LATITUDE + "," + LONGITUDE + ")}");
+                        // System.out.println("GEO-ZONA: {"
+                                // + "(" + ZONA_LATITUD_1 + "," + ZONA_LONGITUD_1 + ");"
+                                // + "(" + ZONA_LATITUD_2 + "," + ZONA_LONGITUD_2 + ");"
+                                // + "(" + ZONA_LATITUD_3 + "," + ZONA_LONGITUD_3 + ");"
+                                // + "(" + ZONA_LATITUD_4 + "," + ZONA_LONGITUD_4 + ");"
+                                // + "(" + ZONA_LATITUD_5 + "," + ZONA_LONGITUD_5 + ")"
+                                // + "}"); 
+                        // System.out.println("UBICACIÓN-ACTUAL: {(" + LATITUDE + "," + LONGITUDE + ")}");
 
                         cadenasql = "UPDATE "
                                 + "VIAJES "
@@ -390,7 +389,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                                 + "TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
                                 + "NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA;
                         Statement stmt1 = conn.createStatement();
-                        System.out.println("CADENASQL-CERRAR-VIAJE: " + cadenasql);
+                        // System.out.println("CADENASQL-CERRAR-VIAJE: " + cadenasql);
                         stmt1.executeUpdate(cadenasql);
                         stmt1.close();
                     }
