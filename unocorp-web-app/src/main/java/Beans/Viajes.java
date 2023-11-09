@@ -99,6 +99,11 @@ public class Viajes implements Serializable {
         }
     }
 
+    public void filtrar_tabla_boton() {
+        this.filtrar_tabla();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje del sistema.", "Lista de viajes actualizados"));
+    }
+    
     public void filtrar_tabla() {
         try {
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");

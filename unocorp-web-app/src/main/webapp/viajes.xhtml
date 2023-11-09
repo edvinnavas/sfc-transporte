@@ -11,7 +11,7 @@
     <ui:define name="contenido">
         <p:panel header="Viajes">
             <p:growl id="msgViajes" showDetail="true"/>
-            <p:panelGrid columns="9">
+            <p:panelGrid columns="10">
                 <p:outputLabel value="Fecha inicial" style="font-weight: bold; font-size: 12px;"/>
                 <p:calendar id="calFechaInicial" value="#{Viajes.fecha_inicial}" pattern="dd/MM/yyyy" style="font-size: 12px;">
                     <p:ajax event="dateSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
@@ -37,6 +37,7 @@
                 <p:selectBooleanCheckbox id="chkTracking" value="#{Viajes.rastreable}" itemLabel="Tracking" style="font-weight: bold; font-size: 12px;">
                     <p:ajax update="tblViajes" listener="#{Viajes.filtrar_tabla}"/>
                 </p:selectBooleanCheckbox>
+                <p:commandButton value="Actualizar" actionListener="#{Viajes.filtrar_tabla_boton}" update="msgViajes,tblViajes" styleClass="mr-2 mb-2" icon="pi pi-refresh"/>
             </p:panelGrid>
             <style type="text/css">
                 .activo {

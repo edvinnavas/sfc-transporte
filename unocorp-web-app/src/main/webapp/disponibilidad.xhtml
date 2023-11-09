@@ -29,7 +29,7 @@
                 <p:commandButton value="Guardar" actionListener="#{Disponibilidad.guardar_disponibilidad}" update="msgDisponibilidad,tblDisponibilidad" styleClass="mr-2 mb-2" icon="pi pi-save"/>
             </p:panelGrid>
             <p:panelGrid columns="1">
-                <p:fileUpload id="fupExcel" listener="#{Disponibilidad.handleFileUpload}" auto="true" mode="advanced" allowTypes="/(\.|\/)(xlsx)$/" accept=".xlsx" update="msgDisponibilidad" style="font-size:12px;"/>
+                <p:fileUpload id="fupExcel" listener="#{Disponibilidad.handleFileUpload}" auto="true" mode="advanced" allowTypes="/(\.|\/)(xlsx)$/" accept=".xlsx" update="msgDisponibilidad,tblDisponibilidad" style="font-size:12px;"/>
             </p:panelGrid>
             <p:dataTable 
                 id="tblDisponibilidad" 

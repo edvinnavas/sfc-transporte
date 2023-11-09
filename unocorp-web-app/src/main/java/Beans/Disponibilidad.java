@@ -275,26 +275,31 @@ public class Disponibilidad implements Serializable {
                 Iterator<Cell> cellIterator = row.cellIterator();
                 while (cellIterator.hasNext()) {
                     Cell cell = cellIterator.next();
-                    switch (cell.getCellType().toString()) {
-                        case "STRING": {
-                            System.out.println("COLUMN-INDEX: " + cell.getColumnIndex());
-                            System.out.println("COLUMN-VALUE: " + cell.getStringCellValue());
-                            break;
-                        }
-                        case "NUMERIC": {
-                            System.out.println("COLUMN-INDEX: " + cell.getColumnIndex());
-                            System.out.println("COLUMN-VALUE: " + cell.getNumericCellValue());
-                            break;
-                        }
-                        default: {
-
+                    if(cell.getColumnIndex() == 1) {
+                        String cisterna = cell.getStringCellValue();
+                        for(Integer i = 0; i < this.lst_reg_tbl_disponibilidad.size(); i++) {
+                            if(this.lst_reg_tbl_disponibilidad.get(i).getCisterna().trim().equals(cisterna)) {
+                                cell = cellIterator.next();
+                                this.lst_reg_tbl_disponibilidad.get(i).setBomba(cell.getStringCellValue());
+                                cell = cellIterator.next();
+                                this.lst_reg_tbl_disponibilidad.get(i).setTipo_carga(cell.getStringCellValue());
+                                cell = cellIterator.next();
+                                this.lst_reg_tbl_disponibilidad.get(i).setCabezal(cell.getStringCellValue());
+                                cell = cellIterator.next();
+                                this.lst_reg_tbl_disponibilidad.get(i).setHora_inicio(cell.getStringCellValue());
+                                cell = cellIterator.next();
+                                this.lst_reg_tbl_disponibilidad.get(i).setHora_final(cell.getStringCellValue());
+                                cell = cellIterator.next();
+                                this.lst_reg_tbl_disponibilidad.get(i).setDisponibilidad(cell.getStringCellValue());
+                                cell = cellIterator.next();
+                                this.lst_reg_tbl_disponibilidad.get(i).setPlanta(cell.getStringCellValue());
+                            }
                         }
                     }
                 }
             }
 
-            FacesMessage message = new FacesMessage("Successful", event.getFile().getFileName() + " is uploaded.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje del sistema.", event.getFile().getFileName() + " is uploaded."));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
             System.out.println("PROYECTO: unocorp-web-app, CLASE: " + this.getClass().getName() + ", METODO: handleFileUpload(), ERRROR: " + ex.toString());
