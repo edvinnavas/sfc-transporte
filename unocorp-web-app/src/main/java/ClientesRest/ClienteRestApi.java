@@ -15,6 +15,7 @@ public class ClienteRestApi implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private static final String BASE_URI = "http://UNOCORP-REST-API:8080/unocorp/";
+    // private static final String BASE_URI = "http://192.200.109.21:9003/unocorp/";
     private ClientConfig clientConfig;
     private Client client;
 

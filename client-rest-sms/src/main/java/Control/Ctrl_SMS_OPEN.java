@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -138,6 +139,10 @@ public class Ctrl_SMS_OPEN implements Serializable {
             stmt = conn.createStatement();
             stmt.executeUpdate(cadenasql);
             stmt.close();
+            
+            Calendar fecha_actual = Calendar.getInstance();
+            Calendar fecha_anterior = Calendar.getInstance();
+            fecha_anterior.add(Calendar.DATE, -3);
 
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
             cadenasql = "SELECT DISTINCT "
@@ -156,13 +161,12 @@ public class Ctrl_SMS_OPEN implements Serializable {
                     + "FROM "
                     + "VIAJES V "
                     + "LEFT JOIN TRANSPORTISTA T ON (V.ID_TRANSPORTISTA=T.ID_TRANSPORTISTA) "
-                    + "LEFT JOIN DISPONIBILIDAD D ON (V.ID_TRANSPORTISTA=D.ID_TRANSPORTISTA AND V.ID_VEHICULO=D.ID_VEHICULO AND D.FECHA BETWEEN '" + dateFormat1.format(new Date()) + "' AND '" + dateFormat1.format(new Date()) + "') "
+                    + "LEFT JOIN DISPONIBILIDAD D ON (V.ID_TRANSPORTISTA=D.ID_TRANSPORTISTA AND V.ID_VEHICULO=D.ID_VEHICULO AND D.FECHA BETWEEN V.FECHA_VIAJE AND V.FECHA_VIAJE) "
                     + "LEFT JOIN CABEZAL CD ON (D.ID_CABEZAL=CD.ID_CABEZAL) "
-                    + "LEFT JOIN SMS_OPEN_DETALLE SOD ON (CD.IMEI=SOD.IMEI AND STR_TO_DATE(SOD.DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s') BETWEEN '" + dateFormat1.format(new Date()) + " 00:00:00' AND '" + dateFormat1.format(new Date()) + " 23:59:59') "
+                    + "LEFT JOIN SMS_OPEN_DETALLE SOD ON (CD.IMEI=SOD.IMEI AND STR_TO_DATE(SOD.DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s') BETWEEN '" + dateFormat1.format(fecha_anterior.getTime()) + " 00:00:00' AND '" + dateFormat1.format(fecha_actual.getTime()) + " 23:59:59') "
                     + "WHERE "
-                    + "V.FECHA_VIAJE BETWEEN '" + dateFormat1.format(new Date()) + "' AND '" + dateFormat1.format(new Date()) + "' AND "
-                    + "V.ID_ESTADO_VIAJE NOT IN (5) AND "
-                    // + "V.ESTADO='ACT' AND "
+                    + "V.ID_ESTADO_VIAJE NOT IN (2, 5, 10) AND "
+                    + "T.ID_TRANSPORTISTA IN (10, 42) AND "
                     + "T.RASTREABLE=1 AND "
                     + "SOD.ID_SMS_OPEN IS NOT NULL";
             stmt = conn.createStatement();
@@ -204,24 +208,6 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 
                 String ETA_HORAS = "0.00";
                 String EDA_KMS = "0.00";
-                // if(google_distance_matrix != null) {
-                //     try {
-                //         ETA_HORAS = google_distance_matrix.getRows().get(0).getElements().get(0).getDuration_in_traffic().getText();
-                //     } catch(Exception traffic_ex) {
-                //         ETA_HORAS = "0.0";
-                //         System.out.println("DURATION-IN-TRAFFIC-GET-TEXT");
-                //         System.out.println("JSON-RESULT: " + json_result);
-                //     }
-                //     try {
-                //         EDA_KMS = google_distance_matrix.getRows().get(0).getElements().get(0).getDistance().getText();
-                //     } catch(Exception traffic_ex) {
-                //         EDA_KMS = "0.0";
-                //         System.out.println("DISTANCE-GET-TEXT");
-                //         System.out.println("JSON-RESULT: " + json_result);
-                //     }
-                // }
-                // System.out.println("ETA_HORAS:" + ETA_HORAS);
-                // System.out.println("EDA_KMS:" + EDA_KMS);
                 
                 /* VALIDA SI LA UBICACIÓN YA EXISTE EN LA TABLA VIAJE_UBICACIONES */
                 Boolean no_existe = true;

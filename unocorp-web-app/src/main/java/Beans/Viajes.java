@@ -40,6 +40,7 @@ public class Viajes implements Serializable {
     private String estado;
     private String tipo_flete;
     private Boolean rastreable;
+    private String google_maps_api;
     
     // Dialog Viaje-Ubicaciones.
     private List<Entidades.RegTblUbicaciones> lst_reg_tbl_ubicaciones;
@@ -68,7 +69,7 @@ public class Viajes implements Serializable {
             this.estado = "ACT";
             this.tipo_flete = "CIF";
             this.rastreable = true;
-            
+            this.google_maps_api = "https://maps.googleapis.com/maps/api/js?key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
             this.lst_reg_tbl_ubicaciones = new ArrayList<>();
             this.mapa_model = new DefaultMapModel<>();
             
@@ -92,6 +93,7 @@ public class Viajes implements Serializable {
     public void cargar_vista(Entidades.UsuarioSesion usuario_sesion) {
         try {
             this.usuario_sesion = usuario_sesion;
+            this.google_maps_api = "https://maps.googleapis.com/maps/api/js?key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje del sistema.", "Vista-Viajes."));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje del sistema.", ex.toString()));
@@ -100,6 +102,7 @@ public class Viajes implements Serializable {
     }
 
     public void filtrar_tabla_boton() {
+        this.google_maps_api = "https://maps.googleapis.com/maps/api/js?key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
         this.filtrar_tabla();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje del sistema.", "Lista de viajes actualizados"));
     }
