@@ -142,7 +142,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
             
             Calendar fecha_actual = Calendar.getInstance();
             Calendar fecha_anterior = Calendar.getInstance();
-            fecha_anterior.add(Calendar.DATE, -3);
+            fecha_anterior.add(Calendar.DATE, -2);
 
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
             cadenasql = "SELECT DISTINCT "

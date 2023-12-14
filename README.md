@@ -23,3 +23,6 @@ docker run -p 9003:8080 -t -i --network unocorp_network --name UNOCORP-REST-API 
 
 docker build -t unocorp/unocorp-cliente-rest-sms:1.0.0 .
 docker run -p 9004:8080 -t -i --network unocorp_network --name UNOCORP-REST-API-SMS --restart=always --env TZ=America/Guatemala unocorp/unocorp-cliente-rest-sms:1.0.0
+
+docker build -t unocorp/unocorp-cliente-rest-geotab:1.0.0 .
+docker run -p 9005:8080 -t -i --network unocorp_network --name UNOCORP-REST-API-GEOTAB --restart=always --env TZ=America/Guatemala unocorp/unocorp-cliente-rest-geotab:1.0.0

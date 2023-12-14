@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Objects;
 
 public class Ctrl_Sfc_Transportes implements Serializable {
@@ -317,7 +318,7 @@ public class Ctrl_Sfc_Transportes implements Serializable {
 
                 String ESTADO;
                 String FECHA_HORA_TERMINADO;
-                if (Objects.equals(ID_ESTADO_VIAJE, Long.valueOf("1")) || Objects.equals(ID_ESTADO_VIAJE, Long.valueOf("2")) || Objects.equals(ID_ESTADO_VIAJE, Long.valueOf("5"))) {
+                if (Objects.equals(ID_ESTADO_VIAJE, Long.valueOf("2")) || Objects.equals(ID_ESTADO_VIAJE, Long.valueOf("5")) || Objects.equals(ID_ESTADO_VIAJE, Long.valueOf("10"))) {
                     ESTADO = "TER";
                     FECHA_HORA_TERMINADO = "CURRENT_TIMESTAMP";
                 } else {
@@ -383,6 +384,19 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                     stmt.close();
                 }
             }
+            
+            Calendar fecha_cierre = Calendar.getInstance();
+            fecha_cierre.add(Calendar.MINUTE, -2);
+            
+            SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+            
+            String cadenasql = "UPDATE VIAJES "
+                    + "SET ID_ESTADO_VIAJE=10, ESTADO='TER', FECHA_HORA_TERMINADO=CURRENT_TIMESTAMP "
+                    + "WHERE ID_ESTADO_VIAJE NOT IN (2, 5, 10) AND FECHA_VIAJE < '" + dateFormat1.format(fecha_cierre.getTime()) + "'";
+            Statement stmt = conn.createStatement();
+            // System.out.println(cadenasql);
+            stmt.executeUpdate(cadenasql);
+            stmt.close();
 
             conn.commit();
             conn.setAutoCommit(true);
