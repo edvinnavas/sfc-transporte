@@ -386,7 +386,7 @@ public class Ctrl_Sfc_Transportes implements Serializable {
             }
             
             Calendar fecha_cierre = Calendar.getInstance();
-            fecha_cierre.add(Calendar.MINUTE, -2);
+            fecha_cierre.add(Calendar.DATE, -2);
             
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
             
