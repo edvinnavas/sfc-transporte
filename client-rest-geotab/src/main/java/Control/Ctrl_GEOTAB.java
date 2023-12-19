@@ -186,7 +186,7 @@ public class Ctrl_GEOTAB implements Serializable {
                     + "V.NUMERO_VIAJE, "
                     + "V.TIPO_ORDEN_VENTA, "
                     + "V.NUMERO_ORDEN_VENTA, "
-                    + "STR_TO_DATE(SOD.DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s') FECHA_HORA_UBICACION, "
+                    + "STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') FECHA_HORA_UBICACION, "
                     + "SOD.IMEI, "
                     + "SOD.LATITUDE LATITUD_UBICACION, "
                     + "SOD.LONGITUDE LONGITUD_UBICACION, "
@@ -197,12 +197,12 @@ public class Ctrl_GEOTAB implements Serializable {
                     + "LEFT JOIN TRANSPORTISTA T ON (V.ID_TRANSPORTISTA=T.ID_TRANSPORTISTA) "
                     + "LEFT JOIN DISPONIBILIDAD D ON (V.ID_TRANSPORTISTA=D.ID_TRANSPORTISTA AND V.ID_VEHICULO=D.ID_VEHICULO AND D.FECHA BETWEEN V.FECHA_VIAJE AND V.FECHA_VIAJE) "
                     + "LEFT JOIN CABEZAL CD ON (D.ID_CABEZAL=CD.ID_CABEZAL) "
-                    + "LEFT JOIN SMS_OPEN_DETALLE SOD ON (CD.IMEI=SOD.IMEI AND STR_TO_DATE(SOD.DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s') BETWEEN '" + dateFormat1.format(fecha_anterior.getTime()) + " 00:00:00' AND '" + dateFormat1.format(fecha_actual.getTime()) + " 23:59:59') "
+                    + "LEFT JOIN GEOTAB_DETALLE SOD ON (CD.IMEI=SOD.IMEI AND STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') BETWEEN '" + dateFormat1.format(fecha_anterior.getTime()) + " 00:00:00' AND '" + dateFormat1.format(fecha_actual.getTime()) + " 23:59:59') "
                     + "WHERE "
                     + "V.ID_ESTADO_VIAJE NOT IN (2, 5, 10) AND "
                     + "T.ID_TRANSPORTISTA IN (5) AND "
                     + "T.RASTREABLE=1 AND "
-                    + "SOD.ID_SMS_OPEN IS NOT NULL";
+                    + "SOD.ID_GEOTAB IS NOT NULL";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             
