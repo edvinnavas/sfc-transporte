@@ -175,8 +175,6 @@ public class Ctrl_GEOTAB implements Serializable {
             stmt.close();
             
             Calendar fecha_actual = Calendar.getInstance();
-            Calendar fecha_anterior = Calendar.getInstance();
-            fecha_anterior.add(Calendar.DATE, -2);
             
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
             sql = "SELECT DISTINCT "
@@ -416,7 +414,7 @@ public class Ctrl_GEOTAB implements Serializable {
             rs.close();
             stmt.close();
         } catch (Exception ex) {
-            System.out.println("PROYECTO:client-rest-sms|CLASE:" + this.getClass().getName() + "|METODO:validar_viajes_cerrados()|ERROR:" + ex.toString());
+            System.out.println("PROYECTO:client-rest-geotab|CLASE:" + this.getClass().getName() + "|METODO:validar_viajes_cerrados()|ERROR:" + ex.toString());
         }
     }
 
@@ -433,7 +431,7 @@ public class Ctrl_GEOTAB implements Serializable {
             Gson gson = new GsonBuilder().serializeNulls().create();
             resultado = gson.toJson(google_distance_matrix);
         } catch (Exception ex) {
-            System.out.println("PROYECTO:client-rest-sms|CLASE:" + this.getClass().getName() + "|METODO:distancematrix()|ERROR:" + ex.toString());
+            System.out.println("PROYECTO:client-rest-geotab|CLASE:" + this.getClass().getName() + "|METODO:distancematrix()|ERROR:" + ex.toString());
         }
 
         return resultado;
