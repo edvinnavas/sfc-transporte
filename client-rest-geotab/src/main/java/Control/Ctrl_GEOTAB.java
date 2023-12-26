@@ -34,10 +34,19 @@ public class Ctrl_GEOTAB implements Serializable {
             ClienteRest.Cliente_Rest_GEOTAB cliente_rest_api = new ClienteRest.Cliente_Rest_GEOTAB();
             
             String database_geotab;
-            if(database.equals("CR")){
-                database_geotab = "grupoterra_costarica";
-            } else {
-                database_geotab = "grupoterra_guatemala";
+            switch (database) {
+                case "CR": {
+                    database_geotab = "grupoterra_costarica";
+                    break;
+                }
+                case "GT": {
+                    database_geotab = "grupoterra_guatemala";
+                    break;
+                }
+                default: {
+                    database_geotab = "";
+                    break;
+                }
             }
             
             // AUTENTICAR EN EL API DE GEOTAB PARA OBTERNER EL SESSIONID.
