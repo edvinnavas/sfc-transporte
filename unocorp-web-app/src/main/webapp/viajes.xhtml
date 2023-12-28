@@ -5,47 +5,63 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="WEB-INF/plantilla/plantilla.xhtml">
+    
     <ui:define name="head">
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhOGV3eEBvXxXGz_g9yKHpNkDeHpjDVJg"></script>
     </ui:define>
+    
     <ui:define name="contenido">
-        <p:panel header="Viajes">
+        
+        <style type="text/css">
+            .activo {
+                    background-color: orange !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+            }
+            .ui-calendar input {
+                font-size: 10px !important;
+            }
+            .ui-selectonemenu-label {
+                font-size: 10px !important;
+            }
+            .titulo_panel {
+                font-size: 14px !important;
+                font-weight: bold !important;
+            }
+        </style>
+        
+        <p:panel header="Viajes" styleClass="titulo_panel">
             <p:growl id="msgViajes" showDetail="true"/>
+            
             <p:panelGrid columns="10">
-                <p:outputLabel value="Fecha inicial" style="font-weight: bold; font-size: 12px;"/>
-                <p:calendar id="calFechaInicial" value="#{Viajes.fecha_inicial}" pattern="dd/MM/yyyy" style="font-size: 12px;">
+                <p:outputLabel value="Fecha inicial" style="font-weight: bold; font-size: 10px;"/>
+                <p:calendar id="calFechaInicial" value="#{Viajes.fecha_inicial}" pattern="dd/MM/yyyy" style="font-size: 10px;">
                     <p:ajax event="dateSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
                 </p:calendar>
-                <p:outputLabel value="Fecha final" style="font-weight: bold; font-size: 12px;"/>
-                <p:calendar id="calFechaFinal" value="#{Viajes.fecha_final}" pattern="dd/MM/yyyy" style="font-size: 12px;">
+                <p:outputLabel value="Fecha final" style="font-weight: bold; font-size: 10px;"/>
+                <p:calendar id="calFechaFinal" value="#{Viajes.fecha_final}" pattern="dd/MM/yyyy" style="font-size: 10px;">
                     <p:ajax event="dateSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
                 </p:calendar>
-                <p:outputLabel value="Estado" style="font-weight: bold; font-size: 12px;"/>
-                <p:selectOneMenu id="cbxEstado" value="#{Viajes.estado}" style="font-size: 12px;">
+                <p:outputLabel value="Estado" style="font-weight: bold; font-size: 10px;"/>
+                <p:selectOneMenu id="cbxEstado" value="#{Viajes.estado}" style="font-size: 10px;">
                     <f:selectItem itemLabel="Ambos" itemValue="Ambos"/>
                     <f:selectItem itemLabel="Activos" itemValue="ACT"/>
                     <f:selectItem itemLabel="Terminados" itemValue="TER"/>
                     <p:ajax event="itemSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
                 </p:selectOneMenu>
-                <p:outputLabel value="Flete" style="font-weight: bold; font-size: 12px;"/>
-                <p:selectOneMenu id="cbxFlete" value="#{Viajes.tipo_flete}" style="font-size: 12px;">
+                <p:outputLabel value="Flete" style="font-weight: bold; font-size: 10px;"/>
+                <p:selectOneMenu id="cbxFlete" value="#{Viajes.tipo_flete}" style="font-size: 10px;">
                     <f:selectItem itemLabel="Ambos" itemValue="Ambos"/>
                     <f:selectItem itemLabel="CIF" itemValue="CIF"/>
                     <f:selectItem itemLabel="FOB" itemValue="FOB"/>
                     <p:ajax event="itemSelect" listener="#{Viajes.filtrar_tabla}" update="tblViajes"/>
                 </p:selectOneMenu>
-                <p:selectBooleanCheckbox id="chkTracking" value="#{Viajes.rastreable}" itemLabel="Tracking" style="font-weight: bold; font-size: 12px;">
+                <p:selectBooleanCheckbox id="chkTracking" value="#{Viajes.rastreable}" itemLabel="Tracking" style="font-weight: bold; font-size: 10px;">
                     <p:ajax update="tblViajes" listener="#{Viajes.filtrar_tabla}"/>
                 </p:selectBooleanCheckbox>
-                <p:commandButton value="Actualizar" actionListener="#{Viajes.filtrar_tabla_boton}" update="msgViajes,tblViajes" styleClass="mr-2 mb-2" icon="pi pi-refresh"/>
+                <p:commandButton value="Actualizar" actionListener="#{Viajes.filtrar_tabla_boton}" update="msgViajes,tblViajes" styleClass="mr-2 mb-2" icon="pi pi-refresh" style="font-size: 10px;"/>
             </p:panelGrid>
-            <style type="text/css">
-                .activo {
-                    background-color: orange !important;
-                    background-image: none !important;
-                    color: #000000 !important;
-                }
-            </style>
+            
             <p:dataTable 
                 id="tblViajes" 
                 var="viaje" 
@@ -54,83 +70,80 @@
                 selectionMode="single" 
                 selection="#{Viajes.sel_reg_tbl_viajes}" 
                 rowKey="#{viaje.id_reg_tbl_viajes}"
-                paginator="true" 
-                rows="10" 
-                rowsPerPageTemplate="10,20,30" 
-                paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                scrollable="true" 
+                scrollWidth="98%" 
+                scrollHeight="450"
                 rowStyleClass="#{viaje.estado eq 'ACT' ? 'activo' : null}"
-                style="font-size: 12px;">
+                style="font-size: 10px;">
                 
                 <p:ajax event="rowDblselect" listener="#{Viajes.mostrar_ubicaciones}" update="formPlantilla:formUbicaciones:tblUbicaciones,formPlantilla:formUbicaciones:mapUbicaciones" global="false"/>
                 
-                <p:column headerText="Id" sortBy="#{viaje.id_reg_tbl_viajes}" filterBy="#{viaje.id_reg_tbl_viajes}" filterMatchMode="contains" style="width: 100px; font-size: 12px;">
+                <p:column headerText="Id" sortBy="#{viaje.id_reg_tbl_viajes}" filterBy="#{viaje.id_reg_tbl_viajes}" filterMatchMode="contains" style="width: 150px; font-size: 10px;">
                     <h:outputText value="#{viaje.id_reg_tbl_viajes}" />
                 </p:column>
-                <p:column headerText="Nombre País" sortBy="#{viaje.nombre_pais}" filterBy="#{viaje.nombre_pais}" filterMatchMode="contains" style="width: 150px; font-size: 12px;">
+                <p:column headerText="País" sortBy="#{viaje.nombre_pais}" filterBy="#{viaje.nombre_pais}" filterMatchMode="contains" style="width: 150px; font-size: 10px;">
                     <h:outputText value="#{viaje.nombre_pais}" />
                 </p:column>
-                <p:column headerText="Número Viaje" sortBy="#{viaje.numero_viaje}" filterBy="#{viaje.numero_viaje}" filterMatchMode="contains" style="width: 100px; font-size: 12px;">
+                <p:column headerText="No. Viaje" sortBy="#{viaje.numero_viaje}" filterBy="#{viaje.numero_viaje}" filterMatchMode="contains" style="width: 150px; font-size: 10px;">
                     <h:outputText value="#{viaje.numero_viaje}" />
                 </p:column>
-                <p:column headerText="Fecha Viaje" sortBy="#{viaje.fecha_viaje}" filterBy="#{viaje.fecha_viaje}" filterMatchMode="contains" style="width: 100px; font-size: 12px;">
+                <p:column headerText="Fecha-Viaje" sortBy="#{viaje.fecha_viaje}" filterBy="#{viaje.fecha_viaje}" filterMatchMode="contains" style="width: 150px; font-size: 10px;">
                     <h:outputText value="#{viaje.fecha_viaje}" />
                 </p:column>
-                <p:column headerText="Estado Viaje" sortBy="#{viaje.codigo_viaje}" filterBy="#{viaje.codigo_viaje}" filterMatchMode="contains" style="width: 100px; font-size: 12px;">
+                <p:column headerText="Estado-Viaje" sortBy="#{viaje.codigo_viaje}" filterBy="#{viaje.codigo_viaje}" filterMatchMode="contains" style="width: 150px; font-size: 10px;">
                     <h:outputText value="#{viaje.codigo_viaje}" />
                 </p:column>
-                <p:column headerText="Nombre Estado Viaje" sortBy="#{viaje.nombre_viaje}" filterBy="#{viaje.nombre_viaje}" filterMatchMode="contains" style="width: 150px; font-size: 12px;">
-                    <h:outputText value="#{viaje.nombre_viaje}" />
-                </p:column>
-                <p:column headerText="Vehículo" sortBy="#{viaje.vehiculo}" filterBy="#{viaje.vehiculo}" filterMatchMode="contains" style="width: 100px; font-size: 12px;">
+                <p:column headerText="Vehículo" sortBy="#{viaje.vehiculo}" filterBy="#{viaje.vehiculo}" filterMatchMode="contains" style="width: 150px; font-size: 10px;">
                     <h:outputText value="#{viaje.vehiculo}" />
                 </p:column>
-                <p:column headerText="Nombre Transportista" sortBy="#{viaje.nombre_transportista}" filterBy="#{viaje.nombre_transportista}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                <p:column headerText="Transportista" sortBy="#{viaje.nombre_transportista}" filterBy="#{viaje.nombre_transportista}" filterMatchMode="contains" style="width: 150px; font-size: 10px;">
                     <h:outputText value="#{viaje.nombre_transportista}" />
                 </p:column>
-                <p:column headerText="Tipo Orden" sortBy="#{viaje.tipo_orden_venta}" filterBy="#{viaje.tipo_orden_venta}" filterMatchMode="contains" style="width: 100px; font-size: 12px;">
+                <p:column headerText="Tipo-Orden" sortBy="#{viaje.tipo_orden_venta}" filterBy="#{viaje.tipo_orden_venta}" filterMatchMode="contains" style="width: 150px; font-size: 10px;">
                     <h:outputText value="#{viaje.tipo_orden_venta}" />
                 </p:column>
-                <p:column headerText="No. Orden" sortBy="#{viaje.numero_orden_venta}" filterBy="#{viaje.numero_orden_venta}" filterMatchMode="contains" style="width: 100px; font-size: 12px;">
+                <p:column headerText="No. Orden" sortBy="#{viaje.numero_orden_venta}" filterBy="#{viaje.numero_orden_venta}" filterMatchMode="contains" style="width: 150px; font-size: 10px;">
                     <h:outputText value="#{viaje.numero_orden_venta}" />
                 </p:column>
-                <p:column headerText="Código Cliente" sortBy="#{viaje.codigo_cliente}" filterBy="#{viaje.codigo_cliente}" filterMatchMode="contains" style="width: 100px; font-size: 12px;">
+                <p:column headerText="AB-Cliente" sortBy="#{viaje.codigo_cliente}" filterBy="#{viaje.codigo_cliente}" filterMatchMode="contains" style="width: 150px; font-size: 10px;">
                     <h:outputText value="#{viaje.codigo_cliente}" />
                 </p:column>
-                <p:column headerText="Nombre Cliente" sortBy="#{viaje.nombre_cliente}" filterBy="#{viaje.nombre_cliente}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                <p:column headerText="Cliente" sortBy="#{viaje.nombre_cliente}" filterBy="#{viaje.nombre_cliente}" filterMatchMode="contains" style="width: 150px; font-size: 10px;">
                     <h:outputText value="#{viaje.nombre_cliente}" />
                 </p:column>
-                <p:column headerText="Nombre Cliente Destino" sortBy="#{viaje.nombre_cliente_destino}" filterBy="#{viaje.nombre_cliente_destino}" filterMatchMode="contains" style="width: 200px; font-size: 12px;">
+                <p:column headerText="Cliente-Destino" sortBy="#{viaje.nombre_cliente_destino}" filterBy="#{viaje.nombre_cliente_destino}" filterMatchMode="contains" style="width: 150px; font-size: 10px;">
                     <h:outputText value="#{viaje.nombre_cliente_destino}" />
                 </p:column>
-                <p:column headerText="Fecha-Hora" sortBy="#{viaje.fecha_hora}" filterBy="#{viaje.fecha_hora}" filterMatchMode="contains" style="width: 100px; font-size: 12px;">
+                <p:column headerText="Fecha-Hora-Registro" sortBy="#{viaje.fecha_hora}" filterBy="#{viaje.fecha_hora}" filterMatchMode="contains" style="width: 150px; font-size: 10px;">
                     <h:outputText value="#{viaje.fecha_hora}" />
                 </p:column>
-                <p:column headerText="Fecha-Hora-Terminado" sortBy="#{viaje.fecha_hora_terminado}" filterBy="#{viaje.fecha_hora_terminado}" filterMatchMode="contains" style="width: 100px; font-size: 12px;">
+                <p:column headerText="Fecha-Hora-Terminado" sortBy="#{viaje.fecha_hora_terminado}" filterBy="#{viaje.fecha_hora_terminado}" filterMatchMode="contains" style="width: 150px; font-size: 10px;">
                     <h:outputText value="#{viaje.fecha_hora_terminado}" />
                 </p:column>
-                <p:column headerText="Tracking" sortBy="#{viaje.rastreable}" filterBy="#{viaje.rastreable}" filterMatchMode="contains" style="width: 100px; font-size: 12px;">
+                <p:column headerText="Tracking" sortBy="#{viaje.rastreable}" filterBy="#{viaje.rastreable}" filterMatchMode="contains" style="width: 150px; font-size: 10px;">
                     <h:outputText value="#{viaje.rastreable}" />
                 </p:column>
-                <p:column headerText="Disponibilidad" sortBy="#{viaje.disponibilidad}" filterBy="#{viaje.disponibilidad}" filterMatchMode="contains" style="width: 100px; font-size: 12px;">
+                <p:column headerText="Disponibilidad" sortBy="#{viaje.disponibilidad}" filterBy="#{viaje.disponibilidad}" filterMatchMode="contains" style="width: 150px; font-size: 10px;">
                     <h:outputText value="#{viaje.disponibilidad}" />
                 </p:column>
-                <p:column headerText="Cabezal" sortBy="#{viaje.cabezal}" filterBy="#{viaje.cabezal}" filterMatchMode="contains" style="width: 100px; font-size: 12px;">
+                <p:column headerText="Cabezal" sortBy="#{viaje.cabezal}" filterBy="#{viaje.cabezal}" filterMatchMode="contains" style="width: 150px; font-size: 10px;">
                     <h:outputText value="#{viaje.cabezal}" />
                 </p:column>
-                <p:column headerText="Cabezal-IMEI" sortBy="#{viaje.imei_cabezal}" filterBy="#{viaje.imei_cabezal}" filterMatchMode="contains" style="width: 150px; font-size: 12px;">
+                <p:column headerText="IMEI-Cabezal" sortBy="#{viaje.imei_cabezal}" filterBy="#{viaje.imei_cabezal}" filterMatchMode="contains" style="width: 150px; font-size: 10px;">
                     <h:outputText value="#{viaje.imei_cabezal}" />
                 </p:column>
-                <p:column headerText="No. Ubicaciones" sortBy="#{viaje.numero_ubicaciones_gps}" filterBy="#{viaje.numero_ubicaciones_gps}" filterMatchMode="contains" style="width: 100px; font-size: 12px;">
+                <p:column headerText="No. Ubicaciones" sortBy="#{viaje.numero_ubicaciones_gps}" filterBy="#{viaje.numero_ubicaciones_gps}" filterMatchMode="contains" style="width: 150px; font-size: 10px;">
                     <h:outputText value="#{viaje.numero_ubicaciones_gps}" />
                 </p:column>
             </p:dataTable>
             <p:contextMenu for="tblViajes">
-                <p:menuitem value="Viaje-Ubicaciones" actionListener="#{Viajes.mostrar_ubicaciones}" icon="pi pi-map" update="formPlantilla:formUbicaciones:tblUbicaciones,formPlantilla:formUbicaciones:mapUbicaciones"/>
                 <p:menuitem value="Cliente-Destino" actionListener="#{Viajes.mostrar_cliente_destino}" icon="pi pi-map" update="formPlantilla:formClienteDestino"/>
+                <p:menuitem value="Detalle-Viaje" actionListener="#{Viajes.mostrar_ubicaciones}" icon="pi pi-map" update="formPlantilla:formUbicaciones:tblUbicaciones,formPlantilla:formUbicaciones:mapUbicaciones"/>
+                <p:menuitem value="Ubicación-Actual" actionListener="#{Viajes.mostrar_ubicacion_actual}" icon="pi pi-map" update="formPlantilla:formUbicaciones:tblUbicaciones,formPlantilla:formUbicaciones:mapUbicaciones"/>
             </p:contextMenu>
         </p:panel>
         
-        <p:dialog id="dlgUbicaciones" widgetVar="widvarUbicaciones" modal="true" appendTo="@(body)" resizable="false" closable="true" closeOnEscape="true" width="1000" style="font-size:12px; font-weight:bold;">
+        <p:dialog id="dlgUbicaciones" widgetVar="widvarUbicaciones" modal="true" appendTo="@(body)" resizable="false" closable="true" closeOnEscape="true" width="1000" style="font-size:14px; font-weight:bold;">
             <h:form id="formUbicaciones">
                 <p:dataTable 
                     id="tblUbicaciones" 
@@ -171,7 +184,7 @@
             </h:form>
         </p:dialog>
         
-        <p:dialog id="dlgClienteDestino" widgetVar="widvarClienteDestino" modal="true" appendTo="@(body)" resizable="false" closable="true" closeOnEscape="true" style="font-size:12px; font-weight:bold;">
+        <p:dialog id="dlgClienteDestino" widgetVar="widvarClienteDestino" modal="true" appendTo="@(body)" resizable="false" closable="true" closeOnEscape="true" style="font-size:14px; font-weight:bold;">
             <h:form id="formClienteDestino">
                 <p:panelGrid columns="4">
                     <p:outputLabel value="Id-Cliente-Destino" style="font-weight: bold; font-size: 12px;"/>
@@ -211,5 +224,6 @@
                 </p:confirmDialog>
             </div>
         </p:dialog>
+        
     </ui:define>
 </ui:composition>

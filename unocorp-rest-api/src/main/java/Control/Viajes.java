@@ -261,7 +261,9 @@ public class Viajes implements Serializable {
                     + "A.ID_PAIS=" + id_pais + " AND "
                     + "A.ID_COMPANIA=" + id_compania + " AND "
                     + "A.ID_PLANTA=" + id_planta + " AND "
-                    + "A.NUMERO_VIAJE=" + numero_viaje;
+                    + "A.NUMERO_VIAJE=" + numero_viaje + " "
+                    + "ORDER BY "
+                    + "A.FECHA_HORA";
             Statement stmt1 = conn.createStatement();
             ResultSet rs1 = stmt1.executeQuery(cadenasql);
             while (rs1.next()) {
