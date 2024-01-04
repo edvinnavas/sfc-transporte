@@ -307,8 +307,8 @@ public class Viajes implements Serializable {
                     sum_latitude = sum_latitude + Double.valueOf(viaje_ubicacion.getLista_ubicaciones().get(i).getLatitude());
                     sum_longitude = sum_longitude + Double.valueOf(viaje_ubicacion.getLista_ubicaciones().get(i).getLogitude());
                 }
-                Double avg_latitude = sum_latitude / contador;
-                Double avg_longitude = sum_longitude / contador;
+                Double avg_latitude = sum_latitude;
+                Double avg_longitude = sum_longitude;
                 this.central_map = avg_latitude.toString() + ", " + avg_longitude;
                 
                 LatLng planta_coord1 = new LatLng(viaje_ubicacion.getPlanta().getZona_latitud_1(), viaje_ubicacion.getPlanta().getZona_longitud_1());
