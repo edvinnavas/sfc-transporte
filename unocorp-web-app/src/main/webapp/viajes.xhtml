@@ -73,7 +73,6 @@
                 scrollable="true" 
                 scrollWidth="98%" 
                 scrollHeight="450"
-                rowStyleClass="#{viaje.estado eq 'ACT' ? 'activo' : null}"
                 style="font-size: 10px;">
                 
                 <p:ajax event="rowDblselect" listener="#{Viajes.mostrar_ubicaciones}" update="formPlantilla:formUbicaciones:tblUbicaciones,formPlantilla:formUbicaciones:mapUbicaciones" global="false"/>

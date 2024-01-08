@@ -298,6 +298,7 @@ public class Disponibilidad implements Serializable {
                     }
                 }
             }
+            wb.close();
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje del sistema.", event.getFile().getFileName() + " is uploaded."));
         } catch (Exception ex) {
