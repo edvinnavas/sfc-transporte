@@ -15,11 +15,14 @@ mysql> GRANT ALL ON db_transportes.* TO 'user_transportes'@'%';
 
 docker run -d --name UNOCORP-PAYARA --network unocorp_network -p 9001:8080 -p 4848:4848 --restart=always --env TZ=America/Guatemala payara/server-full:6.2023.6
 
-docker build -t unocorp/transportes-cliente-rest-api:1.0.0 .
-docker run -p 9002:8018 -t -i --network unocorp_network --name UNOCORP-CLIENTE-REST-VIAJES --restart=always --env TZ=America/Guatemala unocorp/transportes-cliente-rest-api:1.0.0
-
 docker build -t unocorp/unocorp-rest-api:1.0.0 .
 docker run -p 9003:8080 -t -i --network unocorp_network --name UNOCORP-REST-API --restart=always --env TZ=America/Guatemala unocorp/unocorp-rest-api:1.0.0
+
+docker build -t unocorp/unocorp-clientes-rest:1.0.0 .
+docker run -p 9002:8018 -t -i --network unocorp_network --name UNOCORP-CLIENTES-REST --restart=always --env TZ=America/Guatemala unocorp/unocorp/unocorp-clientes-rest:1.0.0
+
+docker build -t unocorp/transportes-cliente-rest-api:1.0.0 .
+docker run -p 9002:8018 -t -i --network unocorp_network --name UNOCORP-CLIENTE-REST-VIAJES --restart=always --env TZ=America/Guatemala unocorp/transportes-cliente-rest-api:1.0.0
 
 docker build -t unocorp/unocorp-cliente-rest-sms:1.0.0 .
 docker run -p 9004:8080 -t -i --network unocorp_network --name UNOCORP-REST-API-SMS --restart=always --env TZ=America/Guatemala unocorp/unocorp-cliente-rest-sms:1.0.0
