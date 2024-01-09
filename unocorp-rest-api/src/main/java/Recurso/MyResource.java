@@ -227,7 +227,7 @@ public class MyResource implements Serializable {
             Control.Ctrl_Tracking ctrl_tracking = new Control.Ctrl_Tracking();
             resultado = ctrl_tracking.tracking(tipo_orden, numero_orden);
         } catch (Exception ex) {
-            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: lista_plantas(), ERRROR: " + ex.toString();
+            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: tracking(), ERRROR: " + ex.toString();
         }
 
         return resultado;

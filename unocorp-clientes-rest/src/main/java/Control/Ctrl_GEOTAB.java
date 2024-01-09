@@ -9,10 +9,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 public class Ctrl_GEOTAB implements Serializable {
 
@@ -34,17 +32,21 @@ public class Ctrl_GEOTAB implements Serializable {
             ClienteRest.Cliente_Rest_GEOTAB cliente_rest_api = new ClienteRest.Cliente_Rest_GEOTAB();
             
             String database_geotab;
+            String lista_transportista;
             switch (database) {
                 case "CR": {
                     database_geotab = "grupoterra_costarica";
+                    lista_transportista = "5";
                     break;
                 }
                 case "GT": {
                     database_geotab = "grupoterra_guatemala";
+                    lista_transportista = "3, 36";
                     break;
                 }
                 default: {
                     database_geotab = "";
+                    lista_transportista = "";
                     break;
                 }
             }
@@ -207,7 +209,7 @@ public class Ctrl_GEOTAB implements Serializable {
                     + "LEFT JOIN GEOTAB_DETALLE SOD ON (CD.IMEI=SOD.IMEI AND STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(V.FECHA_VIAJE, '%Y-%m-%d %H:%i:%s') AND '" + dateFormat1.format(fecha_actual.getTime()) + " 23:59:59') "
                     + "WHERE "
                     + "V.ID_ESTADO_VIAJE NOT IN (2, 5, 10) AND "
-                    + "T.ID_TRANSPORTISTA IN (5) AND "
+                    + "T.ID_TRANSPORTISTA IN (" + lista_transportista + ") AND "
                     + "T.RASTREABLE=1 AND "
                     + "SOD.ID_GEOTAB IS NOT NULL";
             stmt = conn.createStatement();
