@@ -214,4 +214,23 @@ public class MyResource implements Serializable {
         return resultado;
     }
 
+    @GET
+    @Path("tracking/{tipo_orden}/{numero_orden}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String tracking(
+            @PathParam("tipo_orden") String tipo_orden, 
+            @PathParam("numero_orden") Long numero_orden) {
+
+        String resultado;
+
+        try {
+            Control.Ctrl_Tracking ctrl_tracking = new Control.Ctrl_Tracking();
+            resultado = ctrl_tracking.tracking(tipo_orden, numero_orden);
+        } catch (Exception ex) {
+            resultado = "PROYECTO: unocorp-rest-api, CLASE: " + this.getClass().getName() + ", METODO: lista_plantas(), ERRROR: " + ex.toString();
+        }
+
+        return resultado;
+    }
+
 }

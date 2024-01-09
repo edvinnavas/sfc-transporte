@@ -2,6 +2,4 @@
 /unocorp-rest-api/target/
 /unocorp-web-app/target/
 /unocorp-clientes-rest/target/
-/client-rest-sfc-transporte/target/
-/client-rest-sms/target/
-/client-rest-geotab/target/
+/unocorp-pduno-rest-api/target/
