@@ -71,7 +71,7 @@ public class Ctrl_GEOTAB implements Serializable {
 
             // CONSUMIR EL METODO GetFeed PARA OBTENER LAS UBICACIONES DE LOS VEHICULOS.
             Calendar fecha_actual_w = Calendar.getInstance();
-            fecha_actual_w.add(Calendar.MINUTE, -59);
+            fecha_actual_w.add(Calendar.MINUTE, -30);
 
             Entidad.GEOTAB.Search search = new Entidad.GEOTAB.Search();
             search.setFromDate(dateFormat.format(fecha_actual_w.getTime()));
