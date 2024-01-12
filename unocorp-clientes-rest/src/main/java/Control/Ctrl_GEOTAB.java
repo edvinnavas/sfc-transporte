@@ -136,56 +136,48 @@ public class Ctrl_GEOTAB implements Serializable {
 
             Integer CORRELATIVO = 0;
             for (Integer i = 0; i < get_feed_response.getResult().getData().size(); i++) {
-                Long existe = control_base_datos.ObtenerLong("SELECT F.ID_GEOTAB FROM GEOTAB_DETALLE F WHERE " 
-                        + "F.DATETIME_UBICACION='" + dateFormat_db.format(dateFormat_zulu.parse(get_feed_response.getResult().getData().get(i).getDateTime())) + "' AND "
-                        + "F.IMEI='" + get_feed_response.getResult().getData().get(i).getDevice().getId() + "-" + database + "' AND "
-                        + "F.LATITUDE='" + get_feed_response.getResult().getData().get(i).getLatitude() + "' AND "
-                        + "F.LONGITUDE='" + get_feed_response.getResult().getData().get(i).getLongitude() + "'", conn);
-
-                if(existe == null) {
-                    CORRELATIVO++;
-                    // Date datetime = dateFormat_zulu.parse(get_feed_response.getResult().getData().get(i).getDateTime());
-                    sql = "INSERT INTO GEOTAB_DETALLE (" 
-                            + "ID_GEOTAB, "
-                            + "CORRELATIVO, "
-                            + "NAME_VEHICULO, "
-                            + "IMEI, "
-                            + "ODOMETER, "
-                            + "LATITUDE, "
-                            + "LONGITUDE, "
-                            + "DATETIME_UBICACION, "
-                            + "SPEED, "
-                            + "SPEEDMEASURE, "
-                            + "HEADING, "
-                            + "LOCATIONDESCRIPTION, "
-                            + "DIRVERNAME, "
-                            + "DRAVERCODE, "
-                            + "IGNITION, "
-                            + "DATEUTC, "
-                            + "ADDRESS,"
-                            + "FECHA_HORA) VALUES ("
-                            + ID_GEOTAB + ","
-                            + CORRELATIVO + ",'"
-                            + get_feed_response.getResult().getData().get(i).getDevice().getId() + "-" + database + "','"
-                            + get_feed_response.getResult().getData().get(i).getDevice().getId() + "-" + database + "','"
-                            + get_feed_response.getResult().getData().get(i).getSpeed() + "','"
-                            + get_feed_response.getResult().getData().get(i).getLatitude() + "','"
-                            + get_feed_response.getResult().getData().get(i).getLongitude() + "','"
-                            + dateFormat_db.format(dateFormat_zulu.parse(get_feed_response.getResult().getData().get(i).getDateTime())) + "','"
-                            + get_feed_response.getResult().getData().get(i).getSpeed() + "','"
-                            + "Kmh" + "','"
-                            + "0" + "','"
-                            + "Sin descripción ubicación" + "','"
-                            + "No DriverName" + "','"
-                            + "No DriverCode" + "','"
-                            + get_feed_response.getResult().getData().get(i).getSpeed() + "','"
-                            + dateFormat_db.format(dateFormat_zulu.parse(get_feed_response.getResult().getData().get(i).getDateTime())) + "','"
-                            + "Sin descripción ubicación" + "',"
-                            + "CURRENT_TIMESTAMP" + ")";
-                    stmt = conn.createStatement();
-                    stmt.executeUpdate(sql);
-                    stmt.close();
-                }
+                CORRELATIVO++;
+                // Date datetime = dateFormat_zulu.parse(get_feed_response.getResult().getData().get(i).getDateTime());
+                sql = "INSERT INTO GEOTAB_DETALLE (" 
+                        + "ID_GEOTAB, "
+                        + "CORRELATIVO, "
+                        + "NAME_VEHICULO, "
+                        + "IMEI, "
+                        + "ODOMETER, "
+                        + "LATITUDE, "
+                        + "LONGITUDE, "
+                        + "DATETIME_UBICACION, "
+                        + "SPEED, "
+                        + "SPEEDMEASURE, "
+                        + "HEADING, "
+                        + "LOCATIONDESCRIPTION, "
+                        + "DIRVERNAME, "
+                        + "DRAVERCODE, "
+                        + "IGNITION, "
+                        + "DATEUTC, "
+                        + "ADDRESS,"
+                        + "FECHA_HORA) VALUES ("
+                        + ID_GEOTAB + ","
+                        + CORRELATIVO + ",'"
+                        + get_feed_response.getResult().getData().get(i).getDevice().getId() + "-" + database + "','"
+                        + get_feed_response.getResult().getData().get(i).getDevice().getId() + "-" + database + "','"
+                        + get_feed_response.getResult().getData().get(i).getSpeed() + "','"
+                        + get_feed_response.getResult().getData().get(i).getLatitude() + "','"
+                        + get_feed_response.getResult().getData().get(i).getLongitude() + "','"
+                        + dateFormat_db.format(dateFormat_zulu.parse(get_feed_response.getResult().getData().get(i).getDateTime())) + "','"
+                        + get_feed_response.getResult().getData().get(i).getSpeed() + "','"
+                        + "Kmh" + "','"
+                        + "0" + "','"
+                        + "Sin descripción ubicación" + "','"
+                        + "No DriverName" + "','"
+                        + "No DriverCode" + "','"
+                        + get_feed_response.getResult().getData().get(i).getSpeed() + "','"
+                        + dateFormat_db.format(dateFormat_zulu.parse(get_feed_response.getResult().getData().get(i).getDateTime())) + "','"
+                        + "Sin descripción ubicación" + "',"
+                        + "CURRENT_TIMESTAMP" + ")";
+                stmt = conn.createStatement();
+                stmt.executeUpdate(sql);
+                stmt.close();
             }
 
             sql = "UPDATE GEOTAB_ENCABEZADO SET NUMERO_UBICACIONES=" + CORRELATIVO + " WHERE ID_GEOTAB=" + ID_GEOTAB;
