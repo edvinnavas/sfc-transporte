@@ -209,7 +209,7 @@ public class Ctrl_GEOTAB implements Serializable {
 
             String condicion_dias_tracking;
             if(dias_tracking == 1) {
-                condicion_dias_tracking = "BETWEEN DATE_FORMAT(V.FECHA_VIAJE, '%Y-%m-%d %H:%i:%s')";
+                condicion_dias_tracking = "DATE_FORMAT(V.FECHA_VIAJE, '%Y-%m-%d %H:%i:%s')";
             } else {
                 condicion_dias_tracking = "'" + dateFormat1.format(fecha_actual.getTime()) + " 00:00:00'";
             }
