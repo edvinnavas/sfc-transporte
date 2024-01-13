@@ -9,8 +9,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class Ctrl_GEOTAB implements Serializable {
 
@@ -44,7 +46,7 @@ public class Ctrl_GEOTAB implements Serializable {
                 case "GT": {
                     database_geotab = "grupoterra_guatemala";
                     lista_transportista = "3, 36";
-                    periodo_consulta = -5;
+                    periodo_consulta = -30;
                     break;
                 }
                 default: {
@@ -78,7 +80,7 @@ public class Ctrl_GEOTAB implements Serializable {
             fecha_actual_w.add(Calendar.MINUTE, periodo_consulta);
 
             Entidad.GEOTAB.Search search = new Entidad.GEOTAB.Search();
-            System.out.println("GEOTAB: FECHA-CONSULTA: " + dateFormat.format(fecha_actual_w.getTime()));
+            // System.out.println("GEOTAB: FECHA-CONSULTA: " + dateFormat.format(fecha_actual_w.getTime()));
             search.setFromDate(dateFormat.format(fecha_actual_w.getTime()));
 
             Entidad.GEOTAB.Credentials credentials = new Entidad.GEOTAB.Credentials();
@@ -96,31 +98,42 @@ public class Ctrl_GEOTAB implements Serializable {
             get_feed.setMethod("GetFeed");
             get_feed.setParams(params_get_feed);
 
-            // System.out.println("JSON-GET-FEED: " + gson.toJson(get_feed));
+            System.out.println("JSON-GET-FEED: " + gson.toJson(get_feed));
             json_result = cliente_rest_api.GeoTab_Services(gson.toJson(get_feed));
 
             Type get_feed_response_type = new TypeToken<Entidad.GEOTAB.GetFeed_Response>() {
             }.getType();
 
             Entidad.GEOTAB.GetFeed_Response get_feed_response = new Gson().fromJson(json_result, get_feed_response_type);
+            System.out.println("NUMERO-REGISTROS-INICIAL:" + get_feed_response.getResult().getData().size());
             
-//            List<Entidad.GEOTAB.Data> lst_data_temp = new ArrayList<>();
-//            for (Integer i = 0; i < get_feed_response.getResult().getData().size(); i++) {
-//                Boolean no_existe = true;
-//                for (Integer j = 0; j < lst_data_temp.size(); j++) {
-//                    if(get_feed_response.getResult().getData().get(i).getDevice().getId().equals(lst_data_temp.get(j).getDevice().getId())) {
-//                        no_existe = false;
-//                    }
-//                }
-//                // INSERTA EL NUEVO REGISTRO EN EL ARRAY TEMPORAL.
-//                if(no_existe) {
-//                    Entidad.GEOTAB.Data data = get_feed_response.getResult().getData().get(i);
-//                    Date datetime = dateFormat_zulu.parse(get_feed_response.getResult().getData().get(i).getDateTime());
-//                    data.setDateTime(dateFormat_db.format(datetime));
-//                    lst_data_temp.add(data);
-//                }
-//            }
-//            get_feed_response.getResult().setData(lst_data_temp);
+            List<Entidad.GEOTAB.Data> lst_data_temp = new ArrayList<>();
+            for (Integer i = 0; i < get_feed_response.getResult().getData().size(); i++) {
+                
+                Calendar fecha_consulta_inicial = Calendar.getInstance();
+                fecha_consulta_inicial.add(Calendar.HOUR, -1);
+
+                Calendar fecha_consulta_final = Calendar.getInstance();
+                fecha_consulta_final.add(Calendar.HOUR, 1);
+
+                Calendar fecha_registro_ws = Calendar.getInstance();
+                fecha_registro_ws.setTime(dateFormat_zulu.parse(get_feed_response.getResult().getData().get(i).getDateTime()));
+
+                SimpleDateFormat dateFormat_temp = new SimpleDateFormat("yyyyMMddHHmmss");
+
+                Long fechaInicial = Long.valueOf(dateFormat_temp.format(fecha_consulta_inicial.getTime()));
+                Long fechaFinal = Long.valueOf(dateFormat_temp.format(fecha_consulta_final.getTime()));
+                Long fechaRegistro = Long.valueOf(dateFormat_temp.format(fecha_registro_ws.getTime()));
+
+                if((fechaRegistro >= fechaInicial) && (fechaRegistro <= fechaFinal)) {
+                    Entidad.GEOTAB.Data data = get_feed_response.getResult().getData().get(i);
+                    Date datetime = dateFormat_zulu.parse(get_feed_response.getResult().getData().get(i).getDateTime());
+                    data.setDateTime(dateFormat_db.format(datetime));
+                    lst_data_temp.add(data);
+                }
+            }
+            get_feed_response.getResult().setData(lst_data_temp);
+            System.out.println("NUMERO-REGISTROS-FINAL:" + get_feed_response.getResult().getData().size());
 
             resultado = gson.toJson(get_feed_response);
             
@@ -136,9 +149,11 @@ public class Ctrl_GEOTAB implements Serializable {
                     + "CURRENT_TIMESTAMP" + ","
                     + "0" + ")";
             Statement stmt = conn.createStatement();
+            // System.out.println("SQL: " + sql);
             stmt.executeUpdate(sql);
             stmt.close();
 
+            System.out.println("INICIA-INSERT-GEOTAB-DETALLE:" + new Date());
             Integer CORRELATIVO = 0;
             for (Integer i = 0; i < get_feed_response.getResult().getData().size(); i++) {
                 CORRELATIVO++;
@@ -181,12 +196,15 @@ public class Ctrl_GEOTAB implements Serializable {
                         + "Sin descripción ubicación" + "',"
                         + "CURRENT_TIMESTAMP" + ")";
                 stmt = conn.createStatement();
+                // System.out.println("SQL: " + sql);
                 stmt.executeUpdate(sql);
                 stmt.close();
             }
+            System.out.println("FINALIZA-INSERT-GEOTAB-DETALLE:" + new Date());
 
             sql = "UPDATE GEOTAB_ENCABEZADO SET NUMERO_UBICACIONES=" + CORRELATIVO + " WHERE ID_GEOTAB=" + ID_GEOTAB;
             stmt = conn.createStatement();
+            // System.out.println("SQL: " + sql);
             stmt.executeUpdate(sql);
             stmt.close();
             
@@ -220,6 +238,7 @@ public class Ctrl_GEOTAB implements Serializable {
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             
+            System.out.println("INICIA-INSERT-VIAJE-UBICACIONES:" + new Date());
             while (rs.next()) {
                 Long ID_PAIS = rs.getLong(1);
                 Long ID_COMPANIA = rs.getLong(2);
@@ -234,53 +253,9 @@ public class Ctrl_GEOTAB implements Serializable {
                 String LONGITUDE = rs.getString(10);
                 String LOCATIONDESCRIPTION = rs.getString(11);
                 Long ID_CLIENTE_DESTINO = rs.getLong(12);
-                
-                /* CONSUME API-GOOGLE-DISTANCE-MATRIX */
-                String departure_time = control_base_datos.ObtenerString("SELECT A.VALOR FROM PARAMETROS_GPS A WHERE A.ID_PARAMETRO=3", conn);
-                String origins = LATITUDE + "%2C" + LONGITUDE;
-                String LATITUDE_DESTINO = control_base_datos.ObtenerString("SELECT FORMAT((A.ZONA_LATITUD_1 + A.ZONA_LATITUD_2 + A.ZONA_LATITUD_3 + A.ZONA_LATITUD_4 + A.ZONA_LATITUD_5) / 5, 6) AVG_LATITUD FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
-                String LONGITUDE_DESTINO = control_base_datos.ObtenerString("SELECT FORMAT((A.ZONA_LONGITUD_1 + A.ZONA_LONGITUD_2 + A.ZONA_LONGITUD_3 + A.ZONA_LONGITUD_4 + A.ZONA_LONGITUD_5) / 5, 6) AVG_LONGITUD FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
-                String destinations = LATITUDE_DESTINO + "%2C" + LONGITUDE_DESTINO;
-                String key = control_base_datos.ObtenerString("SELECT A.VALOR FROM PARAMETROS_GPS A WHERE A.ID_PARAMETRO=2", conn);
-                
-                //Cliente_Rest_Google_Maps cliente_rest_google_maps = new Cliente_Rest_Google_Maps();  <=== ESTE SI VA COMENTADO.
-                // String json_result = cliente_rest_google_maps.distancematrix(departure_time, origins, destinations, key);
-                
-                // Entidad.GoogleDistanceMatrix google_distance_matrix = null;
-                // try {
-                //     Type google_distance_matrix_type = new TypeToken<Entidad.GoogleDistanceMatrix>() {
-                //     }.getType();
-                //     google_distance_matrix = new Gson().fromJson(json_result, google_distance_matrix_type);
-                // } catch(JsonSyntaxException json_ex) {
-                //     System.out.println("ERROR GSON-CONVERT JSON-RESULTA: " + json_ex.toString());
-                // }
-                
                 String ETA_HORAS = "0.00";
                 String EDA_KMS = "0.00";
                 
-                /* VALIDA SI LA UBICACIÓN YA EXISTE EN LA TABLA VIAJE_UBICACIONES */
-                // Boolean no_existe = true;
-                // sql = "SELECT "
-                        // + "A.LATITUDE, A.LONGITUDE "
-                        // + "FROM "
-                        // + "VIAJE_UBICACIONES A "
-                        // + "WHERE "
-                        // + "A.ID_PAIS=" + ID_PAIS + " AND "
-                        // + "A.ID_COMPANIA=" + ID_COMPANIA + " AND "
-                        // + "A.ID_PLANTA=" + ID_PLANTA + " AND "
-                        // + "A.NUMERO_VIAJE=" + NUMERO_VIAJE + " AND "
-                        // + "A.TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
-                        // + "A.NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA + " AND "
-                        // + "A.FECHA_HORA='" + dateFormat2.format(FECHA_HORA) + "' AND "
-                        // + "A.IMEI='" + IMEI + "'";
-                // Statement stmt1 = conn.createStatement();
-                // ResultSet rs1 = stmt1.executeQuery(sql);
-                // while (rs1.next()) {
-                    // no_existe = false;
-                // }
-                // rs1.close();
-                // stmt1.close();
-
                 try {
                     sql = "INSERT INTO VIAJE_UBICACIONES ("
                             + "ID_PAIS, "
@@ -310,7 +285,7 @@ public class Ctrl_GEOTAB implements Serializable {
                             + ETA_HORAS + "','"
                             + EDA_KMS + "')";
                     Statement stmt1 = conn.createStatement();
-                    // System.out.println("GEOTAB: INSERT VIAJE_UBICACIONES: " + sql);
+                    System.out.println("SQL: " + sql);
                     stmt1.executeUpdate(sql);
                     stmt1.close();
 
@@ -424,7 +399,7 @@ public class Ctrl_GEOTAB implements Serializable {
                                 + "TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
                                 + "NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA;
                         Statement stmt1 = conn.createStatement();
-                        // System.out.println("CADENASQL-CERRAR-VIAJE: " + cadenasql);
+                        // System.out.println("SQL: " + sql);
                         stmt1.executeUpdate(sql);
                         stmt1.close();
                     }

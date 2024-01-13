@@ -83,6 +83,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                     + "CURRENT_TIMESTAMP" + ","
                     + "0" + ")";
             Statement stmt = conn.createStatement();
+            // System.out.println("SQL: " + sql);
             stmt.executeUpdate(sql);
             stmt.close();
 
@@ -128,12 +129,14 @@ public class Ctrl_SMS_OPEN implements Serializable {
                         + lista_ubicaciones.get(i).getAddress() + "',"
                         + "CURRENT_TIMESTAMP" + ")";
                 stmt = conn.createStatement();
+                // System.out.println("SQL: " + sql);
                 stmt.executeUpdate(sql);
                 stmt.close();
             }
 
             sql = "UPDATE SMS_OPEN_ENCABEZADO SET NUMERO_UBICACIONES=" + CORRELATIVO + " WHERE ID_SMS_OPEN=" + ID_SMS_OPEN;
             stmt = conn.createStatement();
+            // System.out.println("SQL: " + sql);
             stmt.executeUpdate(sql);
             stmt.close();
             
@@ -180,53 +183,9 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 String LONGITUDE = rs.getString(10);
                 String LOCATIONDESCRIPTION = rs.getString(11);
                 Long ID_CLIENTE_DESTINO = rs.getLong(12);
-                
-                /* CONSUME API-GOOGLE-DISTANCE-MATRIX */
-                String departure_time = control_base_datos.ObtenerString("SELECT A.VALOR FROM PARAMETROS_GPS A WHERE A.ID_PARAMETRO=3", conn);
-                String origins = LATITUDE + "%2C" + LONGITUDE;
-                String LATITUDE_DESTINO = control_base_datos.ObtenerString("SELECT FORMAT((A.ZONA_LATITUD_1 + A.ZONA_LATITUD_2 + A.ZONA_LATITUD_3 + A.ZONA_LATITUD_4 + A.ZONA_LATITUD_5) / 5, 6) AVG_LATITUD FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
-                String LONGITUDE_DESTINO = control_base_datos.ObtenerString("SELECT FORMAT((A.ZONA_LONGITUD_1 + A.ZONA_LONGITUD_2 + A.ZONA_LONGITUD_3 + A.ZONA_LONGITUD_4 + A.ZONA_LONGITUD_5) / 5, 6) AVG_LONGITUD FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
-                String destinations = LATITUDE_DESTINO + "%2C" + LONGITUDE_DESTINO;
-                String key = control_base_datos.ObtenerString("SELECT A.VALOR FROM PARAMETROS_GPS A WHERE A.ID_PARAMETRO=2", conn);
-                
-                // Cliente_Rest_Google_Maps cliente_rest_google_maps = new Cliente_Rest_Google_Maps();
-                // String json_result = cliente_rest_google_maps.distancematrix(departure_time, origins, destinations, key);
-                
-                // Entidad.GoogleDistanceMatrix google_distance_matrix = null;
-                // try {
-                //     Type google_distance_matrix_type = new TypeToken<Entidad.GoogleDistanceMatrix>() {
-                //     }.getType();
-                //     google_distance_matrix = new Gson().fromJson(json_result, google_distance_matrix_type);
-                // } catch(JsonSyntaxException json_ex) {
-                //     System.out.println("ERROR GSON-CONVERT JSON-RESULTA: " + json_ex.toString());
-                // }
-                
                 String ETA_HORAS = "0.00";
                 String EDA_KMS = "0.00";
                 
-                /* VALIDA SI LA UBICACIÓN YA EXISTE EN LA TABLA VIAJE_UBICACIONES */
-                // Boolean no_existe = true;
-                // sql = "SELECT "
-                        // + "A.LATITUDE, A.LONGITUDE "
-                        // + "FROM "
-                        // + "VIAJE_UBICACIONES A "
-                        // + "WHERE "
-                        // + "A.ID_PAIS=" + ID_PAIS + " AND "
-                        // + "A.ID_COMPANIA=" + ID_COMPANIA + " AND "
-                        // + "A.ID_PLANTA=" + ID_PLANTA + " AND "
-                        // + "A.NUMERO_VIAJE=" + NUMERO_VIAJE + " AND "
-                        // + "A.TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
-                        // + "A.NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA + " AND "
-                        // + "A.FECHA_HORA='" + dateFormat2.format(FECHA_HORA) + "' AND "
-                        // + "A.IMEI='" + IMEI + "'";
-                // Statement stmt1 = conn.createStatement();
-                // ResultSet rs1 = stmt1.executeQuery(sql);
-                // while (rs1.next()) {
-                    // no_existe = false;
-                // }
-                // rs1.close();
-                // stmt1.close();
-
                 try {
                     sql = "INSERT INTO VIAJE_UBICACIONES ("
                             + "ID_PAIS, "
@@ -256,13 +215,13 @@ public class Ctrl_SMS_OPEN implements Serializable {
                             + ETA_HORAS + "','"
                             + EDA_KMS + "')";
                     Statement stmt1 = conn.createStatement();
-                    // System.out.println("SMS-OPEN: INSERT VIAJE_UBICACIONES: " + sql);
+                    // System.out.println("SQL: " + sql);
                     stmt1.executeUpdate(sql);
                     stmt1.close();
 
                     this.validar_viajes_cerrados(ID_PAIS, ID_COMPANIA, ID_PLANTA, NUMERO_VIAJE, TIPO_ORDEN_VENTA, NUMERO_ORDEN_VENTA, ID_CLIENTE_DESTINO, conn);
                 } catch(Exception ex) {
-                    // System.out.println("SMS-OOPEN: UBICACION YA EXISTE." + ex.toString());
+                    // System.out.println("SMS-OPEN: UBICACION YA EXISTE." + ex.toString());
                 }
             }
             rs.close();
@@ -373,7 +332,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                                 + "TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
                                 + "NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA;
                         Statement stmt1 = conn.createStatement();
-                        // System.out.println("CADENASQL-CERRAR-VIAJE: " + sql);
+                        // System.out.println("SQL: " + sql);
                         stmt1.executeUpdate(sql);
                         stmt1.close();
                     }
