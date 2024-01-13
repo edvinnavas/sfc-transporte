@@ -184,7 +184,8 @@ public class Ctrl_GEOTAB implements Serializable {
                         + get_feed_response.getResult().getData().get(i).getSpeed() + "','"
                         + get_feed_response.getResult().getData().get(i).getLatitude() + "','"
                         + get_feed_response.getResult().getData().get(i).getLongitude() + "','"
-                        + dateFormat_db.format(dateFormat_zulu.parse(get_feed_response.getResult().getData().get(i).getDateTime())) + "','"
+                        // + dateFormat_db.format(dateFormat_zulu.parse(get_feed_response.getResult().getData().get(i).getDateTime())) + "','"
+                        + get_feed_response.getResult().getData().get(i).getDateTime() + "','"
                         + get_feed_response.getResult().getData().get(i).getSpeed() + "','"
                         + "Kmh" + "','"
                         + "0" + "','"
@@ -192,7 +193,8 @@ public class Ctrl_GEOTAB implements Serializable {
                         + "No DriverName" + "','"
                         + "No DriverCode" + "','"
                         + get_feed_response.getResult().getData().get(i).getSpeed() + "','"
-                        + dateFormat_db.format(dateFormat_zulu.parse(get_feed_response.getResult().getData().get(i).getDateTime())) + "','"
+                        // + dateFormat_db.format(dateFormat_zulu.parse(get_feed_response.getResult().getData().get(i).getDateTime())) + "','"
+                        + get_feed_response.getResult().getData().get(i).getDateTime() + "','"
                         + "Sin descripción ubicación" + "',"
                         + "CURRENT_TIMESTAMP" + ")";
                 stmt = conn.createStatement();
