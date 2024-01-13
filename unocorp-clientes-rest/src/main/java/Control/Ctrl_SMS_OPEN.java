@@ -78,19 +78,19 @@ public class Ctrl_SMS_OPEN implements Serializable {
 
             Long ID_SMS_OPEN = control_base_datos.ObtenerLong("SELECT IFNULL(MAX(A.ID_SMS_OPEN),0)+1 MAX_ID FROM SMS_OPEN_ENCABEZADO A", conn);
 
-            String cadenasql = "INSERT INTO SMS_OPEN_ENCABEZADO (ID_SMS_OPEN, FECHA_ACTUALIZACION, NUMERO_UBICACIONES) VALUES ("
+            String sql = "INSERT INTO SMS_OPEN_ENCABEZADO (ID_SMS_OPEN, FECHA_ACTUALIZACION, NUMERO_UBICACIONES) VALUES ("
                     + ID_SMS_OPEN + ","
                     + "CURRENT_TIMESTAMP" + ","
                     + "0" + ")";
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate(cadenasql);
+            stmt.executeUpdate(sql);
             stmt.close();
 
             Integer CORRELATIVO = 0;
             for (Integer i = 0; i < lista_ubicaciones.size(); i++) {
                 CORRELATIVO++;
 
-                cadenasql = "INSERT INTO SMS_OPEN_DETALLE ("
+                sql = "INSERT INTO SMS_OPEN_DETALLE ("
                         + "ID_SMS_OPEN, "
                         + "CORRELATIVO, "
                         + "NAME_VEHICULO, "
@@ -128,19 +128,19 @@ public class Ctrl_SMS_OPEN implements Serializable {
                         + lista_ubicaciones.get(i).getAddress() + "',"
                         + "CURRENT_TIMESTAMP" + ")";
                 stmt = conn.createStatement();
-                stmt.executeUpdate(cadenasql);
+                stmt.executeUpdate(sql);
                 stmt.close();
             }
 
-            cadenasql = "UPDATE SMS_OPEN_ENCABEZADO SET NUMERO_UBICACIONES=" + CORRELATIVO + " WHERE ID_SMS_OPEN=" + ID_SMS_OPEN;
+            sql = "UPDATE SMS_OPEN_ENCABEZADO SET NUMERO_UBICACIONES=" + CORRELATIVO + " WHERE ID_SMS_OPEN=" + ID_SMS_OPEN;
             stmt = conn.createStatement();
-            stmt.executeUpdate(cadenasql);
+            stmt.executeUpdate(sql);
             stmt.close();
             
             Calendar fecha_actual = Calendar.getInstance();
 
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
-            cadenasql = "SELECT DISTINCT "
+            sql = "SELECT DISTINCT "
                     + "V.ID_PAIS, "
                     + "V.ID_COMPANIA, "
                     + "V.ID_PLANTA, "
@@ -165,7 +165,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                     + "T.RASTREABLE=1 AND "
                     + "SOD.ID_SMS_OPEN IS NOT NULL";
             stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(cadenasql);
+            ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 Long ID_PAIS = rs.getLong(1);
                 Long ID_COMPANIA = rs.getLong(2);
@@ -205,30 +205,30 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 String EDA_KMS = "0.00";
                 
                 /* VALIDA SI LA UBICACIÓN YA EXISTE EN LA TABLA VIAJE_UBICACIONES */
-                Boolean no_existe = true;
-                cadenasql = "SELECT "
-                        + "A.LATITUDE, A.LONGITUDE "
-                        + "FROM "
-                        + "VIAJE_UBICACIONES A "
-                        + "WHERE "
-                        + "A.ID_PAIS=" + ID_PAIS + " AND "
-                        + "A.ID_COMPANIA=" + ID_COMPANIA + " AND "
-                        + "A.ID_PLANTA=" + ID_PLANTA + " AND "
-                        + "A.NUMERO_VIAJE=" + NUMERO_VIAJE + " AND "
-                        + "A.TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
-                        + "A.NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA + " AND "
-                        + "A.FECHA_HORA='" + dateFormat2.format(FECHA_HORA) + "' AND "
-                        + "A.IMEI='" + IMEI + "'";
-                Statement stmt1 = conn.createStatement();
-                ResultSet rs1 = stmt1.executeQuery(cadenasql);
-                while (rs1.next()) {
-                    no_existe = false;
-                }
-                rs1.close();
-                stmt1.close();
+                // Boolean no_existe = true;
+                // sql = "SELECT "
+                        // + "A.LATITUDE, A.LONGITUDE "
+                        // + "FROM "
+                        // + "VIAJE_UBICACIONES A "
+                        // + "WHERE "
+                        // + "A.ID_PAIS=" + ID_PAIS + " AND "
+                        // + "A.ID_COMPANIA=" + ID_COMPANIA + " AND "
+                        // + "A.ID_PLANTA=" + ID_PLANTA + " AND "
+                        // + "A.NUMERO_VIAJE=" + NUMERO_VIAJE + " AND "
+                        // + "A.TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
+                        // + "A.NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA + " AND "
+                        // + "A.FECHA_HORA='" + dateFormat2.format(FECHA_HORA) + "' AND "
+                        // + "A.IMEI='" + IMEI + "'";
+                // Statement stmt1 = conn.createStatement();
+                // ResultSet rs1 = stmt1.executeQuery(sql);
+                // while (rs1.next()) {
+                    // no_existe = false;
+                // }
+                // rs1.close();
+                // stmt1.close();
 
-                if (no_existe) {
-                    cadenasql = "INSERT INTO VIAJE_UBICACIONES ("
+                try {
+                    sql = "INSERT INTO VIAJE_UBICACIONES ("
                             + "ID_PAIS, "
                             + "ID_COMPANIA, "
                             + "ID_PLANTA, "
@@ -255,11 +255,14 @@ public class Ctrl_SMS_OPEN implements Serializable {
                             + LOCATIONDESCRIPTION + "','"
                             + ETA_HORAS + "','"
                             + EDA_KMS + "')";
-                    stmt1 = conn.createStatement();
-                    stmt1.executeUpdate(cadenasql);
+                    Statement stmt1 = conn.createStatement();
+                    System.out.println("SMS-OPEN: INSERT VIAJE_UBICACIONES: " + sql);
+                    stmt1.executeUpdate(sql);
                     stmt1.close();
 
                     this.validar_viajes_cerrados(ID_PAIS, ID_COMPANIA, ID_PLANTA, NUMERO_VIAJE, TIPO_ORDEN_VENTA, NUMERO_ORDEN_VENTA, ID_CLIENTE_DESTINO, conn);
+                } catch(Exception ex) {
+                    System.out.println("SMS-OOPEN: UBICACION YA EXISTE.");
                 }
             }
             rs.close();

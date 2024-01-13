@@ -134,7 +134,6 @@ public class Ctrl_GEOTAB implements Serializable {
             stmt.executeUpdate(sql);
             stmt.close();
 
-            // System.out.println("NUMERO-REGISTROS: " + get_feed_response.getResult().getData().size());
             Integer CORRELATIVO = 0;
             for (Integer i = 0; i < get_feed_response.getResult().getData().size(); i++) {
                 CORRELATIVO++;
@@ -177,14 +176,12 @@ public class Ctrl_GEOTAB implements Serializable {
                         + "Sin descripción ubicación" + "',"
                         + "CURRENT_TIMESTAMP" + ")";
                 stmt = conn.createStatement();
-                // System.out.println("INSERT-GEOTAB_DETALLE: " + sql);
                 stmt.executeUpdate(sql);
                 stmt.close();
             }
 
             sql = "UPDATE GEOTAB_ENCABEZADO SET NUMERO_UBICACIONES=" + CORRELATIVO + " WHERE ID_GEOTAB=" + ID_GEOTAB;
             stmt = conn.createStatement();
-            // System.out.println("UPDATE-GEOTAB_ENCABEZADO: " + sql);
             stmt.executeUpdate(sql);
             stmt.close();
             
@@ -216,7 +213,6 @@ public class Ctrl_GEOTAB implements Serializable {
                     + "T.RASTREABLE=1 AND "
                     + "SOD.ID_GEOTAB IS NOT NULL";
             stmt = conn.createStatement();
-            System.out.println("SELECT-UBICACIONES: " + sql);
             ResultSet rs = stmt.executeQuery(sql);
             
             while (rs.next()) {
@@ -258,29 +254,29 @@ public class Ctrl_GEOTAB implements Serializable {
                 String EDA_KMS = "0.00";
                 
                 /* VALIDA SI LA UBICACIÓN YA EXISTE EN LA TABLA VIAJE_UBICACIONES */
-                Boolean no_existe = true;
-                sql = "SELECT "
-                        + "A.LATITUDE, A.LONGITUDE "
-                        + "FROM "
-                        + "VIAJE_UBICACIONES A "
-                        + "WHERE "
-                        + "A.ID_PAIS=" + ID_PAIS + " AND "
-                        + "A.ID_COMPANIA=" + ID_COMPANIA + " AND "
-                        + "A.ID_PLANTA=" + ID_PLANTA + " AND "
-                        + "A.NUMERO_VIAJE=" + NUMERO_VIAJE + " AND "
-                        + "A.TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
-                        + "A.NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA + " AND "
-                        + "A.FECHA_HORA='" + dateFormat2.format(FECHA_HORA) + "' AND "
-                        + "A.IMEI='" + IMEI + "'";
-                Statement stmt1 = conn.createStatement();
-                ResultSet rs1 = stmt1.executeQuery(sql);
-                while (rs1.next()) {
-                    no_existe = false;
-                }
-                rs1.close();
-                stmt1.close();
+                // Boolean no_existe = true;
+                // sql = "SELECT "
+                        // + "A.LATITUDE, A.LONGITUDE "
+                        // + "FROM "
+                        // + "VIAJE_UBICACIONES A "
+                        // + "WHERE "
+                        // + "A.ID_PAIS=" + ID_PAIS + " AND "
+                        // + "A.ID_COMPANIA=" + ID_COMPANIA + " AND "
+                        // + "A.ID_PLANTA=" + ID_PLANTA + " AND "
+                        // + "A.NUMERO_VIAJE=" + NUMERO_VIAJE + " AND "
+                        // + "A.TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
+                        // + "A.NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA + " AND "
+                        // + "A.FECHA_HORA='" + dateFormat2.format(FECHA_HORA) + "' AND "
+                        // + "A.IMEI='" + IMEI + "'";
+                // Statement stmt1 = conn.createStatement();
+                // ResultSet rs1 = stmt1.executeQuery(sql);
+                // while (rs1.next()) {
+                    // no_existe = false;
+                // }
+                // rs1.close();
+                // stmt1.close();
 
-                if (no_existe) {
+                try {
                     sql = "INSERT INTO VIAJE_UBICACIONES ("
                             + "ID_PAIS, "
                             + "ID_COMPANIA, "
@@ -308,12 +304,14 @@ public class Ctrl_GEOTAB implements Serializable {
                             + LOCATIONDESCRIPTION + "','"
                             + ETA_HORAS + "','"
                             + EDA_KMS + "')";
-                    stmt1 = conn.createStatement();
-                    System.out.println("INSERT-VIAJE_UBICACIONES: " + sql);
+                    Statement stmt1 = conn.createStatement();
+                    System.out.println("GEOTAB: INSERT VIAJE_UBICACIONES: " + sql);
                     stmt1.executeUpdate(sql);
                     stmt1.close();
 
                     this.validar_viajes_cerrados(ID_PAIS, ID_COMPANIA, ID_PLANTA, NUMERO_VIAJE, TIPO_ORDEN_VENTA, NUMERO_ORDEN_VENTA, ID_CLIENTE_DESTINO, conn);
+                } catch(Exception ex) {
+                    System.out.println("GEOTAB: UBICACION YA EXISTE.");
                 }
             }
             rs.close();
