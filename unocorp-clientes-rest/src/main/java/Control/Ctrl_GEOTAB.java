@@ -33,20 +33,24 @@ public class Ctrl_GEOTAB implements Serializable {
             
             String database_geotab;
             String lista_transportista;
+            Integer periodo_consulta;
             switch (database) {
                 case "CR": {
                     database_geotab = "grupoterra_costarica";
                     lista_transportista = "5";
+                    periodo_consulta = -30;
                     break;
                 }
                 case "GT": {
                     database_geotab = "grupoterra_guatemala";
                     lista_transportista = "3, 36";
+                    periodo_consulta = -15;
                     break;
                 }
                 default: {
                     database_geotab = "";
                     lista_transportista = "";
+                    periodo_consulta = 0;
                     break;
                 }
             }
@@ -71,7 +75,7 @@ public class Ctrl_GEOTAB implements Serializable {
 
             // CONSUMIR EL METODO GetFeed PARA OBTENER LAS UBICACIONES DE LOS VEHICULOS.
             Calendar fecha_actual_w = Calendar.getInstance();
-            fecha_actual_w.add(Calendar.MINUTE, -30);
+            fecha_actual_w.add(Calendar.MINUTE, periodo_consulta);
 
             Entidad.GEOTAB.Search search = new Entidad.GEOTAB.Search();
             search.setFromDate(dateFormat.format(fecha_actual_w.getTime()));
@@ -305,13 +309,13 @@ public class Ctrl_GEOTAB implements Serializable {
                             + ETA_HORAS + "','"
                             + EDA_KMS + "')";
                     Statement stmt1 = conn.createStatement();
-                    System.out.println("GEOTAB: INSERT VIAJE_UBICACIONES: " + sql);
+                    // System.out.println("GEOTAB: INSERT VIAJE_UBICACIONES: " + sql);
                     stmt1.executeUpdate(sql);
                     stmt1.close();
 
                     this.validar_viajes_cerrados(ID_PAIS, ID_COMPANIA, ID_PLANTA, NUMERO_VIAJE, TIPO_ORDEN_VENTA, NUMERO_ORDEN_VENTA, ID_CLIENTE_DESTINO, conn);
                 } catch(Exception ex) {
-                    System.out.println("GEOTAB: UBICACION YA EXISTE.");
+                    System.out.println("GEOTAB: UBICACION YA EXISTE." + ex.toString());
                 }
             }
             rs.close();

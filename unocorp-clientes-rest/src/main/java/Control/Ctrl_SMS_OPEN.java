@@ -256,13 +256,13 @@ public class Ctrl_SMS_OPEN implements Serializable {
                             + ETA_HORAS + "','"
                             + EDA_KMS + "')";
                     Statement stmt1 = conn.createStatement();
-                    System.out.println("SMS-OPEN: INSERT VIAJE_UBICACIONES: " + sql);
+                    // System.out.println("SMS-OPEN: INSERT VIAJE_UBICACIONES: " + sql);
                     stmt1.executeUpdate(sql);
                     stmt1.close();
 
                     this.validar_viajes_cerrados(ID_PAIS, ID_COMPANIA, ID_PLANTA, NUMERO_VIAJE, TIPO_ORDEN_VENTA, NUMERO_ORDEN_VENTA, ID_CLIENTE_DESTINO, conn);
                 } catch(Exception ex) {
-                    System.out.println("SMS-OOPEN: UBICACION YA EXISTE.");
+                    System.out.println("SMS-OOPEN: UBICACION YA EXISTE." + ex.toString());
                 }
             }
             rs.close();
@@ -305,7 +305,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
 
     private void validar_viajes_cerrados(Long ID_PAIS, Long ID_COMPANIA, Long ID_PLANTA, Long NUMERO_VIAJE, String TIPO_ORDEN_VENTA, Long NUMERO_ORDEN_VENTA, Long ID_CLIENTE_DESTINO, Connection conn) {
         try {
-            String cadenasql = "SELECT "
+            String sql = "SELECT "
                     + "A.LATITUDE, "
                     + "A.LONGITUDE, "
                     + "A.FECHA_HORA "
@@ -319,7 +319,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                     + "A.TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
                     + "A.NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA;
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(cadenasql);
+            ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 Double LATITUDE = rs.getDouble(1);
                 Double LONGITUDE = rs.getDouble(2);
@@ -359,7 +359,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                                 // + "}"); 
                         // System.out.println("UBICACIÓN-ACTUAL: {(" + LATITUDE + "," + LONGITUDE + ")}");
 
-                        cadenasql = "UPDATE "
+                        sql = "UPDATE "
                                 + "VIAJES "
                                 + "SET "
                                 + "ID_ESTADO_VIAJE=5, "
@@ -373,8 +373,8 @@ public class Ctrl_SMS_OPEN implements Serializable {
                                 + "TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
                                 + "NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA;
                         Statement stmt1 = conn.createStatement();
-                        // System.out.println("CADENASQL-CERRAR-VIAJE: " + cadenasql);
-                        stmt1.executeUpdate(cadenasql);
+                        // System.out.println("CADENASQL-CERRAR-VIAJE: " + sql);
+                        stmt1.executeUpdate(sql);
                         stmt1.close();
                     }
                 }
