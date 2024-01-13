@@ -21,7 +21,7 @@ public class Ctrl_GEOTAB implements Serializable {
     public Ctrl_GEOTAB() {
     }
 
-    public String ObtenerUbicaciones(String database) {
+    public String ObtenerUbicaciones(String database, Integer dias_tracking) {
         String resultado = "";
 
         Connection conn = null;
@@ -46,7 +46,7 @@ public class Ctrl_GEOTAB implements Serializable {
                 case "GT": {
                     database_geotab = "grupoterra_guatemala";
                     lista_transportista = "3, 36";
-                    periodo_consulta = -20;
+                    periodo_consulta = -30;
                     break;
                 }
                 default: {
@@ -204,8 +204,16 @@ public class Ctrl_GEOTAB implements Serializable {
             stmt.close();
             
             Calendar fecha_actual = Calendar.getInstance();
-            
+
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+
+            String condicion_dias_tracking;
+            if(dias_tracking == 1) {
+                condicion_dias_tracking = "BETWEEN DATE_FORMAT(V.FECHA_VIAJE, '%Y-%m-%d %H:%i:%s')";
+            } else {
+                condicion_dias_tracking = "'" + dateFormat1.format(fecha_actual.getTime()) + " 00:00:00'";
+            }
+            
             sql = "SELECT DISTINCT "
                     + "V.ID_PAIS, "
                     + "V.ID_COMPANIA, "
@@ -222,9 +230,9 @@ public class Ctrl_GEOTAB implements Serializable {
                     + "FROM "
                     + "VIAJES V "
                     + "LEFT JOIN TRANSPORTISTA T ON (V.ID_TRANSPORTISTA=T.ID_TRANSPORTISTA) "
-                    + "LEFT JOIN DISPONIBILIDAD D ON (V.ID_TRANSPORTISTA=D.ID_TRANSPORTISTA AND V.ID_VEHICULO=D.ID_VEHICULO AND D.FECHA BETWEEN V.FECHA_VIAJE AND V.FECHA_VIAJE) "
+                    + "LEFT JOIN DISPONIBILIDAD D ON (V.ID_TRANSPORTISTA=D.ID_TRANSPORTISTA AND V.ID_VEHICULO=D.ID_VEHICULO AND V.FECHA_VIAJE=D.FECHA) "
                     + "LEFT JOIN CABEZAL CD ON (D.ID_CABEZAL=CD.ID_CABEZAL) "
-                    + "LEFT JOIN GEOTAB_DETALLE SOD ON (CD.IMEI=SOD.IMEI AND STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(V.FECHA_VIAJE, '%Y-%m-%d %H:%i:%s') AND '" + dateFormat1.format(fecha_actual.getTime()) + " 23:59:59') "
+                    + "LEFT JOIN GEOTAB_DETALLE SOD ON (CD.IMEI=SOD.IMEI AND STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') BETWEEN " + condicion_dias_tracking + " AND '" + dateFormat1.format(fecha_actual.getTime()) + " 23:59:59') "
                     + "WHERE "
                     + "V.ID_ESTADO_VIAJE NOT IN (2, 5, 10) AND "
                     + "T.ID_TRANSPORTISTA IN (" + lista_transportista + ") AND "
@@ -233,7 +241,6 @@ public class Ctrl_GEOTAB implements Serializable {
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             
-            System.out.println("INICIA-INSERT-VIAJE-UBICACIONES:" + new Date());
             while (rs.next()) {
                 Long ID_PAIS = rs.getLong(1);
                 Long ID_COMPANIA = rs.getLong(2);
@@ -280,7 +287,7 @@ public class Ctrl_GEOTAB implements Serializable {
                             + ETA_HORAS + "','"
                             + EDA_KMS + "')";
                     Statement stmt1 = conn.createStatement();
-                    System.out.println("SQL: " + sql);
+                    // System.out.println("SQL: " + sql);
                     stmt1.executeUpdate(sql);
                     stmt1.close();
 
