@@ -134,7 +134,7 @@ public class Ctrl_GEOTAB implements Serializable {
             stmt.executeUpdate(sql);
             stmt.close();
 
-            System.out.println("NUMERO-REGISTROS: " + get_feed_response.getResult().getData().size());
+            // System.out.println("NUMERO-REGISTROS: " + get_feed_response.getResult().getData().size());
             Integer CORRELATIVO = 0;
             for (Integer i = 0; i < get_feed_response.getResult().getData().size(); i++) {
                 CORRELATIVO++;
@@ -177,71 +177,72 @@ public class Ctrl_GEOTAB implements Serializable {
                         + "Sin descripción ubicación" + "',"
                         + "CURRENT_TIMESTAMP" + ")";
                 stmt = conn.createStatement();
-                System.out.println("INSERT-GEOTAB_DETALLE: " + sql);
+                // System.out.println("INSERT-GEOTAB_DETALLE: " + sql);
                 stmt.executeUpdate(sql);
                 stmt.close();
             }
 
             sql = "UPDATE GEOTAB_ENCABEZADO SET NUMERO_UBICACIONES=" + CORRELATIVO + " WHERE ID_GEOTAB=" + ID_GEOTAB;
             stmt = conn.createStatement();
-            System.out.println("UPDATE-GEOTAB_ENCABEZADO: " + sql);
+            // System.out.println("UPDATE-GEOTAB_ENCABEZADO: " + sql);
             stmt.executeUpdate(sql);
             stmt.close();
             
-            // Calendar fecha_actual = Calendar.getInstance();
+            Calendar fecha_actual = Calendar.getInstance();
             
-            // SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
-            // sql = "SELECT DISTINCT "
-                    // + "V.ID_PAIS, "
-                    // + "V.ID_COMPANIA, "
-                    // + "V.ID_PLANTA, "
-                    // + "V.NUMERO_VIAJE, "
-                    // + "V.TIPO_ORDEN_VENTA, "
-                    // + "V.NUMERO_ORDEN_VENTA, "
-                    // + "STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') FECHA_HORA_UBICACION, "
-                    // + "SOD.IMEI, "
-                    // + "SOD.LATITUDE LATITUD_UBICACION, "
-                    // + "SOD.LONGITUDE LONGITUD_UBICACION, "
-                    // + "SOD.LOCATIONDESCRIPTION DESCRIPCION_UBICACION, "
-                    // + "V.ID_CLIENTE_DESTINO "
-                    // + "FROM "
-                    // + "VIAJES V "
-                    // + "LEFT JOIN TRANSPORTISTA T ON (V.ID_TRANSPORTISTA=T.ID_TRANSPORTISTA) "
-                    // + "LEFT JOIN DISPONIBILIDAD D ON (V.ID_TRANSPORTISTA=D.ID_TRANSPORTISTA AND V.ID_VEHICULO=D.ID_VEHICULO AND D.FECHA BETWEEN V.FECHA_VIAJE AND V.FECHA_VIAJE) "
-                    // + "LEFT JOIN CABEZAL CD ON (D.ID_CABEZAL=CD.ID_CABEZAL) "
-                    // + "LEFT JOIN GEOTAB_DETALLE SOD ON (CD.IMEI=SOD.IMEI AND STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(V.FECHA_VIAJE, '%Y-%m-%d %H:%i:%s') AND '" + dateFormat1.format(fecha_actual.getTime()) + " 23:59:59') "
-                    // + "WHERE "
-                    // + "V.ID_ESTADO_VIAJE NOT IN (2, 5, 10) AND "
-                    // + "T.ID_TRANSPORTISTA IN (" + lista_transportista + ") AND "
-                    // + "T.RASTREABLE=1 AND "
-                    // + "SOD.ID_GEOTAB IS NOT NULL";
-            // stmt = conn.createStatement();
-            // ResultSet rs = stmt.executeQuery(sql);
+            SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+            sql = "SELECT DISTINCT "
+                    + "V.ID_PAIS, "
+                    + "V.ID_COMPANIA, "
+                    + "V.ID_PLANTA, "
+                    + "V.NUMERO_VIAJE, "
+                    + "V.TIPO_ORDEN_VENTA, "
+                    + "V.NUMERO_ORDEN_VENTA, "
+                    + "STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') FECHA_HORA_UBICACION, "
+                    + "SOD.IMEI, "
+                    + "SOD.LATITUDE LATITUD_UBICACION, "
+                    + "SOD.LONGITUDE LONGITUD_UBICACION, "
+                    + "SOD.LOCATIONDESCRIPTION DESCRIPCION_UBICACION, "
+                    + "V.ID_CLIENTE_DESTINO "
+                    + "FROM "
+                    + "VIAJES V "
+                    + "LEFT JOIN TRANSPORTISTA T ON (V.ID_TRANSPORTISTA=T.ID_TRANSPORTISTA) "
+                    + "LEFT JOIN DISPONIBILIDAD D ON (V.ID_TRANSPORTISTA=D.ID_TRANSPORTISTA AND V.ID_VEHICULO=D.ID_VEHICULO AND D.FECHA BETWEEN V.FECHA_VIAJE AND V.FECHA_VIAJE) "
+                    + "LEFT JOIN CABEZAL CD ON (D.ID_CABEZAL=CD.ID_CABEZAL) "
+                    + "LEFT JOIN GEOTAB_DETALLE SOD ON (CD.IMEI=SOD.IMEI AND STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(V.FECHA_VIAJE, '%Y-%m-%d %H:%i:%s') AND '" + dateFormat1.format(fecha_actual.getTime()) + " 23:59:59') "
+                    + "WHERE "
+                    + "V.ID_ESTADO_VIAJE NOT IN (2, 5, 10) AND "
+                    + "T.ID_TRANSPORTISTA IN (" + lista_transportista + ") AND "
+                    + "T.RASTREABLE=1 AND "
+                    + "SOD.ID_GEOTAB IS NOT NULL";
+            stmt = conn.createStatement();
+            System.out.println("SELECT-UBICACIONES: " + sql);
+            ResultSet rs = stmt.executeQuery(sql);
             
-            // while (rs.next()) {
-                // Long ID_PAIS = rs.getLong(1);
-                // Long ID_COMPANIA = rs.getLong(2);
-                // Long ID_PLANTA = rs.getLong(3);
-                // Long NUMERO_VIAJE = rs.getLong(4);
-                // String TIPO_ORDEN_VENTA = rs.getString(5);
-                // Long NUMERO_ORDEN_VENTA = rs.getLong(6);
-                // SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                // Date FECHA_HORA = dateFormat2.parse(rs.getString(7));
-                // String IMEI = rs.getString(8);
-                // String LATITUDE = rs.getString(9);
-                // String LONGITUDE = rs.getString(10);
-                // String LOCATIONDESCRIPTION = rs.getString(11);
-                // Long ID_CLIENTE_DESTINO = rs.getLong(12);
+            while (rs.next()) {
+                Long ID_PAIS = rs.getLong(1);
+                Long ID_COMPANIA = rs.getLong(2);
+                Long ID_PLANTA = rs.getLong(3);
+                Long NUMERO_VIAJE = rs.getLong(4);
+                String TIPO_ORDEN_VENTA = rs.getString(5);
+                Long NUMERO_ORDEN_VENTA = rs.getLong(6);
+                SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date FECHA_HORA = dateFormat2.parse(rs.getString(7));
+                String IMEI = rs.getString(8);
+                String LATITUDE = rs.getString(9);
+                String LONGITUDE = rs.getString(10);
+                String LOCATIONDESCRIPTION = rs.getString(11);
+                Long ID_CLIENTE_DESTINO = rs.getLong(12);
                 
                 /* CONSUME API-GOOGLE-DISTANCE-MATRIX */
-                // String departure_time = control_base_datos.ObtenerString("SELECT A.VALOR FROM PARAMETROS_GPS A WHERE A.ID_PARAMETRO=3", conn);
-                // String origins = LATITUDE + "%2C" + LONGITUDE;
-                // String LATITUDE_DESTINO = control_base_datos.ObtenerString("SELECT FORMAT((A.ZONA_LATITUD_1 + A.ZONA_LATITUD_2 + A.ZONA_LATITUD_3 + A.ZONA_LATITUD_4 + A.ZONA_LATITUD_5) / 5, 6) AVG_LATITUD FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
-                // String LONGITUDE_DESTINO = control_base_datos.ObtenerString("SELECT FORMAT((A.ZONA_LONGITUD_1 + A.ZONA_LONGITUD_2 + A.ZONA_LONGITUD_3 + A.ZONA_LONGITUD_4 + A.ZONA_LONGITUD_5) / 5, 6) AVG_LONGITUD FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
-                // String destinations = LATITUDE_DESTINO + "%2C" + LONGITUDE_DESTINO;
-                // String key = control_base_datos.ObtenerString("SELECT A.VALOR FROM PARAMETROS_GPS A WHERE A.ID_PARAMETRO=2", conn);
+                String departure_time = control_base_datos.ObtenerString("SELECT A.VALOR FROM PARAMETROS_GPS A WHERE A.ID_PARAMETRO=3", conn);
+                String origins = LATITUDE + "%2C" + LONGITUDE;
+                String LATITUDE_DESTINO = control_base_datos.ObtenerString("SELECT FORMAT((A.ZONA_LATITUD_1 + A.ZONA_LATITUD_2 + A.ZONA_LATITUD_3 + A.ZONA_LATITUD_4 + A.ZONA_LATITUD_5) / 5, 6) AVG_LATITUD FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                String LONGITUDE_DESTINO = control_base_datos.ObtenerString("SELECT FORMAT((A.ZONA_LONGITUD_1 + A.ZONA_LONGITUD_2 + A.ZONA_LONGITUD_3 + A.ZONA_LONGITUD_4 + A.ZONA_LONGITUD_5) / 5, 6) AVG_LONGITUD FROM CLIENTE_DESTINO A WHERE A.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                String destinations = LATITUDE_DESTINO + "%2C" + LONGITUDE_DESTINO;
+                String key = control_base_datos.ObtenerString("SELECT A.VALOR FROM PARAMETROS_GPS A WHERE A.ID_PARAMETRO=2", conn);
                 
-                // Cliente_Rest_Google_Maps cliente_rest_google_maps = new Cliente_Rest_Google_Maps();  <=== ESTE SI VA COMENTADO.
+                //Cliente_Rest_Google_Maps cliente_rest_google_maps = new Cliente_Rest_Google_Maps();  <=== ESTE SI VA COMENTADO.
                 // String json_result = cliente_rest_google_maps.distancematrix(departure_time, origins, destinations, key);
                 
                 // Entidad.GoogleDistanceMatrix google_distance_matrix = null;
@@ -253,69 +254,70 @@ public class Ctrl_GEOTAB implements Serializable {
                 //     System.out.println("ERROR GSON-CONVERT JSON-RESULTA: " + json_ex.toString());
                 // }
                 
-                // String ETA_HORAS = "0.00";
-                // String EDA_KMS = "0.00";
+                String ETA_HORAS = "0.00";
+                String EDA_KMS = "0.00";
                 
                 /* VALIDA SI LA UBICACIÓN YA EXISTE EN LA TABLA VIAJE_UBICACIONES */
-                // Boolean no_existe = true;
-                // sql = "SELECT "
-                        // + "A.LATITUDE, A.LONGITUDE "
-                        // + "FROM "
-                        // + "VIAJE_UBICACIONES A "
-                        // + "WHERE "
-                        // + "A.ID_PAIS=" + ID_PAIS + " AND "
-                        // + "A.ID_COMPANIA=" + ID_COMPANIA + " AND "
-                        // + "A.ID_PLANTA=" + ID_PLANTA + " AND "
-                        // + "A.NUMERO_VIAJE=" + NUMERO_VIAJE + " AND "
-                        // + "A.TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
-                        // + "A.NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA + " AND "
-                        // + "A.FECHA_HORA='" + dateFormat2.format(FECHA_HORA) + "' AND "
-                        // + "A.IMEI='" + IMEI + "'";
-                // Statement stmt1 = conn.createStatement();
-                // ResultSet rs1 = stmt1.executeQuery(sql);
-                // while (rs1.next()) {
-                    // no_existe = false;
-                // }
-                // rs1.close();
-                // stmt1.close();
+                Boolean no_existe = true;
+                sql = "SELECT "
+                        + "A.LATITUDE, A.LONGITUDE "
+                        + "FROM "
+                        + "VIAJE_UBICACIONES A "
+                        + "WHERE "
+                        + "A.ID_PAIS=" + ID_PAIS + " AND "
+                        + "A.ID_COMPANIA=" + ID_COMPANIA + " AND "
+                        + "A.ID_PLANTA=" + ID_PLANTA + " AND "
+                        + "A.NUMERO_VIAJE=" + NUMERO_VIAJE + " AND "
+                        + "A.TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
+                        + "A.NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA + " AND "
+                        + "A.FECHA_HORA='" + dateFormat2.format(FECHA_HORA) + "' AND "
+                        + "A.IMEI='" + IMEI + "'";
+                Statement stmt1 = conn.createStatement();
+                ResultSet rs1 = stmt1.executeQuery(sql);
+                while (rs1.next()) {
+                    no_existe = false;
+                }
+                rs1.close();
+                stmt1.close();
 
-                // if (no_existe) {
-                    // sql = "INSERT INTO VIAJE_UBICACIONES ("
-                            // + "ID_PAIS, "
-                            // + "ID_COMPANIA, "
-                            // + "ID_PLANTA, "
-                            // + "NUMERO_VIAJE, "
-                            // + "TIPO_ORDEN_VENTA, "
-                            // + "NUMERO_ORDEN_VENTA, "
-                            // + "FECHA_HORA, "
-                            // + "IMEI, "
-                            // + "LATITUDE, "
-                            // + "LONGITUDE, "
-                            // + "LOCATIONDESCRIPTION, "
-                            // + "ETA_HORAS, "
-                            // + "EDA_KMS) VALUES ("
-                            // + ID_PAIS + ","
-                            // + ID_COMPANIA + ","
-                            // + ID_PLANTA + ","
-                            // + NUMERO_VIAJE + ",'"
-                            // + TIPO_ORDEN_VENTA + "',"
-                            // + NUMERO_ORDEN_VENTA + ",'"
-                            // + dateFormat2.format(FECHA_HORA) + "','"
-                            // + IMEI + "','"
-                            // + LATITUDE + "','"
-                            // + LONGITUDE + "','"
-                            // + LOCATIONDESCRIPTION + "','"
-                            // + ETA_HORAS + "','"
-                            // + EDA_KMS + "')";
-                    // stmt1 = conn.createStatement();
-                    // stmt1.executeUpdate(sql);
-                    // stmt1.close();
+                if (no_existe) {
+                    sql = "INSERT INTO VIAJE_UBICACIONES ("
+                            + "ID_PAIS, "
+                            + "ID_COMPANIA, "
+                            + "ID_PLANTA, "
+                            + "NUMERO_VIAJE, "
+                            + "TIPO_ORDEN_VENTA, "
+                            + "NUMERO_ORDEN_VENTA, "
+                            + "FECHA_HORA, "
+                            + "IMEI, "
+                            + "LATITUDE, "
+                            + "LONGITUDE, "
+                            + "LOCATIONDESCRIPTION, "
+                            + "ETA_HORAS, "
+                            + "EDA_KMS) VALUES ("
+                            + ID_PAIS + ","
+                            + ID_COMPANIA + ","
+                            + ID_PLANTA + ","
+                            + NUMERO_VIAJE + ",'"
+                            + TIPO_ORDEN_VENTA + "',"
+                            + NUMERO_ORDEN_VENTA + ",'"
+                            + dateFormat2.format(FECHA_HORA) + "','"
+                            + IMEI + "','"
+                            + LATITUDE + "','"
+                            + LONGITUDE + "','"
+                            + LOCATIONDESCRIPTION + "','"
+                            + ETA_HORAS + "','"
+                            + EDA_KMS + "')";
+                    stmt1 = conn.createStatement();
+                    System.out.println("INSERT-VIAJE_UBICACIONES: " + sql);
+                    stmt1.executeUpdate(sql);
+                    stmt1.close();
 
-                    // this.validar_viajes_cerrados(ID_PAIS, ID_COMPANIA, ID_PLANTA, NUMERO_VIAJE, TIPO_ORDEN_VENTA, NUMERO_ORDEN_VENTA, ID_CLIENTE_DESTINO, conn);
-                // }
-            // }
-            // rs.close();
-            // stmt.close();
+                    this.validar_viajes_cerrados(ID_PAIS, ID_COMPANIA, ID_PLANTA, NUMERO_VIAJE, TIPO_ORDEN_VENTA, NUMERO_ORDEN_VENTA, ID_CLIENTE_DESTINO, conn);
+                }
+            }
+            rs.close();
+            stmt.close();
             
             conn.commit();
             conn.setAutoCommit(true);
