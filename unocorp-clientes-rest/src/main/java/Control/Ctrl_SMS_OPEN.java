@@ -262,7 +262,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
 
                     this.validar_viajes_cerrados(ID_PAIS, ID_COMPANIA, ID_PLANTA, NUMERO_VIAJE, TIPO_ORDEN_VENTA, NUMERO_ORDEN_VENTA, ID_CLIENTE_DESTINO, conn);
                 } catch(Exception ex) {
-                    System.out.println("SMS-OOPEN: UBICACION YA EXISTE." + ex.toString());
+                    // System.out.println("SMS-OOPEN: UBICACION YA EXISTE." + ex.toString());
                 }
             }
             rs.close();

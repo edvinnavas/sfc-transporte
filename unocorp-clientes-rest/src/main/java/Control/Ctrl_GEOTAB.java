@@ -44,7 +44,7 @@ public class Ctrl_GEOTAB implements Serializable {
                 case "GT": {
                     database_geotab = "grupoterra_guatemala";
                     lista_transportista = "3, 36";
-                    periodo_consulta = -15;
+                    periodo_consulta = -5;
                     break;
                 }
                 default: {
@@ -78,6 +78,7 @@ public class Ctrl_GEOTAB implements Serializable {
             fecha_actual_w.add(Calendar.MINUTE, periodo_consulta);
 
             Entidad.GEOTAB.Search search = new Entidad.GEOTAB.Search();
+            System.out.println("GEOTAB: FECHA-CONSULTA: " + dateFormat.format(fecha_actual_w.getTime()));
             search.setFromDate(dateFormat.format(fecha_actual_w.getTime()));
 
             Entidad.GEOTAB.Credentials credentials = new Entidad.GEOTAB.Credentials();
@@ -315,7 +316,7 @@ public class Ctrl_GEOTAB implements Serializable {
 
                     this.validar_viajes_cerrados(ID_PAIS, ID_COMPANIA, ID_PLANTA, NUMERO_VIAJE, TIPO_ORDEN_VENTA, NUMERO_ORDEN_VENTA, ID_CLIENTE_DESTINO, conn);
                 } catch(Exception ex) {
-                    System.out.println("GEOTAB: UBICACION YA EXISTE." + ex.toString());
+                    // System.out.println("GEOTAB: UBICACION YA EXISTE." + ex.toString());
                 }
             }
             rs.close();
