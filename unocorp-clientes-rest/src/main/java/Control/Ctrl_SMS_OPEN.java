@@ -71,6 +71,32 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 lista_ubicaciones.add(ubicacion);
             }
 
+            List<Entidad.SMS_OPEN.Ubicacion> lista_ubicaciones_temp = new ArrayList<>();
+            for (Integer i = 0; i < lista_ubicaciones.size(); i++) {
+                
+                Calendar fecha_consulta_inicial = Calendar.getInstance();
+                fecha_consulta_inicial.add(Calendar.HOUR, -1);
+
+                Calendar fecha_consulta_final = Calendar.getInstance();
+                fecha_consulta_final.add(Calendar.HOUR, 1);
+
+                Calendar fecha_registro_ws = Calendar.getInstance();
+                SimpleDateFormat dateFormat_sms = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                fecha_registro_ws.setTime(dateFormat_sms.parse(lista_ubicaciones.get(i).getDateTime()));
+
+                SimpleDateFormat dateFormat_temp = new SimpleDateFormat("yyyyMMddHHmmss");
+
+                Long fechaInicial = Long.valueOf(dateFormat_temp.format(fecha_consulta_inicial.getTime()));
+                Long fechaFinal = Long.valueOf(dateFormat_temp.format(fecha_consulta_final.getTime()));
+                Long fechaRegistro = Long.valueOf(dateFormat_temp.format(fecha_registro_ws.getTime()));
+
+                if((fechaRegistro >= fechaInicial) && (fechaRegistro <= fechaFinal)) {
+                    Entidad.SMS_OPEN.Ubicacion ubicacion = lista_ubicaciones.get(i);
+                    lista_ubicaciones_temp.add(ubicacion);
+                }
+            }
+            lista_ubicaciones = lista_ubicaciones_temp;
+
             Control_Base_Datos control_base_datos = new Control_Base_Datos();
             conn = control_base_datos.obtener_conexion_mysql();
 
