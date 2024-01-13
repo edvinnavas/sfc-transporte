@@ -46,7 +46,7 @@ public class Ctrl_GEOTAB implements Serializable {
                 case "GT": {
                     database_geotab = "grupoterra_guatemala";
                     lista_transportista = "3, 36";
-                    periodo_consulta = -30;
+                    periodo_consulta = -20;
                     break;
                 }
                 default: {
@@ -80,7 +80,6 @@ public class Ctrl_GEOTAB implements Serializable {
             fecha_actual_w.add(Calendar.MINUTE, periodo_consulta);
 
             Entidad.GEOTAB.Search search = new Entidad.GEOTAB.Search();
-            // System.out.println("GEOTAB: FECHA-CONSULTA: " + dateFormat.format(fecha_actual_w.getTime()));
             search.setFromDate(dateFormat.format(fecha_actual_w.getTime()));
 
             Entidad.GEOTAB.Credentials credentials = new Entidad.GEOTAB.Credentials();
@@ -98,14 +97,13 @@ public class Ctrl_GEOTAB implements Serializable {
             get_feed.setMethod("GetFeed");
             get_feed.setParams(params_get_feed);
 
-            System.out.println("JSON-GET-FEED: " + gson.toJson(get_feed));
+            // System.out.println("JSON-GET-FEED: " + gson.toJson(get_feed));
             json_result = cliente_rest_api.GeoTab_Services(gson.toJson(get_feed));
 
             Type get_feed_response_type = new TypeToken<Entidad.GEOTAB.GetFeed_Response>() {
             }.getType();
 
             Entidad.GEOTAB.GetFeed_Response get_feed_response = new Gson().fromJson(json_result, get_feed_response_type);
-            System.out.println("NUMERO-REGISTROS-INICIAL:" + get_feed_response.getResult().getData().size());
             
             List<Entidad.GEOTAB.Data> lst_data_temp = new ArrayList<>();
             for (Integer i = 0; i < get_feed_response.getResult().getData().size(); i++) {
@@ -133,7 +131,6 @@ public class Ctrl_GEOTAB implements Serializable {
                 }
             }
             get_feed_response.getResult().setData(lst_data_temp);
-            System.out.println("NUMERO-REGISTROS-FINAL:" + get_feed_response.getResult().getData().size());
 
             resultado = gson.toJson(get_feed_response);
             
@@ -153,7 +150,6 @@ public class Ctrl_GEOTAB implements Serializable {
             stmt.executeUpdate(sql);
             stmt.close();
 
-            System.out.println("INICIA-INSERT-GEOTAB-DETALLE:" + new Date());
             Integer CORRELATIVO = 0;
             for (Integer i = 0; i < get_feed_response.getResult().getData().size(); i++) {
                 CORRELATIVO++;
@@ -184,7 +180,6 @@ public class Ctrl_GEOTAB implements Serializable {
                         + get_feed_response.getResult().getData().get(i).getSpeed() + "','"
                         + get_feed_response.getResult().getData().get(i).getLatitude() + "','"
                         + get_feed_response.getResult().getData().get(i).getLongitude() + "','"
-                        // + dateFormat_db.format(dateFormat_zulu.parse(get_feed_response.getResult().getData().get(i).getDateTime())) + "','"
                         + get_feed_response.getResult().getData().get(i).getDateTime() + "','"
                         + get_feed_response.getResult().getData().get(i).getSpeed() + "','"
                         + "Kmh" + "','"
@@ -193,7 +188,6 @@ public class Ctrl_GEOTAB implements Serializable {
                         + "No DriverName" + "','"
                         + "No DriverCode" + "','"
                         + get_feed_response.getResult().getData().get(i).getSpeed() + "','"
-                        // + dateFormat_db.format(dateFormat_zulu.parse(get_feed_response.getResult().getData().get(i).getDateTime())) + "','"
                         + get_feed_response.getResult().getData().get(i).getDateTime() + "','"
                         + "Sin descripción ubicación" + "',"
                         + "CURRENT_TIMESTAMP" + ")";
@@ -202,7 +196,6 @@ public class Ctrl_GEOTAB implements Serializable {
                 stmt.executeUpdate(sql);
                 stmt.close();
             }
-            System.out.println("FINALIZA-INSERT-GEOTAB-DETALLE:" + new Date());
 
             sql = "UPDATE GEOTAB_ENCABEZADO SET NUMERO_UBICACIONES=" + CORRELATIVO + " WHERE ID_GEOTAB=" + ID_GEOTAB;
             stmt = conn.createStatement();
