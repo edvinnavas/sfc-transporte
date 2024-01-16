@@ -192,7 +192,8 @@ public class Ctrl_SMS_OPEN implements Serializable {
                     + "V.ID_ESTADO_VIAJE NOT IN (2, 5, 10) AND "
                     + "T.ID_TRANSPORTISTA IN (10, 42) AND "
                     + "T.RASTREABLE=1 AND "
-                    + "SOD.ID_SMS_OPEN IS NOT NULL";
+                    + "SOD.ID_SMS_OPEN IS NOT NULL AND "
+                    + "(V.ID_PAIS, V.ID_COMPANIA, V.ID_PLANTA, V.NUMERO_VIAJE, V.TIPO_ORDEN_VENTA, V.NUMERO_ORDEN_VENTA, STR_TO_DATE(SOD.DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s'), SOD.IMEI, SOD.LATITUDE, SOD.LONGITUDE) NOT IN (SELECT F.ID_PAIS, F.ID_COMPANIA, F.ID_PLANTA, F.NUMERO_VIAJE, F.TIPO_ORDEN_VENTA, F.NUMERO_ORDEN_VENTA, F.FECHA_HORA, F.IMEI, F.LATITUDE, F.LONGITUDE FROM VIAJE_UBICACIONES F)";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
