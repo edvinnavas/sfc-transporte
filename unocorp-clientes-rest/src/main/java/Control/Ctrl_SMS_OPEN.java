@@ -193,7 +193,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                     + "T.ID_TRANSPORTISTA IN (10, 42) AND "
                     + "T.RASTREABLE=1 AND "
                     + "SOD.ID_SMS_OPEN IS NOT NULL AND "
-                    + "(V.ID_PAIS, V.ID_COMPANIA, V.ID_PLANTA, V.NUMERO_VIAJE, V.TIPO_ORDEN_VENTA, V.NUMERO_ORDEN_VENTA, STR_TO_DATE(SOD.DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s'), SOD.IMEI) NOT IN (SELECT F.ID_PAIS, F.ID_COMPANIA, F.ID_PLANTA, F.NUMERO_VIAJE, F.TIPO_ORDEN_VENTA, F.NUMERO_ORDEN_VENTA, F.FECHA_HORA, F.IMEI FROM VIAJE_UBICACIONES F)";
+                    + "(V.ID_PAIS, V.ID_COMPANIA, V.ID_PLANTA, V.NUMERO_VIAJE, V.TIPO_ORDEN_VENTA, V.NUMERO_ORDEN_VENTA, STR_TO_DATE(SOD.DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s'), SOD.IMEI) NOT IN (SELECT F.ID_PAIS, F.ID_COMPANIA, F.ID_PLANTA, F.NUMERO_VIAJE, F.TIPO_ORDEN_VENTA, F.NUMERO_ORDEN_VENTA, F.FECHA_HORA, F.IMEI FROM VIAJE_UBICACIONES_SMS_OPEN F)";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -214,7 +214,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 String EDA_KMS = "0.00";
                 
                 try {
-                    sql = "INSERT INTO VIAJE_UBICACIONES ("
+                    sql = "INSERT INTO VIAJE_UBICACIONES_SMS_OPEN ("
                             + "ID_PAIS, "
                             + "ID_COMPANIA, "
                             + "ID_PLANTA, "
@@ -296,7 +296,7 @@ public class Ctrl_SMS_OPEN implements Serializable {
                     + "A.LONGITUDE, "
                     + "A.FECHA_HORA "
                     + "FROM "
-                    + "VIAJE_UBICACIONES A "
+                    + "VIAJE_UBICACIONES_SMS_OPEN A "
                     + "WHERE "
                     + "A.ID_PAIS=" + ID_PAIS + " AND "
                     + "A.ID_COMPANIA=" + ID_COMPANIA + " AND "

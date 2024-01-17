@@ -64,11 +64,11 @@ public class Ctrl_Tracking implements Serializable {
             tracking.setNumero_viaje(numero_viaje);
             tracking.setEstado_viaje(estado_viaje);
 
-            String max_fecha_hora = ctrl_base_datos.ObtenerString("SELECT MAX(A.FECHA_HORA) MAX_FECHA_HORA FROM VIAJE_UBICACIONES A WHERE A.TIPO_ORDEN_VENTA='" + tipo_orden + "' AND A.NUMERO_ORDEN_VENTA=" + numero_orden + " AND A.NUMERO_VIAJE=" + numero_viaje, conn);
+            String max_fecha_hora = ctrl_base_datos.ObtenerString("SELECT MAX(A.FECHA_HORA) MAX_FECHA_HORA FROM VIEW_VIAJE_UBICACIONES A WHERE A.TIPO_ORDEN_VENTA='" + tipo_orden + "' AND A.NUMERO_ORDEN_VENTA=" + numero_orden + " AND A.NUMERO_VIAJE=" + numero_viaje, conn);
 
             tracking.setFecha_hora(max_fecha_hora);
-            tracking.setLatitud_actual(ctrl_base_datos.ObtenerDouble("SELECT A.LATITUDE FROM VIAJE_UBICACIONES A WHERE A.TIPO_ORDEN_VENTA='" + tipo_orden + "' AND A.NUMERO_ORDEN_VENTA=" + numero_orden + " AND A.NUMERO_VIAJE=" + numero_viaje + " AND A.FECHA_HORA='" + max_fecha_hora + "'", conn));
-            tracking.setLongitud_actual(ctrl_base_datos.ObtenerDouble("SELECT A.LONGITUDE FROM VIAJE_UBICACIONES A WHERE A.TIPO_ORDEN_VENTA='" + tipo_orden + "' AND A.NUMERO_ORDEN_VENTA=" + numero_orden + " AND A.NUMERO_VIAJE=" + numero_viaje + " AND A.FECHA_HORA='" + max_fecha_hora + "'", conn));
+            tracking.setLatitud_actual(ctrl_base_datos.ObtenerDouble("SELECT A.LATITUDE FROM VIEW_VIAJE_UBICACIONES A WHERE A.TIPO_ORDEN_VENTA='" + tipo_orden + "' AND A.NUMERO_ORDEN_VENTA=" + numero_orden + " AND A.NUMERO_VIAJE=" + numero_viaje + " AND A.FECHA_HORA='" + max_fecha_hora + "'", conn));
+            tracking.setLongitud_actual(ctrl_base_datos.ObtenerDouble("SELECT A.LONGITUDE FROM VIEW_VIAJE_UBICACIONES A WHERE A.TIPO_ORDEN_VENTA='" + tipo_orden + "' AND A.NUMERO_ORDEN_VENTA=" + numero_orden + " AND A.NUMERO_VIAJE=" + numero_viaje + " AND A.FECHA_HORA='" + max_fecha_hora + "'", conn));
             tracking.setTiempo_estimado_llegada("240 minutos");
             tracking.setDistancia_estimado_llegada("102 kilometros");
 

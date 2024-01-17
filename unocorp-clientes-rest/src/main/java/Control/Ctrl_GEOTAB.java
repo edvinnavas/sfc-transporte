@@ -46,7 +46,7 @@ public class Ctrl_GEOTAB implements Serializable {
                 case "GT": {
                     database_geotab = "grupoterra_guatemala";
                     lista_transportista = "3, 36";
-                    periodo_consulta = -30;
+                    periodo_consulta = -15;
                     break;
                 }
                 default: {
@@ -238,7 +238,7 @@ public class Ctrl_GEOTAB implements Serializable {
                     + "T.ID_TRANSPORTISTA IN (" + lista_transportista + ") AND "
                     + "T.RASTREABLE=1 AND "
                     + "SOD.ID_GEOTAB IS NOT NULL AND "
-                    + "(V.ID_PAIS, V.ID_COMPANIA, V.ID_PLANTA, V.NUMERO_VIAJE, V.TIPO_ORDEN_VENTA, V.NUMERO_ORDEN_VENTA, STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s'), SOD.IMEI) NOT IN (SELECT F.ID_PAIS, F.ID_COMPANIA, F.ID_PLANTA, F.NUMERO_VIAJE, F.TIPO_ORDEN_VENTA, F.NUMERO_ORDEN_VENTA, F.FECHA_HORA, F.IMEI FROM VIAJE_UBICACIONES F)";
+                    + "(V.ID_PAIS, V.ID_COMPANIA, V.ID_PLANTA, V.NUMERO_VIAJE, V.TIPO_ORDEN_VENTA, V.NUMERO_ORDEN_VENTA, STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s'), SOD.IMEI) NOT IN (SELECT F.ID_PAIS, F.ID_COMPANIA, F.ID_PLANTA, F.NUMERO_VIAJE, F.TIPO_ORDEN_VENTA, F.NUMERO_ORDEN_VENTA, F.FECHA_HORA, F.IMEI FROM VIAJE_UBICACIONES_GEOTAB F)";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -259,7 +259,7 @@ public class Ctrl_GEOTAB implements Serializable {
                 String EDA_KMS = "0.00";
                 
                 try {
-                    sql = "INSERT INTO VIAJE_UBICACIONES ("
+                    sql = "INSERT INTO VIAJE_UBICACIONES_GEOTAB ("
                             + "ID_PAIS, "
                             + "ID_COMPANIA, "
                             + "ID_PLANTA, "
@@ -338,7 +338,7 @@ public class Ctrl_GEOTAB implements Serializable {
                     + "A.LONGITUDE, "
                     + "A.FECHA_HORA "
                     + "FROM "
-                    + "VIAJE_UBICACIONES A "
+                    + "VIAJE_UBICACIONES_GEOTAB A "
                     + "WHERE "
                     + "A.ID_PAIS=" + ID_PAIS + " AND "
                     + "A.ID_COMPANIA=" + ID_COMPANIA + " AND "
