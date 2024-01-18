@@ -21,7 +21,7 @@ public class Ctrl_GEOTAB implements Serializable {
     public Ctrl_GEOTAB() {
     }
 
-    public String ObtenerUbicaciones(String database, Integer dias_tracking) {
+    public String ObtenerUbicaciones(String database) {
         String resultado = "";
 
         Connection conn = null;
@@ -46,7 +46,7 @@ public class Ctrl_GEOTAB implements Serializable {
                 case "GT": {
                     database_geotab = "grupoterra_guatemala";
                     lista_transportista = "3, 36";
-                    periodo_consulta = -15;
+                    periodo_consulta = -30;
                     break;
                 }
                 default: {
@@ -202,43 +202,34 @@ public class Ctrl_GEOTAB implements Serializable {
             // System.out.println("SQL: " + sql);
             stmt.executeUpdate(sql);
             stmt.close();
-            
-            Calendar fecha_actual = Calendar.getInstance();
 
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
 
-            String condicion_dias_tracking;
-            if(dias_tracking == 1) {
-                condicion_dias_tracking = "DATE_FORMAT(V.FECHA_VIAJE, '%Y-%m-%d %H:%i:%s')";
-            } else {
-                condicion_dias_tracking = "'" + dateFormat1.format(fecha_actual.getTime()) + " 00:00:00'";
-            }
-            
+            Calendar fecha_actual = Calendar.getInstance();
+
             sql = "SELECT DISTINCT "
-                    + "V.ID_PAIS, "
-                    + "V.ID_COMPANIA, "
-                    + "V.ID_PLANTA, "
-                    + "V.NUMERO_VIAJE, "
-                    + "V.TIPO_ORDEN_VENTA, "
-                    + "V.NUMERO_ORDEN_VENTA, "
-                    + "STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') FECHA_HORA_UBICACION, "
-                    + "SOD.IMEI, "
-                    + "SOD.LATITUDE LATITUD_UBICACION, "
-                    + "SOD.LONGITUDE LONGITUD_UBICACION, "
-                    + "SOD.LOCATIONDESCRIPTION DESCRIPCION_UBICACION, "
-                    + "V.ID_CLIENTE_DESTINO "
-                    + "FROM "
-                    + "VIAJES V "
-                    + "LEFT JOIN TRANSPORTISTA T ON (V.ID_TRANSPORTISTA=T.ID_TRANSPORTISTA) "
+                    + "V.ID_PAIS, " 
+                    + "V.ID_COMPANIA, " 
+                    + "V.ID_PLANTA, " 
+                    + "V.NUMERO_VIAJE, " 
+                    + "V.TIPO_ORDEN_VENTA, " 
+                    + "V.NUMERO_ORDEN_VENTA, " 
+                    + "STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') FECHA_HORA_UBICACION, " 
+                    + "SOD.IMEI, " 
+                    + "SOD.LATITUDE LATITUD_UBICACION, " 
+                    + "SOD.LONGITUDE LONGITUD_UBICACION, " 
+                    + "SOD.LOCATIONDESCRIPTION DESCRIPCION_UBICACION, " 
+                    + "V.ID_CLIENTE_DESTINO " 
+                    + "FROM " 
+                    + "VIAJES V " 
                     + "LEFT JOIN DISPONIBILIDAD D ON (V.ID_TRANSPORTISTA=D.ID_TRANSPORTISTA AND V.ID_VEHICULO=D.ID_VEHICULO AND V.FECHA_VIAJE=D.FECHA) "
                     + "LEFT JOIN CABEZAL CD ON (D.ID_CABEZAL=CD.ID_CABEZAL) "
-                    + "LEFT JOIN GEOTAB_DETALLE SOD ON (CD.IMEI=SOD.IMEI AND STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') BETWEEN " + condicion_dias_tracking + " AND '" + dateFormat1.format(fecha_actual.getTime()) + " 23:59:59') "
+                    + "LEFT JOIN GEOTAB_DETALLE SOD ON (CD.IMEI=SOD.IMEI AND STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(V.FECHA_VIAJE, '%Y-%m-%d %H:%i:%s') AND '"+ dateFormat1.format(fecha_actual.getTime()) + " 23:59:59') "
                     + "WHERE "
-                    + "V.ID_ESTADO_VIAJE NOT IN (2, 5, 10) AND "
-                    + "T.ID_TRANSPORTISTA IN (" + lista_transportista + ") AND "
-                    + "T.RASTREABLE=1 AND "
-                    + "SOD.ID_GEOTAB IS NOT NULL AND "
-                    + "(V.ID_PAIS, V.ID_COMPANIA, V.ID_PLANTA, V.NUMERO_VIAJE, V.TIPO_ORDEN_VENTA, V.NUMERO_ORDEN_VENTA, STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s'), SOD.IMEI) NOT IN (SELECT F.ID_PAIS, F.ID_COMPANIA, F.ID_PLANTA, F.NUMERO_VIAJE, F.TIPO_ORDEN_VENTA, F.NUMERO_ORDEN_VENTA, F.FECHA_HORA, F.IMEI FROM VIAJE_UBICACIONES_GEOTAB F)";
+                    + "(V.ID_ESTADO_VIAJE NOT IN (2, 5, 10)) AND "
+                    + "(V.ID_TRANSPORTISTA IN (" + lista_transportista + ")) AND "
+                    + "(SOD.IMEI IS NOT NULL) AND "
+                    + "((V.ID_PAIS, V.ID_COMPANIA, V.ID_PLANTA, V.NUMERO_VIAJE, V.TIPO_ORDEN_VENTA, V.NUMERO_ORDEN_VENTA, STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s'), SOD.IMEI) NOT IN (SELECT F.ID_PAIS, F.ID_COMPANIA, F.ID_PLANTA, F.NUMERO_VIAJE, F.TIPO_ORDEN_VENTA, F.NUMERO_ORDEN_VENTA, F.FECHA_HORA, F.IMEI FROM VIAJE_UBICACIONES_GEOTAB F))";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {

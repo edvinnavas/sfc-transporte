@@ -182,18 +182,16 @@ public class Ctrl_SMS_OPEN implements Serializable {
                     + "SOD.LONGITUDE LONGITUD_UBICACION, "
                     + "SOD.LOCATIONDESCRIPTION DESCRIPCION_UBICACION, "
                     + "V.ID_CLIENTE_DESTINO "
-                    + "FROM "
-                    + "VIAJES V "
-                    + "LEFT JOIN TRANSPORTISTA T ON (V.ID_TRANSPORTISTA=T.ID_TRANSPORTISTA) "
+                    + "FROM " 
+                    + "VIAJES V " 
                     + "LEFT JOIN DISPONIBILIDAD D ON (V.ID_TRANSPORTISTA=D.ID_TRANSPORTISTA AND V.ID_VEHICULO=D.ID_VEHICULO AND V.FECHA_VIAJE=D.FECHA) "
                     + "LEFT JOIN CABEZAL CD ON (D.ID_CABEZAL=CD.ID_CABEZAL) "
                     + "LEFT JOIN SMS_OPEN_DETALLE SOD ON (CD.IMEI=SOD.IMEI AND STR_TO_DATE(SOD.DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s') BETWEEN DATE_FORMAT(V.FECHA_VIAJE, '%Y-%m-%d %H:%i:%s') AND '" + dateFormat1.format(fecha_actual.getTime()) + " 23:59:59') "
                     + "WHERE "
-                    + "V.ID_ESTADO_VIAJE NOT IN (2, 5, 10) AND "
-                    + "T.ID_TRANSPORTISTA IN (10, 42) AND "
-                    + "T.RASTREABLE=1 AND "
-                    + "SOD.ID_SMS_OPEN IS NOT NULL AND "
-                    + "(V.ID_PAIS, V.ID_COMPANIA, V.ID_PLANTA, V.NUMERO_VIAJE, V.TIPO_ORDEN_VENTA, V.NUMERO_ORDEN_VENTA, STR_TO_DATE(SOD.DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s'), SOD.IMEI) NOT IN (SELECT F.ID_PAIS, F.ID_COMPANIA, F.ID_PLANTA, F.NUMERO_VIAJE, F.TIPO_ORDEN_VENTA, F.NUMERO_ORDEN_VENTA, F.FECHA_HORA, F.IMEI FROM VIAJE_UBICACIONES_SMS_OPEN F)";
+                    + "(V.ID_ESTADO_VIAJE NOT IN (2, 5, 10)) AND "
+                    + "(V.ID_TRANSPORTISTA IN (10, 42)) AND "
+                    + "(SOD.IMEI IS NOT NULL) AND "
+                    + "((V.ID_PAIS, V.ID_COMPANIA, V.ID_PLANTA, V.NUMERO_VIAJE, V.TIPO_ORDEN_VENTA, V.NUMERO_ORDEN_VENTA, STR_TO_DATE(SOD.DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s'), SOD.IMEI) NOT IN (SELECT F.ID_PAIS, F.ID_COMPANIA, F.ID_PLANTA, F.NUMERO_VIAJE, F.TIPO_ORDEN_VENTA, F.NUMERO_ORDEN_VENTA, F.FECHA_HORA, F.IMEI FROM VIAJE_UBICACIONES_SMS_OPEN F))";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {

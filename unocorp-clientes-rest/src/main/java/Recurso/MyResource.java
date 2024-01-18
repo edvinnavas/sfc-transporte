@@ -53,17 +53,16 @@ public class MyResource implements Serializable {
     }
 
     @GET
-    @Path("ObtenerUbicaciones/{database}/{dias_tracking}")
+    @Path("ObtenerUbicaciones/{database}")
     @Produces(MediaType.APPLICATION_JSON)
     public String ObtenerUbicaciones(
-            @PathParam("database") String database, 
-            @PathParam("dias_tracking") Integer dias_tracking) {
+            @PathParam("database") String database) {
 
         String resultado;
 
         try {
             Control.Ctrl_GEOTAB ctrl_geotab = new Control.Ctrl_GEOTAB();
-            resultado = ctrl_geotab.ObtenerUbicaciones(database, dias_tracking);
+            resultado = ctrl_geotab.ObtenerUbicaciones(database);
         } catch (Exception ex) {
             resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerUbicaciones()|ERROR:" + ex.toString();
             System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerUbicaciones()|ERROR:" + ex.toString());
