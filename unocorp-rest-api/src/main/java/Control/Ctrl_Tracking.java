@@ -2,7 +2,10 @@ package Control;
 
 import java.io.Serializable;
 import java.sql.Connection;
-
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -24,6 +27,7 @@ public class Ctrl_Tracking implements Serializable {
             Long id_pais = ctrl_base_datos.ObtenerLong("SELECT A.ID_PAIS FROM VIAJES A WHERE A.TIPO_ORDEN_VENTA='" + tipo_orden + "' AND A.NUMERO_ORDEN_VENTA=" + numero_orden, conn);
             Long numero_viaje = ctrl_base_datos.ObtenerLong("SELECT A.NUMERO_VIAJE FROM VIAJES A WHERE A.TIPO_ORDEN_VENTA='" + tipo_orden + "' AND A.NUMERO_ORDEN_VENTA=" + numero_orden, conn);
             String estado_viaje = ctrl_base_datos.ObtenerString("SELECT A.ESTADO FROM VIAJES A WHERE A.TIPO_ORDEN_VENTA='" + tipo_orden + "' AND A.NUMERO_ORDEN_VENTA=" + numero_orden, conn);
+            String fecha_viaje = ctrl_base_datos.ObtenerString("SELECT A.FECHA_VIAJE FROM VIAJES A WHERE A.TIPO_ORDEN_VENTA='" + tipo_orden + "' AND A.NUMERO_ORDEN_VENTA=" + numero_orden, conn);
 
             Entidad.Pduno.Planta planta_origen = new Entidad.Pduno.Planta();
             planta_origen.setId_planta(id_planta);
@@ -59,16 +63,28 @@ public class Ctrl_Tracking implements Serializable {
             cliente_destino.setZona_longitud_5(ctrl_base_datos.ObtenerDouble("SELECT C.ZONA_LONGITUD_4 FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
             tracking.setCliente_destino(cliente_destino);
 
-            tracking.setTipo_orden(tipo_orden);
-            tracking.setNumero_orden(numero_orden);
             tracking.setNumero_viaje(numero_viaje);
             tracking.setEstado_viaje(estado_viaje);
+            tracking.setFecha_viaje(fecha_viaje);
+            tracking.setTipo_orden(tipo_orden);
+            tracking.setNumero_orden(numero_orden);
+            
+            List<Entidad.Pduno.Ubicaciones> lst_ubicaciones = new ArrayList<>();
+            String sql = "SELECT V.FECHA_HORA, V.LATITUDE, V.LONGITUDE "
+                    + "FROM VIEW_VIAJE_UBICACIONES V "
+                    + "WHERE V.TIPO_ORDEN_VENTA='" + tipo_orden + "' AND V.NUMERO_ORDEN_VENTA=" + numero_orden + " "
+                    + "ORDER BY V.FECHA_HORA";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()) {
+                Entidad.Pduno.Ubicaciones ubicaciones = new Entidad.Pduno.Ubicaciones(rs.getString(1), rs.getDouble(2), rs.getDouble(3));
+                lst_ubicaciones.add(ubicaciones);
+            }
+            rs.close();
+            stmt.close();
 
-            String max_fecha_hora = ctrl_base_datos.ObtenerString("SELECT MAX(A.FECHA_HORA) MAX_FECHA_HORA FROM VIEW_VIAJE_UBICACIONES A WHERE A.TIPO_ORDEN_VENTA='" + tipo_orden + "' AND A.NUMERO_ORDEN_VENTA=" + numero_orden + " AND A.NUMERO_VIAJE=" + numero_viaje, conn);
+            tracking.setLst_ubicaciones(lst_ubicaciones);
 
-            tracking.setFecha_hora(max_fecha_hora);
-            tracking.setLatitud_actual(ctrl_base_datos.ObtenerDouble("SELECT A.LATITUDE FROM VIEW_VIAJE_UBICACIONES A WHERE A.TIPO_ORDEN_VENTA='" + tipo_orden + "' AND A.NUMERO_ORDEN_VENTA=" + numero_orden + " AND A.NUMERO_VIAJE=" + numero_viaje + " AND A.FECHA_HORA='" + max_fecha_hora + "'", conn));
-            tracking.setLongitud_actual(ctrl_base_datos.ObtenerDouble("SELECT A.LONGITUDE FROM VIEW_VIAJE_UBICACIONES A WHERE A.TIPO_ORDEN_VENTA='" + tipo_orden + "' AND A.NUMERO_ORDEN_VENTA=" + numero_orden + " AND A.NUMERO_VIAJE=" + numero_viaje + " AND A.FECHA_HORA='" + max_fecha_hora + "'", conn));
             tracking.setTiempo_estimado_llegada("240 minutos");
             tracking.setDistancia_estimado_llegada("102 kilometros");
 
