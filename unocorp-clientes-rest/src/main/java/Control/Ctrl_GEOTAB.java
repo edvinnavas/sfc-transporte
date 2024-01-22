@@ -131,8 +131,6 @@ public class Ctrl_GEOTAB implements Serializable {
                 }
             }
             get_feed_response.getResult().setData(lst_data_temp);
-
-            resultado = gson.toJson(get_feed_response);
             
             Control_Base_Datos control_base_datos = new Control_Base_Datos();
             conn = control_base_datos.obtener_conexion_mysql();
@@ -203,95 +201,110 @@ public class Ctrl_GEOTAB implements Serializable {
             stmt.executeUpdate(sql);
             stmt.close();
 
-            SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+            Integer en_ejecucion = control_base_datos.ObtenerEntero("SELECT SUM(A.ESTADO) EN_EJEUCCION FROM AMBIENTE_EJECUCION A", conn);
+            if(en_ejecucion == 0) {
+                sql = "UPDATE AMBIENTE_EJECUCION SET ESTADO=1, FECHA_HORA=CURRENT_TIMESTAMP WHERE ID_EJECUCION=2";
+                stmt = conn.createStatement();
+                // System.out.println("SQL: " + sql);
+                stmt.executeUpdate(sql);
+                stmt.close();
 
-            Calendar fecha_actual = Calendar.getInstance();
-
-            sql = "SELECT DISTINCT "
-                    + "V.ID_PAIS, " 
-                    + "V.ID_COMPANIA, " 
-                    + "V.ID_PLANTA, " 
-                    + "V.NUMERO_VIAJE, " 
-                    + "V.TIPO_ORDEN_VENTA, " 
-                    + "V.NUMERO_ORDEN_VENTA, " 
-                    + "STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') FECHA_HORA_UBICACION, " 
-                    + "SOD.IMEI, " 
-                    + "SOD.LATITUDE LATITUD_UBICACION, " 
-                    + "SOD.LONGITUDE LONGITUD_UBICACION, " 
-                    + "SOD.LOCATIONDESCRIPTION DESCRIPCION_UBICACION, " 
-                    + "V.ID_CLIENTE_DESTINO " 
-                    + "FROM " 
-                    + "VIAJES V " 
-                    + "LEFT JOIN DISPONIBILIDAD D ON (V.ID_TRANSPORTISTA=D.ID_TRANSPORTISTA AND V.ID_VEHICULO=D.ID_VEHICULO AND V.FECHA_VIAJE=D.FECHA) "
-                    + "LEFT JOIN CABEZAL CD ON (D.ID_CABEZAL=CD.ID_CABEZAL) "
-                    + "LEFT JOIN GEOTAB_DETALLE SOD ON (CD.IMEI=SOD.IMEI AND STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(V.FECHA_VIAJE, '%Y-%m-%d %H:%i:%s') AND '"+ dateFormat1.format(fecha_actual.getTime()) + " 23:59:59') "
-                    + "WHERE "
-                    + "(V.ID_ESTADO_VIAJE NOT IN (2, 5, 10)) AND "
-                    + "(V.ID_TRANSPORTISTA IN (" + lista_transportista + ")) AND "
-                    + "(SOD.IMEI IS NOT NULL) AND "
-                    + "((V.ID_PAIS, V.ID_COMPANIA, V.ID_PLANTA, V.NUMERO_VIAJE, V.TIPO_ORDEN_VENTA, V.NUMERO_ORDEN_VENTA, STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s'), SOD.IMEI) NOT IN (SELECT F.ID_PAIS, F.ID_COMPANIA, F.ID_PLANTA, F.NUMERO_VIAJE, F.TIPO_ORDEN_VENTA, F.NUMERO_ORDEN_VENTA, F.FECHA_HORA, F.IMEI FROM VIAJE_UBICACIONES_GEOTAB F))";
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                Long ID_PAIS = rs.getLong(1);
-                Long ID_COMPANIA = rs.getLong(2);
-                Long ID_PLANTA = rs.getLong(3);
-                Long NUMERO_VIAJE = rs.getLong(4);
-                String TIPO_ORDEN_VENTA = rs.getString(5);
-                Long NUMERO_ORDEN_VENTA = rs.getLong(6);
-                SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date FECHA_HORA = dateFormat2.parse(rs.getString(7));
-                String IMEI = rs.getString(8);
-                String LATITUDE = rs.getString(9);
-                String LONGITUDE = rs.getString(10);
-                String LOCATIONDESCRIPTION = rs.getString(11);
-                Long ID_CLIENTE_DESTINO = rs.getLong(12);
-                String ETA_HORAS = "0.00";
-                String EDA_KMS = "0.00";
+                SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar fecha_actual = Calendar.getInstance();
+                sql = "SELECT DISTINCT "
+                        + "V.ID_PAIS, " 
+                        + "V.ID_COMPANIA, " 
+                        + "V.ID_PLANTA, " 
+                        + "V.NUMERO_VIAJE, " 
+                        + "V.TIPO_ORDEN_VENTA, " 
+                        + "V.NUMERO_ORDEN_VENTA, " 
+                        + "STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') FECHA_HORA_UBICACION, " 
+                        + "SOD.IMEI, " 
+                        + "SOD.LATITUDE LATITUD_UBICACION, " 
+                        + "SOD.LONGITUDE LONGITUD_UBICACION, " 
+                        + "SOD.LOCATIONDESCRIPTION DESCRIPCION_UBICACION, " 
+                        + "V.ID_CLIENTE_DESTINO " 
+                        + "FROM " 
+                        + "VIAJES V " 
+                        + "LEFT JOIN DISPONIBILIDAD D ON (V.ID_TRANSPORTISTA=D.ID_TRANSPORTISTA AND V.ID_VEHICULO=D.ID_VEHICULO AND V.FECHA_VIAJE=D.FECHA) "
+                        + "LEFT JOIN CABEZAL CD ON (D.ID_CABEZAL=CD.ID_CABEZAL) "
+                        + "LEFT JOIN GEOTAB_DETALLE SOD ON (CD.IMEI=SOD.IMEI AND STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(V.FECHA_VIAJE, '%Y-%m-%d %H:%i:%s') AND '"+ dateFormat1.format(fecha_actual.getTime()) + " 23:59:59') "
+                        + "WHERE "
+                        + "(V.ID_ESTADO_VIAJE NOT IN (2, 5, 10)) AND "
+                        + "(V.ID_TRANSPORTISTA IN (" + lista_transportista + ")) AND "
+                        + "(SOD.IMEI IS NOT NULL) AND "
+                        + "((V.ID_PAIS, V.ID_COMPANIA, V.ID_PLANTA, V.NUMERO_VIAJE, V.TIPO_ORDEN_VENTA, V.NUMERO_ORDEN_VENTA, STR_TO_DATE(SOD.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s'), SOD.IMEI) NOT IN (SELECT F.ID_PAIS, F.ID_COMPANIA, F.ID_PLANTA, F.NUMERO_VIAJE, F.TIPO_ORDEN_VENTA, F.NUMERO_ORDEN_VENTA, F.FECHA_HORA, F.IMEI FROM VIAJE_UBICACIONES_GEOTAB F))";
+                stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    Long ID_PAIS = rs.getLong(1);
+                    Long ID_COMPANIA = rs.getLong(2);
+                    Long ID_PLANTA = rs.getLong(3);
+                    Long NUMERO_VIAJE = rs.getLong(4);
+                    String TIPO_ORDEN_VENTA = rs.getString(5);
+                    Long NUMERO_ORDEN_VENTA = rs.getLong(6);
+                    SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date FECHA_HORA = dateFormat2.parse(rs.getString(7));
+                    String IMEI = rs.getString(8);
+                    String LATITUDE = rs.getString(9);
+                    String LONGITUDE = rs.getString(10);
+                    String LOCATIONDESCRIPTION = rs.getString(11);
+                    Long ID_CLIENTE_DESTINO = rs.getLong(12);
+                    String ETA_HORAS = "0.00";
+                    String EDA_KMS = "0.00";
                 
-                try {
-                    sql = "INSERT INTO VIAJE_UBICACIONES_GEOTAB ("
-                            + "ID_PAIS, "
-                            + "ID_COMPANIA, "
-                            + "ID_PLANTA, "
-                            + "NUMERO_VIAJE, "
-                            + "TIPO_ORDEN_VENTA, "
-                            + "NUMERO_ORDEN_VENTA, "
-                            + "FECHA_HORA, "
-                            + "IMEI, "
-                            + "LATITUDE, "
-                            + "LONGITUDE, "
-                            + "LOCATIONDESCRIPTION, "
-                            + "ETA_HORAS, "
-                            + "EDA_KMS) VALUES ("
-                            + ID_PAIS + ","
-                            + ID_COMPANIA + ","
-                            + ID_PLANTA + ","
-                            + NUMERO_VIAJE + ",'"
-                            + TIPO_ORDEN_VENTA + "',"
-                            + NUMERO_ORDEN_VENTA + ",'"
-                            + dateFormat2.format(FECHA_HORA) + "','"
-                            + IMEI + "','"
-                            + LATITUDE + "','"
-                            + LONGITUDE + "','"
-                            + LOCATIONDESCRIPTION + "','"
-                            + ETA_HORAS + "','"
-                            + EDA_KMS + "')";
-                    Statement stmt1 = conn.createStatement();
-                    // System.out.println("SQL: " + sql);
-                    stmt1.executeUpdate(sql);
-                    stmt1.close();
+                    try {
+                        sql = "INSERT INTO VIAJE_UBICACIONES_GEOTAB ("
+                                + "ID_PAIS, "
+                                + "ID_COMPANIA, "
+                                + "ID_PLANTA, "
+                                + "NUMERO_VIAJE, "
+                                + "TIPO_ORDEN_VENTA, "
+                                + "NUMERO_ORDEN_VENTA, "
+                                + "FECHA_HORA, "
+                                + "IMEI, "
+                                + "LATITUDE, "
+                                + "LONGITUDE, "
+                                + "LOCATIONDESCRIPTION, "
+                                + "ETA_HORAS, "
+                                + "EDA_KMS) VALUES ("
+                                + ID_PAIS + ","
+                                + ID_COMPANIA + ","
+                                + ID_PLANTA + ","
+                                + NUMERO_VIAJE + ",'"
+                                + TIPO_ORDEN_VENTA + "',"
+                                + NUMERO_ORDEN_VENTA + ",'"
+                                + dateFormat2.format(FECHA_HORA) + "','"
+                                + IMEI + "','"
+                                + LATITUDE + "','"
+                                + LONGITUDE + "','"
+                                + LOCATIONDESCRIPTION + "','"
+                                + ETA_HORAS + "','"
+                                + EDA_KMS + "')";
+                        Statement stmt1 = conn.createStatement();
+                        // System.out.println("SQL: " + sql);
+                        stmt1.executeUpdate(sql);
+                        stmt1.close();
 
-                    this.validar_viajes_cerrados(ID_PAIS, ID_COMPANIA, ID_PLANTA, NUMERO_VIAJE, TIPO_ORDEN_VENTA, NUMERO_ORDEN_VENTA, ID_CLIENTE_DESTINO, conn);
-                } catch(Exception ex) {
-                    // System.out.println("GEOTAB: UBICACION YA EXISTE." + ex.toString());
+                        this.validar_viajes_cerrados(ID_PAIS, ID_COMPANIA, ID_PLANTA, NUMERO_VIAJE, TIPO_ORDEN_VENTA, NUMERO_ORDEN_VENTA, ID_CLIENTE_DESTINO, conn);
+                    } catch(Exception ex) {
+                        // System.out.println("GEOTAB: UBICACION YA EXISTE." + ex.toString());
+                    }
                 }
+                rs.close();
+                stmt.close();
+
+                sql = "UPDATE AMBIENTE_EJECUCION SET ESTADO=0, FECHA_HORA=CURRENT_TIMESTAMP WHERE ID_EJECUCION=2";
+                stmt = conn.createStatement();
+                // System.out.println("SQL: " + sql);
+                stmt.executeUpdate(sql);
+                stmt.close();
             }
-            rs.close();
-            stmt.close();
             
             conn.commit();
             conn.setAutoCommit(true);
+
+            resultado = gson.toJson(get_feed_response);
         } catch (Exception ex) {
             try {
                 resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerUbicaciones()|ERROR:" + ex.toString();
