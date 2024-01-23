@@ -201,6 +201,8 @@ public class Ctrl_GEOTAB implements Serializable {
             stmt.executeUpdate(sql);
             stmt.close();
 
+            conn.commit();
+
             Integer en_ejecucion = control_base_datos.ObtenerEntero("SELECT SUM(A.ESTADO) EN_EJEUCCION FROM AMBIENTE_EJECUCION A", conn);
             if(en_ejecucion == 0) {
                 sql = "UPDATE AMBIENTE_EJECUCION SET ESTADO=1, FECHA_HORA=CURRENT_TIMESTAMP WHERE ID_EJECUCION=2";
@@ -208,6 +210,8 @@ public class Ctrl_GEOTAB implements Serializable {
                 // System.out.println("SQL: " + sql);
                 stmt.executeUpdate(sql);
                 stmt.close();
+
+                conn.commit();
 
                 SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
                 Calendar fecha_actual = Calendar.getInstance();
@@ -299,9 +303,10 @@ public class Ctrl_GEOTAB implements Serializable {
                 // System.out.println("SQL: " + sql);
                 stmt.executeUpdate(sql);
                 stmt.close();
+
+                conn.commit();
             }
             
-            conn.commit();
             conn.setAutoCommit(true);
 
             resultado = gson.toJson(get_feed_response);

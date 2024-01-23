@@ -165,6 +165,8 @@ public class Ctrl_SMS_OPEN implements Serializable {
             // System.out.println("SQL: " + sql);
             stmt.executeUpdate(sql);
             stmt.close();
+
+            conn.commit();
             
             Integer en_ejecucion = control_base_datos.ObtenerEntero("SELECT SUM(A.ESTADO) EN_EJEUCCION FROM AMBIENTE_EJECUCION A", conn);
             if(en_ejecucion == 0) {
@@ -173,6 +175,8 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 // System.out.println("SQL: " + sql);
                 stmt.executeUpdate(sql);
                 stmt.close();
+
+                conn.commit();
 
                 SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
                 Calendar fecha_actual = Calendar.getInstance();
@@ -264,9 +268,10 @@ public class Ctrl_SMS_OPEN implements Serializable {
                 // System.out.println("SQL: " + sql);
                 stmt.executeUpdate(sql);
                 stmt.close();
-            }
 
-            conn.commit();
+                conn.commit();
+            }
+            
             conn.setAutoCommit(true);
 
             Gson gson = new GsonBuilder().serializeNulls().create();

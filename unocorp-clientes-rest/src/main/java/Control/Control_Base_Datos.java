@@ -20,6 +20,7 @@ public class Control_Base_Datos implements Serializable {
 
         try {
             String host_mysql_db = "UNOCORP-MYSQL";
+            // String host_mysql_db = "192.200.109.21";
             String usuario_db = "user_transportes";
             String contrasena_db = "TransGPS2023";
 

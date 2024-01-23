@@ -19,43 +19,43 @@ public class MyResource implements Serializable {
     }
 
     @GET
-    @Path("obtener_viajes/{fecha}")
+    @Path("obtener-viajes-jde/{fecha}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String obtener_viajes(@PathParam("fecha") String fecha) {
+    public String obtener_viajes_jde(@PathParam("fecha") String fecha) {
         String resultado = "";
 
         try {
             Control.Ctrl_Sfc_Transportes ctrl_sfc_transportes = new Control.Ctrl_Sfc_Transportes("usersfc", "eyb61gfP7M");
             resultado = ctrl_sfc_transportes.obtner_viajes(fecha);
         } catch (Exception ex) {
-            resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:obtener_viajes()|ERROR:" + ex.toString();
-            System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:obtener_viajes()|ERROR:" + ex.toString());
+            resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:obtener_viajes_jde()|ERROR:" + ex.toString();
+            System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:obtener_viajes_jde()|ERROR:" + ex.toString());
         }
 
         return resultado;
     }
 
     @GET
-    @Path("ObtenerUbicaciones")
+    @Path("ws-client-sms-open")
     @Produces(MediaType.APPLICATION_JSON)
-    public String ObtenerUbicaciones() {
+    public String ws_client_sms_open() {
         String resultado;
 
         try {
             Control.Ctrl_SMS_OPEN ctrl_sms_open = new Control.Ctrl_SMS_OPEN();
             resultado = ctrl_sms_open.ObtenerUbicaciones();
         } catch (Exception ex) {
-            resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:obtener_viajes()|ERROR:" + ex.toString();
-            System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:obtener_viajes()|ERROR:" + ex.toString());
+            resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_sms_open()|ERROR:" + ex.toString();
+            System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_sms_open()|ERROR:" + ex.toString());
         }
 
         return resultado;
     }
 
     @GET
-    @Path("ObtenerUbicaciones/{database}")
+    @Path("ws-client-geotab/{database}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String ObtenerUbicaciones(
+    public String ws_client_geotab(
             @PathParam("database") String database) {
 
         String resultado;
@@ -64,8 +64,27 @@ public class MyResource implements Serializable {
             Control.Ctrl_GEOTAB ctrl_geotab = new Control.Ctrl_GEOTAB();
             resultado = ctrl_geotab.ObtenerUbicaciones(database);
         } catch (Exception ex) {
-            resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerUbicaciones()|ERROR:" + ex.toString();
-            System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerUbicaciones()|ERROR:" + ex.toString());
+            resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_geotab()|ERROR:" + ex.toString();
+            System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_geotab()|ERROR:" + ex.toString());
+        }
+
+        return resultado;
+    }
+
+    @GET
+    @Path("ws-client-disatel")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String ws_client_disatel(
+            @PathParam("database") String database) {
+
+        String resultado;
+
+        try {
+            Control.Ctrl_DISATEL ctrl_disatel = new Control.Ctrl_DISATEL();
+            resultado = ctrl_disatel.ListaVehiculos();
+        } catch (Exception ex) {
+            resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_disatel()|ERROR:" + ex.toString();
+            System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_disatel()|ERROR:" + ex.toString());
         }
 
         return resultado;
