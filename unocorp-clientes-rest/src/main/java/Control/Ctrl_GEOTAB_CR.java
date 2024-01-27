@@ -112,13 +112,19 @@ public class Ctrl_GEOTAB_CR implements Serializable {
 
             conn.setAutoCommit(false);
 
+            String sql = "DELETE FROM GEOTAB_DETALLE_CR WHERE ID_GEOTAB > 0";
+            Statement stmt = conn.createStatement();
+            // System.out.println("SQL: " + sql);
+            stmt.executeUpdate(sql);
+            stmt.close();
+
             Long ID_GEOTAB = control_base_datos.ObtenerLong("SELECT IFNULL(MAX(A.ID_GEOTAB),0)+1 MAX_ID FROM GEOTAB_ENCABEZADO_CR A", conn);
 
-            String sql = "INSERT INTO GEOTAB_ENCABEZADO_CR (ID_GEOTAB, FECHA_ACTUALIZACION, NUMERO_UBICACIONES) VALUES ("
+            sql = "INSERT INTO GEOTAB_ENCABEZADO_CR (ID_GEOTAB, FECHA_ACTUALIZACION, NUMERO_UBICACIONES) VALUES ("
                     + ID_GEOTAB + ","
                     + "CURRENT_TIMESTAMP" + ","
                     + "0" + ")";
-            Statement stmt = conn.createStatement();
+            stmt = conn.createStatement();
             // System.out.println("SQL: " + sql);
             stmt.executeUpdate(sql);
             stmt.close();
@@ -262,7 +268,7 @@ public class Ctrl_GEOTAB_CR implements Serializable {
                         // System.out.println("GEOTAB-CR: UBICACION YA EXISTE." + ex.toString());
                     }
 
-                    this.validar_viajes_cerrados(ID_PAIS, ID_COMPANIA, ID_PLANTA, NUMERO_VIAJE, TIPO_ORDEN_VENTA, NUMERO_ORDEN_VENTA, ID_CLIENTE_DESTINO, conn);
+                    // this.validar_viajes_cerrados(ID_PAIS, ID_COMPANIA, ID_PLANTA, NUMERO_VIAJE, TIPO_ORDEN_VENTA, NUMERO_ORDEN_VENTA, ID_CLIENTE_DESTINO, conn);
 
                     sql = "DELETE FROM GEOTAB_DETALLE_CR WHERE "
                             + "STR_TO_DATE(DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s')='" + GPS_FECHA_HORA_UBICACION + "' AND " 
