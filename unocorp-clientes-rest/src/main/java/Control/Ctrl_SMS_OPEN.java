@@ -101,13 +101,19 @@ public class Ctrl_SMS_OPEN implements Serializable {
 
             conn.setAutoCommit(false);
 
+            String sql = "DELETE FROM SMS_OPEN_DETALLE WHERE ID_SMS_OPEN > 0";
+            Statement stmt = conn.createStatement();
+            // System.out.println("SQL: " + sql);
+            stmt.executeUpdate(sql);
+            stmt.close();
+
             Long ID_SMS_OPEN = control_base_datos.ObtenerLong("SELECT IFNULL(MAX(A.ID_SMS_OPEN),0)+1 MAX_ID FROM SMS_OPEN_ENCABEZADO A", conn);
 
-            String sql = "INSERT INTO SMS_OPEN_ENCABEZADO (ID_SMS_OPEN, FECHA_ACTUALIZACION, NUMERO_UBICACIONES) VALUES ("
+            sql = "INSERT INTO SMS_OPEN_ENCABEZADO (ID_SMS_OPEN, FECHA_ACTUALIZACION, NUMERO_UBICACIONES) VALUES ("
                     + ID_SMS_OPEN + ","
                     + "CURRENT_TIMESTAMP" + ","
                     + "0" + ")";
-            Statement stmt = conn.createStatement();
+            stmt = conn.createStatement();
             // System.out.println("SQL: " + sql);
             stmt.executeUpdate(sql);
             stmt.close();
