@@ -72,10 +72,43 @@ public class MyResource implements Serializable {
     }
 
     @GET
+    @Path("ws-client-geotab-cr")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String ws_client_geotab_cr() {
+        String resultado;
+
+        try {
+            Control.Ctrl_GEOTAB_CR ctrl_geotab = new Control.Ctrl_GEOTAB_CR();
+            resultado = ctrl_geotab.ObtenerUbicaciones();
+        } catch (Exception ex) {
+            resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_geotab_cr()|ERROR:" + ex.toString();
+            System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_geotab_cr()|ERROR:" + ex.toString());
+        }
+
+        return resultado;
+    }
+
+    @GET
+    @Path("ws-client-geotab-gt")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String ws_client_geotab_gt() {
+        String resultado;
+
+        try {
+            Control.Ctrl_GEOTAB_GT ctrl_geotab = new Control.Ctrl_GEOTAB_GT();
+            resultado = ctrl_geotab.ObtenerUbicaciones();
+        } catch (Exception ex) {
+            resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_geotab_gt()|ERROR:" + ex.toString();
+            System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_geotab_gt()|ERROR:" + ex.toString());
+        }
+
+        return resultado;
+    }
+
+    @GET
     @Path("ws-client-disatel")
     @Produces(MediaType.APPLICATION_JSON)
-    public String ws_client_disatel(
-            @PathParam("database") String database) {
+    public String ws_client_disatel() {
 
         String resultado;
 
