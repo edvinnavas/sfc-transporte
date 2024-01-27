@@ -14,7 +14,6 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class Ctrl_SMS_OPEN implements Serializable {
@@ -166,62 +165,56 @@ public class Ctrl_SMS_OPEN implements Serializable {
             stmt.executeUpdate(sql);
             stmt.close();
 
-            conn.commit();
-            
-            Integer en_ejecucion = control_base_datos.ObtenerEntero("SELECT SUM(A.ESTADO) EN_EJEUCCION FROM AMBIENTE_EJECUCION A", conn);
-            if(en_ejecucion == 0) {
-                sql = "UPDATE AMBIENTE_EJECUCION SET ESTADO=1, FECHA_HORA=CURRENT_TIMESTAMP WHERE ID_EJECUCION=1";
-                stmt = conn.createStatement();
-                // System.out.println("SQL: " + sql);
-                stmt.executeUpdate(sql);
-                stmt.close();
+            sql = "SELECT " 
+                    + "STR_TO_DATE(A.DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s') FECHA_HORA_UBICACION, " 
+                    + "A.IMEI IMEI, " 
+                    + "A.LATITUDE LATITUD_UBICACION, " 
+                    + "A.LONGITUDE LONGITUD_UBICACION, " 
+                    + "A.LOCATIONDESCRIPTION DESCRIPCION_UBICACION " 
+                    + "FROM "
+                    + "SMS_OPEN_DETALLE A";
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                String GPS_FECHA_HORA_UBICACION = rs.getString(1);
+                String GPS_IMEI = rs.getString(2);
+                String GPS_LATITUD_UBICACION = rs.getString(3);
+                String GPS_LONGITUD_UBICACION = rs.getString(4);
+                String GPS_DESCRIPCION_UBICACION = rs.getString(5);
 
-                conn.commit();
+                Long ID_CABEZAL = control_base_datos.ObtenerLong("SELECT A.ID_CABEZAL FROM CABEZAL A WHERE A.IMEI='" + GPS_IMEI + "'", conn);
+                if (ID_CABEZAL == null) {
+                    ID_CABEZAL = Long.valueOf("0");
+                }
 
-                SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
-                Calendar fecha_actual = Calendar.getInstance();
-                sql = "SELECT DISTINCT "
-                        + "V.ID_PAIS, "
-                        + "V.ID_COMPANIA, "
-                        + "V.ID_PLANTA, "
-                        + "V.NUMERO_VIAJE, "
-                        + "V.TIPO_ORDEN_VENTA, "
-                        + "V.NUMERO_ORDEN_VENTA, "
-                        + "STR_TO_DATE(SOD.DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s') FECHA_HORA_UBICACION, "
-                        + "SOD.IMEI, "
-                        + "SOD.LATITUDE LATITUD_UBICACION, "
-                        + "SOD.LONGITUDE LONGITUD_UBICACION, "
-                        + "SOD.LOCATIONDESCRIPTION DESCRIPCION_UBICACION, "
-                        + "V.ID_CLIENTE_DESTINO "
+                sql = "SELECT DISTINCT " 
+                        + "V.ID_PAIS, " 
+                        + "V.ID_COMPANIA, " 
+                        + "V.ID_PLANTA, " 
+                        + "V.NUMERO_VIAJE, " 
+                        + "V.TIPO_ORDEN_VENTA, " 
+                        + "V.NUMERO_ORDEN_VENTA, " 
+                        + "V.ID_CLIENTE_DESTINO " 
                         + "FROM " 
                         + "VIAJES V " 
-                        + "LEFT JOIN DISPONIBILIDAD D ON (V.ID_TRANSPORTISTA=D.ID_TRANSPORTISTA AND V.ID_VEHICULO=D.ID_VEHICULO AND V.FECHA_VIAJE=D.FECHA) "
-                        + "LEFT JOIN CABEZAL CD ON (D.ID_CABEZAL=CD.ID_CABEZAL) "
-                        + "LEFT JOIN SMS_OPEN_DETALLE SOD ON (CD.IMEI=SOD.IMEI AND STR_TO_DATE(SOD.DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s') BETWEEN DATE_FORMAT(V.FECHA_VIAJE, '%Y-%m-%d %H:%i:%s') AND '" + dateFormat1.format(fecha_actual.getTime()) + " 23:59:59') "
-                        + "WHERE "
-                        + "(V.ID_ESTADO_VIAJE NOT IN (2, 5, 10)) AND "
+                        + "LEFT JOIN DISPONIBILIDAD D ON (V.ID_TRANSPORTISTA=D.ID_TRANSPORTISTA AND V.ID_VEHICULO=D.ID_VEHICULO AND V.FECHA_VIAJE=D.FECHA) " 
+                        + "WHERE " 
+                        + "(V.ID_ESTADO_VIAJE NOT IN (2, 5, 10)) AND " 
                         + "(V.ID_TRANSPORTISTA IN (10, 42)) AND "
-                        + "(SOD.IMEI IS NOT NULL) AND "
-                        + "((V.ID_PAIS, V.ID_COMPANIA, V.ID_PLANTA, V.NUMERO_VIAJE, V.TIPO_ORDEN_VENTA, V.NUMERO_ORDEN_VENTA, STR_TO_DATE(SOD.DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s'), SOD.IMEI) NOT IN (SELECT F.ID_PAIS, F.ID_COMPANIA, F.ID_PLANTA, F.NUMERO_VIAJE, F.TIPO_ORDEN_VENTA, F.NUMERO_ORDEN_VENTA, F.FECHA_HORA, F.IMEI FROM VIAJE_UBICACIONES_SMS_OPEN F))";
-                stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                while (rs.next()) {
-                    Long ID_PAIS = rs.getLong(1);
-                    Long ID_COMPANIA = rs.getLong(2);
-                    Long ID_PLANTA = rs.getLong(3);
-                    Long NUMERO_VIAJE = rs.getLong(4);
-                    String TIPO_ORDEN_VENTA = rs.getString(5);
-                    Long NUMERO_ORDEN_VENTA = rs.getLong(6);
-                    SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    Date FECHA_HORA = dateFormat2.parse(rs.getString(7));
-                    String IMEI = rs.getString(8);
-                    String LATITUDE = rs.getString(9);
-                    String LONGITUDE = rs.getString(10);
-                    String LOCATIONDESCRIPTION = rs.getString(11);
-                    Long ID_CLIENTE_DESTINO = rs.getLong(12);
+                        + "(D.ID_CABEZAL=" + ID_CABEZAL + ")";
+                Statement stmt1 = conn.createStatement();
+                ResultSet rs1 = stmt1.executeQuery(sql);
+                while (rs1.next()) {
+                    Long ID_PAIS = rs1.getLong(1);
+                    Long ID_COMPANIA = rs1.getLong(2);
+                    Long ID_PLANTA = rs1.getLong(3);
+                    Long NUMERO_VIAJE = rs1.getLong(4);
+                    String TIPO_ORDEN_VENTA = rs1.getString(5);
+                    Long NUMERO_ORDEN_VENTA = rs1.getLong(6);
+                    Long ID_CLIENTE_DESTINO = rs1.getLong(7);
                     String ETA_HORAS = "0.00";
                     String EDA_KMS = "0.00";
-                
+
                     try {
                         sql = "INSERT INTO VIAJE_UBICACIONES_SMS_OPEN ("
                                 + "ID_PAIS, "
@@ -243,54 +236,56 @@ public class Ctrl_SMS_OPEN implements Serializable {
                                 + NUMERO_VIAJE + ",'"
                                 + TIPO_ORDEN_VENTA + "',"
                                 + NUMERO_ORDEN_VENTA + ",'"
-                                + dateFormat2.format(FECHA_HORA) + "','"
-                                + IMEI + "','"
-                                + LATITUDE + "','"
-                                + LONGITUDE + "','"
-                                + LOCATIONDESCRIPTION + "','"
+                                + GPS_FECHA_HORA_UBICACION + "','"
+                                + GPS_IMEI + "','"
+                                + GPS_LATITUD_UBICACION + "','"
+                                + GPS_LONGITUD_UBICACION + "','"
+                                + GPS_DESCRIPCION_UBICACION + "','"
                                 + ETA_HORAS + "','"
                                 + EDA_KMS + "')";
-                        Statement stmt1 = conn.createStatement();
+                        Statement stmt2 = conn.createStatement();
                         // System.out.println("SQL: " + sql);
-                        stmt1.executeUpdate(sql);
-                        stmt1.close();
-
-                        this.validar_viajes_cerrados(ID_PAIS, ID_COMPANIA, ID_PLANTA, NUMERO_VIAJE, TIPO_ORDEN_VENTA, NUMERO_ORDEN_VENTA, ID_CLIENTE_DESTINO, conn);
-                    } catch(Exception ex) {
+                        stmt2.executeUpdate(sql);
+                        stmt2.close();
+                    } catch (Exception ex) {
                         // System.out.println("SMS-OPEN: UBICACION YA EXISTE." + ex.toString());
                     }
+
+                    // this.validar_viajes_cerrados(ID_PAIS, ID_COMPANIA, ID_PLANTA, NUMERO_VIAJE, TIPO_ORDEN_VENTA, NUMERO_ORDEN_VENTA, ID_CLIENTE_DESTINO, conn);
+
+                    sql = "DELETE FROM SMS_OPEN_DETALLE WHERE "
+                            + "STR_TO_DATE(DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s')='" + GPS_FECHA_HORA_UBICACION + "' AND " 
+                            + "IMEI='" + GPS_IMEI + "' AND " 
+                            + "LATITUDE='" + GPS_LATITUD_UBICACION + "' AND " 
+                            + "LONGITUDE='" + GPS_LONGITUD_UBICACION + "'";
+                    Statement stmt2 = conn.createStatement();
+                    // System.out.println("SQL: " + sql);
+                    stmt2.executeUpdate(sql);
+                    stmt2.close();
                 }
-                rs.close();
-                stmt.close();
-
-                sql = "UPDATE AMBIENTE_EJECUCION SET ESTADO=0, FECHA_HORA=CURRENT_TIMESTAMP WHERE ID_EJECUCION=1";
-                stmt = conn.createStatement();
-                // System.out.println("SQL: " + sql);
-                stmt.executeUpdate(sql);
-                stmt.close();
-
-                conn.commit();
+                rs1.close();
+                stmt1.close();
             }
-            
+            rs.close();
+            stmt.close();
+
+            conn.commit();
             conn.setAutoCommit(true);
 
             Gson gson = new GsonBuilder().serializeNulls().create();
             resultado = gson.toJson(lista_ubicaciones);
         } catch (Exception ex) {
             try {
-                resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerUbicaciones()|ERROR:" + ex.toString();
-                System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerUbicaciones()|ERROR:" + ex.toString());
                 if (conn != null) {
                     conn.rollback();
                     conn.setAutoCommit(true);
                     conn = null;
-
-                    resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerUbicaciones()|ERROR:" + ex.toString();
-                    System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerUbicaciones()|ERROR:" + ex.toString());
                 }
+                resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerUbicaciones()|ERROR:" + ex.toString();
+                System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerUbicaciones()|ERROR:" + ex.toString());
             } catch (Exception ex1) {
-                resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerUbicaciones_rollback()|ERROR:" + ex.toString();
-                System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerUbicaciones_rollback()|ERROR:" + ex.toString());
+                resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerUbicaciones()|ERROR:" + ex.toString();
+                System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerUbicaciones()|ERROR:" + ex.toString());
             }
         } finally {
             try {
@@ -298,8 +293,8 @@ public class Ctrl_SMS_OPEN implements Serializable {
                     conn.close();
                 }
             } catch (Exception ex) {
-                resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerUbicaciones_finally()|ERROR:" + ex.toString();
-                System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerUbicaciones_finally()|ERROR:" + ex.toString());
+                resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerUbicaciones()|ERROR:" + ex.toString();
+                System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerUbicaciones()|ERROR:" + ex.toString());
             }
         }
 

@@ -205,20 +205,20 @@ public class Ctrl_GEOTAB_CR implements Serializable {
                 }
 
                 sql = "SELECT DISTINCT " 
-                + "V.ID_PAIS, " 
-                + "V.ID_COMPANIA, " 
-                + "V.ID_PLANTA, " 
-                + "V.NUMERO_VIAJE, " 
-                + "V.TIPO_ORDEN_VENTA, " 
-                + "V.NUMERO_ORDEN_VENTA, " 
-                + "V.ID_CLIENTE_DESTINO " 
-                + "FROM " 
-                + "VIAJES V " 
-                + "LEFT JOIN DISPONIBILIDAD D ON (V.ID_TRANSPORTISTA=D.ID_TRANSPORTISTA AND V.ID_VEHICULO=D.ID_VEHICULO AND V.FECHA_VIAJE=D.FECHA) " 
-                + "WHERE " 
-                + "(V.ID_ESTADO_VIAJE NOT IN (2, 5, 10)) AND " 
-                + "(V.ID_TRANSPORTISTA IN (5)) AND "
-                + "(D.ID_CABEZAL=" + ID_CABEZAL + ")";
+                        + "V.ID_PAIS, " 
+                        + "V.ID_COMPANIA, " 
+                        + "V.ID_PLANTA, " 
+                        + "V.NUMERO_VIAJE, " 
+                        + "V.TIPO_ORDEN_VENTA, " 
+                        + "V.NUMERO_ORDEN_VENTA, " 
+                        + "V.ID_CLIENTE_DESTINO " 
+                        + "FROM " 
+                        + "VIAJES V " 
+                        + "LEFT JOIN DISPONIBILIDAD D ON (V.ID_TRANSPORTISTA=D.ID_TRANSPORTISTA AND V.ID_VEHICULO=D.ID_VEHICULO AND V.FECHA_VIAJE=D.FECHA) " 
+                        + "WHERE " 
+                        + "(V.ID_ESTADO_VIAJE NOT IN (2, 5, 10)) AND " 
+                        + "(V.ID_TRANSPORTISTA IN (5)) AND "
+                        + "(D.ID_CABEZAL=" + ID_CABEZAL + ")";
                 Statement stmt1 = conn.createStatement();
                 ResultSet rs1 = stmt1.executeQuery(sql);
                 while (rs1.next()) {
