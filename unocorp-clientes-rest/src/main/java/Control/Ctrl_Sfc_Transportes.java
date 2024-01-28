@@ -398,32 +398,28 @@ public class Ctrl_Sfc_Transportes implements Serializable {
             stmt.close();
 
             // ELIMINA GEOPOSICIONES DE SMS-OPEN CON ANTIGUEDAD MAYOR A 3 DIAS.
-            SimpleDateFormat dateFormat_SMS_OPEN = new SimpleDateFormat("dd-MM-yyyy");
-            sql = "DELETE FROM SMS_OPEN_DETALLE WHERE STR_TO_DATE(DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s') <= '" + dateFormat_SMS_OPEN.format(fecha_cierre.getTime()) + " 23:59:59'";
+            sql = "DELETE FROM SMS_OPEN_DETALLE WHERE STR_TO_DATE(DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s') <= '" + dateFormat1.format(fecha_cierre.getTime()) + " 23:59:59'";
             stmt = conn.createStatement();
             // System.out.println("SQL: " + sql);
             stmt.executeUpdate(sql);
             stmt.close();
 
             // ELIMINA GEOPOSICIONES DE GEOTAB-CR CON ANTIGUEDAD MAYOR A 3 DIAS.
-            SimpleDateFormat dateFormat_GEOTAB_CR = new SimpleDateFormat("yyyy-MM-dd");
-            sql = "DELETE FROM GEOTAB_DETALLE_CR WHERE STR_TO_DATE(DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') <= '" + dateFormat_GEOTAB_CR.format(fecha_cierre.getTime()) + " 23:59:59'";
+            sql = "DELETE FROM GEOTAB_DETALLE_CR WHERE STR_TO_DATE(DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') <= '" + dateFormat1.format(fecha_cierre.getTime()) + " 23:59:59'";
             stmt = conn.createStatement();
             // System.out.println("SQL: " + sql);
             stmt.executeUpdate(sql);
             stmt.close();
 
             // ELIMINA GEOPOSICIONES DE GEOTAB-GT CON ANTIGUEDAD MAYOR A 3 DIAS.
-            SimpleDateFormat dateFormat_GEOTAB_GT = new SimpleDateFormat("yyyy-MM-dd");
-            sql = "DELETE FROM GEOTAB_DETALLE_GT WHERE STR_TO_DATE(DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') <= '" + dateFormat_GEOTAB_GT.format(fecha_cierre.getTime()) + " 23:59:59'";
+            sql = "DELETE FROM GEOTAB_DETALLE_GT WHERE STR_TO_DATE(DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') <= '" + dateFormat1.format(fecha_cierre.getTime()) + " 23:59:59'";
             stmt = conn.createStatement();
             // System.out.println("SQL: " + sql);
             stmt.executeUpdate(sql);
             stmt.close();
 
             // ELIMINA GEOPOSICIONES DE DISATEL CON ANTIGUEDAD MAYOR A 3 DIAS.
-            SimpleDateFormat dateFormat_DISATEL = new SimpleDateFormat("yyyy/MM/dd");
-            sql = "DELETE FROM DISATEL_DETALLE WHERE STR_TO_DATE(DATETIME_UBICACION, '%Y/%m/%d %H:%i:%s') <= '" + dateFormat_DISATEL.format(fecha_cierre.getTime()) + " 23:59:59'";
+            sql = "DELETE FROM DISATEL_DETALLE WHERE STR_TO_DATE(DATETIME_UBICACION, '%Y/%m/%d %H:%i:%s') <= '" + dateFormat1.format(fecha_cierre.getTime()) + " 23:59:59'";
             stmt = conn.createStatement();
             // System.out.println("SQL: " + sql);
             stmt.executeUpdate(sql);
@@ -509,7 +505,7 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                                 + "TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
                                 + "NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA;
                         Statement stmt1 = conn.createStatement();
-                        // System.out.println("SQL: " + sql);
+                        System.out.println("SQL: " + sql);
                         stmt1.executeUpdate(sql);
                         stmt1.close();
                     }
