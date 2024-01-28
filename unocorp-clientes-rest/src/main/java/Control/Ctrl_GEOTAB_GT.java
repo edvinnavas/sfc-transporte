@@ -112,19 +112,19 @@ public class Ctrl_GEOTAB_GT implements Serializable {
 
             conn.setAutoCommit(false);
 
-            String sql = "DELETE FROM GEOTAB_DETALLE_GT WHERE ID_GEOTAB > 0";
+            /* String sql = "DELETE FROM GEOTAB_DETALLE_GT WHERE ID_GEOTAB > 0";
             Statement stmt = conn.createStatement();
             // System.out.println("SQL: " + sql);
             stmt.executeUpdate(sql);
-            stmt.close();
+            stmt.close(); */
 
             Long ID_GEOTAB = control_base_datos.ObtenerLong("SELECT IFNULL(MAX(A.ID_GEOTAB),0)+1 MAX_ID FROM GEOTAB_ENCABEZADO_GT A", conn);
 
-            sql = "INSERT INTO GEOTAB_ENCABEZADO_GT (ID_GEOTAB, FECHA_ACTUALIZACION, NUMERO_UBICACIONES) VALUES ("
+            String sql = "INSERT INTO GEOTAB_ENCABEZADO_GT (ID_GEOTAB, FECHA_ACTUALIZACION, NUMERO_UBICACIONES) VALUES ("
                     + ID_GEOTAB + ","
                     + "CURRENT_TIMESTAMP" + ","
                     + "0" + ")";
-            stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             // System.out.println("SQL: " + sql);
             stmt.executeUpdate(sql);
             stmt.close();
@@ -228,7 +228,7 @@ public class Ctrl_GEOTAB_GT implements Serializable {
                     Long NUMERO_VIAJE = rs1.getLong(4);
                     String TIPO_ORDEN_VENTA = rs1.getString(5);
                     Long NUMERO_ORDEN_VENTA = rs1.getLong(6);
-                    Long ID_CLIENTE_DESTINO = rs1.getLong(7);
+                    // Long ID_CLIENTE_DESTINO = rs1.getLong(7);
                     String ETA_HORAS = "0.00";
                     String EDA_KMS = "0.00";
 
@@ -318,89 +318,6 @@ public class Ctrl_GEOTAB_GT implements Serializable {
         }
 
         return resultado;
-    }
-
-    private void validar_viajes_cerrados(Long ID_PAIS, Long ID_COMPANIA, Long ID_PLANTA, Long NUMERO_VIAJE, String TIPO_ORDEN_VENTA, Long NUMERO_ORDEN_VENTA, Long ID_CLIENTE_DESTINO, Connection conn) {
-        try {
-            String sql = "SELECT "
-                    + "A.LATITUDE, "
-                    + "A.LONGITUDE, "
-                    + "A.FECHA_HORA "
-                    + "FROM "
-                    + "VIAJE_UBICACIONES_GEOTAB_GT A "
-                    + "WHERE "
-                    + "A.ID_PAIS=" + ID_PAIS + " AND "
-                    + "A.ID_COMPANIA=" + ID_COMPANIA + " AND "
-                    + "A.ID_PLANTA=" + ID_PLANTA + " AND "
-                    + "A.NUMERO_VIAJE=" + NUMERO_VIAJE + " AND "
-                    + "A.TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
-                    + "A.NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA;
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                Double LATITUDE = rs.getDouble(1);
-                Double LONGITUDE = rs.getDouble(2);
-                String FECHA_HORA = rs.getString(3);
-
-                if (ID_CLIENTE_DESTINO != null) {
-                    Control_Base_Datos control_base_datos = new Control_Base_Datos();
-                    Double ZONA_LATITUD_1 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LATITUD_1,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
-                    Double ZONA_LONGITUD_1 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LONGITUD_1,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
-                    Double ZONA_LATITUD_2 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LATITUD_2,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
-                    Double ZONA_LONGITUD_2 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LONGITUD_2,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
-                    Double ZONA_LATITUD_3 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LATITUD_3,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
-                    Double ZONA_LONGITUD_3 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LONGITUD_3,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
-                    Double ZONA_LATITUD_4 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LATITUD_4,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
-                    Double ZONA_LONGITUD_4 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LONGITUD_4,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
-                    Double ZONA_LATITUD_5 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LATITUD_5,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
-                    Double ZONA_LONGITUD_5 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LONGITUD_5,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
-
-                    Point geozona[] = {
-                        new Point(ZONA_LATITUD_1, ZONA_LONGITUD_1),
-                        new Point(ZONA_LATITUD_2, ZONA_LONGITUD_2),
-                        new Point(ZONA_LATITUD_3, ZONA_LONGITUD_3),
-                        new Point(ZONA_LATITUD_4, ZONA_LONGITUD_4),
-                        new Point(ZONA_LATITUD_5, ZONA_LONGITUD_5)
-                    };
-
-                    Point ubicacion_actual = new Point(LATITUDE, LONGITUDE);
-
-                    Poligono poligono = new Poligono();
-                    if (poligono.isInside(geozona, 5, ubicacion_actual)) {
-                        // System.out.println("GEO-ZONA: {"
-                        // + "(" + ZONA_LATITUD_1 + "," + ZONA_LONGITUD_1 + ");"
-                        // + "(" + ZONA_LATITUD_2 + "," + ZONA_LONGITUD_2 + ");"
-                        // + "(" + ZONA_LATITUD_3 + "," + ZONA_LONGITUD_3 + ");"
-                        // + "(" + ZONA_LATITUD_4 + "," + ZONA_LONGITUD_4 + ");"
-                        // + "(" + ZONA_LATITUD_5 + "," + ZONA_LONGITUD_5 + ")"
-                        // + "}"); 
-                        // System.out.println("UBICACIÓN-ACTUAL: {(" + LATITUDE + "," + LONGITUDE + ")}");
-
-                        sql = "UPDATE "
-                                + "VIAJES "
-                                + "SET "
-                                + "ID_ESTADO_VIAJE=5, "
-                                + "ESTADO='TER', "
-                                + "FECHA_HORA_TERMINADO='" + FECHA_HORA + "' "
-                                + "WHERE "
-                                + "ID_PAIS=" + ID_PAIS + " AND "
-                                + "ID_COMPANIA=" + ID_COMPANIA + " AND "
-                                + "ID_PLANTA=" + ID_PLANTA + " AND "
-                                + "NUMERO_VIAJE=" + NUMERO_VIAJE + " AND "
-                                + "TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
-                                + "NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA;
-                        Statement stmt1 = conn.createStatement();
-                        // System.out.println("SQL: " + sql);
-                        stmt1.executeUpdate(sql);
-                        stmt1.close();
-                    }
-                }
-            }
-            rs.close();
-            stmt.close();
-        } catch (Exception ex) {
-            System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:validar_viajes_cerrados()|ERROR:" + ex.toString());
-        }
     }
 
 }

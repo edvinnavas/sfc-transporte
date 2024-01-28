@@ -53,25 +53,6 @@ public class MyResource implements Serializable {
     }
 
     @GET
-    @Path("ws-client-geotab/{database}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String ws_client_geotab(
-            @PathParam("database") String database) {
-
-        String resultado;
-
-        try {
-            Control.Ctrl_GEOTAB ctrl_geotab = new Control.Ctrl_GEOTAB();
-            resultado = ctrl_geotab.ObtenerUbicaciones(database);
-        } catch (Exception ex) {
-            resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_geotab()|ERROR:" + ex.toString();
-            System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_geotab()|ERROR:" + ex.toString());
-        }
-
-        return resultado;
-    }
-
-    @GET
     @Path("ws-client-geotab-cr")
     @Produces(MediaType.APPLICATION_JSON)
     public String ws_client_geotab_cr() {

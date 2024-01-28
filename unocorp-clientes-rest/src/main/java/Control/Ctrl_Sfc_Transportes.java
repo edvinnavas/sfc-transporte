@@ -46,253 +46,253 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                 SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
 
                 Long ID_PAIS = Long.valueOf("0");
-                String cadenasql = "SELECT P.ID_PAIS FROM PAIS P WHERE P.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_PAIS() + "'";
+                String sql = "SELECT P.ID_PAIS FROM PAIS P WHERE P.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_PAIS() + "'";
                 Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(cadenasql);
+                ResultSet rs = stmt.executeQuery(sql);
                 while (rs.next()) {
                     ID_PAIS = rs.getLong(1);
                 }
                 rs.close();
                 stmt.close();
                 if (Objects.equals(ID_PAIS, Long.valueOf("0"))) {
-                    cadenasql = "SELECT IFNULL(MAX(P.ID_PAIS),0) FROM PAIS P";
+                    sql = "SELECT IFNULL(MAX(P.ID_PAIS),0) FROM PAIS P";
                     stmt = conn.createStatement();
-                    rs = stmt.executeQuery(cadenasql);
+                    rs = stmt.executeQuery(sql);
                     while (rs.next()) {
                         ID_PAIS = rs.getLong(1);
                     }
                     rs.close();
                     stmt.close();
                     ID_PAIS++;
-                    cadenasql = "INSERT INTO PAIS (ID_PAIS, CODIGO, NOMBRE, FECHA_HORA) VALUES ("
+                    sql = "INSERT INTO PAIS (ID_PAIS, CODIGO, NOMBRE, FECHA_HORA) VALUES ("
                             + ID_PAIS + ",'"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_PAIS() + "','"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getNOMBRE_PAIS().replaceAll("'", "") + "',"
                             + "CURRENT_TIMESTAMP" + ")";
                     stmt = conn.createStatement();
-                    // System.out.println(cadenasql);
-                    stmt.executeUpdate(cadenasql);
+                    // System.out.println(sql);
+                    stmt.executeUpdate(sql);
                     stmt.close();
                 }
 
                 Long ID_COMPANIA = Long.valueOf("0");
-                cadenasql = "SELECT C.ID_COMPANIA FROM COMPANIA C WHERE C.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_COMPANIA() + "'";
+                sql = "SELECT C.ID_COMPANIA FROM COMPANIA C WHERE C.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_COMPANIA() + "'";
                 stmt = conn.createStatement();
-                rs = stmt.executeQuery(cadenasql);
+                rs = stmt.executeQuery(sql);
                 while (rs.next()) {
                     ID_COMPANIA = rs.getLong(1);
                 }
                 rs.close();
                 stmt.close();
                 if (Objects.equals(ID_COMPANIA, Long.valueOf("0"))) {
-                    cadenasql = "SELECT IFNULL(MAX(C.ID_COMPANIA),0) FROM COMPANIA C";
+                    sql = "SELECT IFNULL(MAX(C.ID_COMPANIA),0) FROM COMPANIA C";
                     stmt = conn.createStatement();
-                    rs = stmt.executeQuery(cadenasql);
+                    rs = stmt.executeQuery(sql);
                     while (rs.next()) {
                         ID_COMPANIA = rs.getLong(1);
                     }
                     rs.close();
                     stmt.close();
                     ID_COMPANIA++;
-                    cadenasql = "INSERT INTO COMPANIA (ID_COMPANIA, CODIGO, NOMBRE, ID_PAIS, FECHA_HORA) VALUES ("
+                    sql = "INSERT INTO COMPANIA (ID_COMPANIA, CODIGO, NOMBRE, ID_PAIS, FECHA_HORA) VALUES ("
                             + ID_COMPANIA + ",'"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_COMPANIA() + "','"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getNOMBRE_COMPANIA().replaceAll("'", "") + "',"
                             + ID_PAIS + ","
                             + "CURRENT_TIMESTAMP" + ")";
                     stmt = conn.createStatement();
-                    // System.out.println(cadenasql);
-                    stmt.executeUpdate(cadenasql);
+                    // System.out.println(sql);
+                    stmt.executeUpdate(sql);
                     stmt.close();
                 }
 
                 Long ID_PLANTA = Long.valueOf("0");
-                cadenasql = "SELECT P.ID_PLANTA FROM PLANTA P WHERE P.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_PLANTA() + "'";
+                sql = "SELECT P.ID_PLANTA FROM PLANTA P WHERE P.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_PLANTA() + "'";
                 stmt = conn.createStatement();
-                rs = stmt.executeQuery(cadenasql);
+                rs = stmt.executeQuery(sql);
                 while (rs.next()) {
                     ID_PLANTA = rs.getLong(1);
                 }
                 rs.close();
                 stmt.close();
                 if (Objects.equals(ID_PLANTA, Long.valueOf("0"))) {
-                    cadenasql = "SELECT IFNULL(MAX(P.ID_PLANTA),0) FROM PLANTA P";
+                    sql = "SELECT IFNULL(MAX(P.ID_PLANTA),0) FROM PLANTA P";
                     stmt = conn.createStatement();
-                    rs = stmt.executeQuery(cadenasql);
+                    rs = stmt.executeQuery(sql);
                     while (rs.next()) {
                         ID_PLANTA = rs.getLong(1);
                     }
                     rs.close();
                     stmt.close();
                     ID_PLANTA++;
-                    cadenasql = "INSERT INTO PLANTA (ID_PLANTA, CODIGO, NOMBRE, ID_COMPANIA, FECHA_HORA) VALUES ("
+                    sql = "INSERT INTO PLANTA (ID_PLANTA, CODIGO, NOMBRE, ID_COMPANIA, FECHA_HORA) VALUES ("
                             + ID_PLANTA + ",'"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_PLANTA() + "','"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getNOMBRE_PLANTA().replaceAll("'", "") + "',"
                             + ID_COMPANIA + ","
                             + "CURRENT_TIMESTAMP" + ")";
                     stmt = conn.createStatement();
-                    // System.out.println(cadenasql);
-                    stmt.executeUpdate(cadenasql);
+                    // System.out.println(sql);
+                    stmt.executeUpdate(sql);
                     stmt.close();
                 }
 
                 Long ID_ESTADO_VIAJE = Long.valueOf("0");
-                cadenasql = "SELECT EV.ID_ESTADO_VIAJE FROM ESTADO_VIAJE EV WHERE EV.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_ESTADO_VIAJE() + "'";
+                sql = "SELECT EV.ID_ESTADO_VIAJE FROM ESTADO_VIAJE EV WHERE EV.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_ESTADO_VIAJE() + "'";
                 stmt = conn.createStatement();
-                rs = stmt.executeQuery(cadenasql);
+                rs = stmt.executeQuery(sql);
                 while (rs.next()) {
                     ID_ESTADO_VIAJE = rs.getLong(1);
                 }
                 rs.close();
                 stmt.close();
                 if (Objects.equals(ID_ESTADO_VIAJE, Long.valueOf("0"))) {
-                    cadenasql = "SELECT IFNULL(MAX(EV.ID_ESTADO_VIAJE),0) FROM ESTADO_VIAJE EV";
+                    sql = "SELECT IFNULL(MAX(EV.ID_ESTADO_VIAJE),0) FROM ESTADO_VIAJE EV";
                     stmt = conn.createStatement();
-                    rs = stmt.executeQuery(cadenasql);
+                    rs = stmt.executeQuery(sql);
                     while (rs.next()) {
                         ID_ESTADO_VIAJE = rs.getLong(1);
                     }
                     rs.close();
                     stmt.close();
                     ID_ESTADO_VIAJE++;
-                    cadenasql = "INSERT INTO ESTADO_VIAJE (ID_ESTADO_VIAJE, CODIGO, NOMBRE, FECHA_HORA) VALUES ("
+                    sql = "INSERT INTO ESTADO_VIAJE (ID_ESTADO_VIAJE, CODIGO, NOMBRE, FECHA_HORA) VALUES ("
                             + ID_ESTADO_VIAJE + ",'"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_ESTADO_VIAJE() + "','"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getNOMBRE_ESTADO_VIAJE().replaceAll("'", "") + "',"
                             + "CURRENT_TIMESTAMP" + ")";
                     stmt = conn.createStatement();
-                    // System.out.println(cadenasql);
-                    stmt.executeUpdate(cadenasql);
+                    // System.out.println(sql);
+                    stmt.executeUpdate(sql);
                     stmt.close();
                 }
 
                 Long ID_TRANSPORTISTA = Long.valueOf("0");
-                cadenasql = "SELECT T.ID_TRANSPORTISTA FROM TRANSPORTISTA T WHERE T.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_TRANSPORTISTA() + "'";
+                sql = "SELECT T.ID_TRANSPORTISTA FROM TRANSPORTISTA T WHERE T.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_TRANSPORTISTA() + "'";
                 stmt = conn.createStatement();
-                rs = stmt.executeQuery(cadenasql);
+                rs = stmt.executeQuery(sql);
                 while (rs.next()) {
                     ID_TRANSPORTISTA = rs.getLong(1);
                 }
                 rs.close();
                 stmt.close();
                 if (Objects.equals(ID_TRANSPORTISTA, Long.valueOf("0"))) {
-                    cadenasql = "SELECT IFNULL(MAX(T.ID_TRANSPORTISTA),0) FROM TRANSPORTISTA T";
+                    sql = "SELECT IFNULL(MAX(T.ID_TRANSPORTISTA),0) FROM TRANSPORTISTA T";
                     stmt = conn.createStatement();
-                    rs = stmt.executeQuery(cadenasql);
+                    rs = stmt.executeQuery(sql);
                     while (rs.next()) {
                         ID_TRANSPORTISTA = rs.getLong(1);
                     }
                     rs.close();
                     stmt.close();
                     ID_TRANSPORTISTA++;
-                    cadenasql = "INSERT INTO TRANSPORTISTA (ID_TRANSPORTISTA, CODIGO, NOMBRE, ID_PAIS, FECHA_HORA) VALUES ("
+                    sql = "INSERT INTO TRANSPORTISTA (ID_TRANSPORTISTA, CODIGO, NOMBRE, ID_PAIS, FECHA_HORA) VALUES ("
                             + ID_TRANSPORTISTA + ",'"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_TRANSPORTISTA() + "','"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getNOMBRE_TRANSPORTISTA().replaceAll("'", "") + "',"
                             + ID_PAIS + ","
                             + "CURRENT_TIMESTAMP" + ")";
                     stmt = conn.createStatement();
-                    // System.out.println(cadenasql);
-                    stmt.executeUpdate(cadenasql);
+                    // System.out.println(sql);
+                    stmt.executeUpdate(sql);
                     stmt.close();
                 }
 
                 Long ID_VEHICULO = Long.valueOf("0");
-                cadenasql = "SELECT V.ID_VEHICULO FROM VEHICULO V WHERE V.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getVEHICULO().replaceAll("'", "") + "'";
+                sql = "SELECT V.ID_VEHICULO FROM VEHICULO V WHERE V.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getVEHICULO().replaceAll("'", "") + "'";
                 stmt = conn.createStatement();
-                rs = stmt.executeQuery(cadenasql);
+                rs = stmt.executeQuery(sql);
                 while (rs.next()) {
                     ID_VEHICULO = rs.getLong(1);
                 }
                 rs.close();
                 stmt.close();
                 if (Objects.equals(ID_VEHICULO, Long.valueOf("0"))) {
-                    cadenasql = "SELECT IFNULL(MAX(V.ID_VEHICULO),0) FROM VEHICULO V";
+                    sql = "SELECT IFNULL(MAX(V.ID_VEHICULO),0) FROM VEHICULO V";
                     stmt = conn.createStatement();
-                    rs = stmt.executeQuery(cadenasql);
+                    rs = stmt.executeQuery(sql);
                     while (rs.next()) {
                         ID_VEHICULO = rs.getLong(1);
                     }
                     rs.close();
                     stmt.close();
                     ID_VEHICULO++;
-                    cadenasql = "INSERT INTO VEHICULO (ID_VEHICULO, CODIGO, PLACA, ID_TRANSPORTISTA, FECHA_HORA) VALUES ("
+                    sql = "INSERT INTO VEHICULO (ID_VEHICULO, CODIGO, PLACA, ID_TRANSPORTISTA, FECHA_HORA) VALUES ("
                             + ID_VEHICULO + ",'"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getVEHICULO().replaceAll("'", "") + "','"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getPLACA_VEHICULO().replaceAll("'", "") + "',"
                             + ID_TRANSPORTISTA + ","
                             + "CURRENT_TIMESTAMP" + ")";
                     stmt = conn.createStatement();
-                    // System.out.println(cadenasql);
-                    stmt.executeUpdate(cadenasql);
+                    // System.out.println(sql);
+                    stmt.executeUpdate(sql);
                     stmt.close();
                 }
 
                 Long ID_CLIENTE = Long.valueOf("0");
-                cadenasql = "SELECT C.ID_CLIENTE FROM CLIENTE C WHERE C.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_CLIENTE() + "'";
+                sql = "SELECT C.ID_CLIENTE FROM CLIENTE C WHERE C.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_CLIENTE() + "'";
                 stmt = conn.createStatement();
-                rs = stmt.executeQuery(cadenasql);
+                rs = stmt.executeQuery(sql);
                 while (rs.next()) {
                     ID_CLIENTE = rs.getLong(1);
                 }
                 rs.close();
                 stmt.close();
                 if (Objects.equals(ID_CLIENTE, Long.valueOf("0"))) {
-                    cadenasql = "SELECT IFNULL(MAX(C.ID_CLIENTE),0) FROM CLIENTE C";
+                    sql = "SELECT IFNULL(MAX(C.ID_CLIENTE),0) FROM CLIENTE C";
                     stmt = conn.createStatement();
-                    rs = stmt.executeQuery(cadenasql);
+                    rs = stmt.executeQuery(sql);
                     while (rs.next()) {
                         ID_CLIENTE = rs.getLong(1);
                     }
                     rs.close();
                     stmt.close();
                     ID_CLIENTE++;
-                    cadenasql = "INSERT INTO CLIENTE (ID_CLIENTE, CODIGO, NOMBRE, FECHA_HORA) VALUES ("
+                    sql = "INSERT INTO CLIENTE (ID_CLIENTE, CODIGO, NOMBRE, FECHA_HORA) VALUES ("
                             + ID_CLIENTE + ",'"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_CLIENTE() + "','"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getNOMBRE_CLIENTE().replaceAll("'", "") + "',"
                             + "CURRENT_TIMESTAMP" + ")";
                     stmt = conn.createStatement();
-                    // System.out.println(cadenasql);
-                    stmt.executeUpdate(cadenasql);
+                    // System.out.println(sql);
+                    stmt.executeUpdate(sql);
                     stmt.close();
                 }
 
                 Long ID_CLIENTE_DESTINO = Long.valueOf("0");
-                cadenasql = "SELECT CD.ID_CLIENTE_DESTINO FROM CLIENTE_DESTINO CD WHERE CD.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_CLIENTE_DESTINO() + "'";
+                sql = "SELECT CD.ID_CLIENTE_DESTINO FROM CLIENTE_DESTINO CD WHERE CD.CODIGO='" + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_CLIENTE_DESTINO() + "'";
                 stmt = conn.createStatement();
-                rs = stmt.executeQuery(cadenasql);
+                rs = stmt.executeQuery(sql);
                 while (rs.next()) {
                     ID_CLIENTE_DESTINO = rs.getLong(1);
                 }
                 rs.close();
                 stmt.close();
                 if (Objects.equals(ID_CLIENTE_DESTINO, Long.valueOf("0"))) {
-                    cadenasql = "SELECT IFNULL(MAX(CD.ID_CLIENTE_DESTINO),0) FROM CLIENTE_DESTINO CD";
+                    sql = "SELECT IFNULL(MAX(CD.ID_CLIENTE_DESTINO),0) FROM CLIENTE_DESTINO CD";
                     stmt = conn.createStatement();
-                    rs = stmt.executeQuery(cadenasql);
+                    rs = stmt.executeQuery(sql);
                     while (rs.next()) {
                         ID_CLIENTE_DESTINO = rs.getLong(1);
                     }
                     rs.close();
                     stmt.close();
                     ID_CLIENTE_DESTINO++;
-                    cadenasql = "INSERT INTO CLIENTE_DESTINO (ID_CLIENTE_DESTINO, CODIGO, NOMBRE, ID_CLIENTE, FECHA_HORA) VALUES ("
+                    sql = "INSERT INTO CLIENTE_DESTINO (ID_CLIENTE_DESTINO, CODIGO, NOMBRE, ID_CLIENTE, FECHA_HORA) VALUES ("
                             + ID_CLIENTE_DESTINO + ",'"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getCODIGO_CLIENTE_DESTINO() + "','"
                             + respuesta_sfc_transportes.getLista_viajes().get(i).getNOMBRE_CLIENTE_DESTINO().replaceAll("'", "") + "',"
                             + ID_CLIENTE + ","
                             + "CURRENT_TIMESTAMP" + ")";
                     stmt = conn.createStatement();
-                    // System.out.println(cadenasql);
-                    stmt.executeUpdate(cadenasql);
+                    // System.out.println(sql);
+                    stmt.executeUpdate(sql);
                     stmt.close();
                 }
 
                 Boolean exite_viaje = false;
                 String ESTADO_ACTUAL = "";
-                cadenasql = "SELECT "
+                sql = "SELECT "
                         + "V.ID_PLANTA, "
                         + "V.NUMERO_VIAJE, "
                         + "V.ESTADO "
@@ -306,7 +306,7 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                         + "V.TIPO_ORDEN_VENTA='" + respuesta_sfc_transportes.getLista_viajes().get(i).getTIPO_ORDEN_VENTA() + "' AND "
                         + "V.NUMERO_ORDEN_VENTA=" + respuesta_sfc_transportes.getLista_viajes().get(i).getNUMERO_ORDEN_VENTA();
                 stmt = conn.createStatement();
-                rs = stmt.executeQuery(cadenasql);
+                rs = stmt.executeQuery(sql);
                 while (rs.next()) {
                     exite_viaje = true;
                     ESTADO_ACTUAL = rs.getString(3);
@@ -326,7 +326,7 @@ public class Ctrl_Sfc_Transportes implements Serializable {
 
                 if (exite_viaje) {
                     if (!ESTADO_ACTUAL.equals("TER")) {
-                        cadenasql = "UPDATE VIAJES SET "
+                        sql = "UPDATE VIAJES SET "
                                 + "ID_ESTADO_VIAJE=" + ID_ESTADO_VIAJE + ", "
                                 + "ESTADO='" + ESTADO + "', "
                                 + "FECHA_HORA_TERMINADO=" + FECHA_HORA_TERMINADO + " "
@@ -338,12 +338,12 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                                 + "TIPO_ORDEN_VENTA='" + respuesta_sfc_transportes.getLista_viajes().get(i).getTIPO_ORDEN_VENTA() + "' AND "
                                 + "NUMERO_ORDEN_VENTA=" + respuesta_sfc_transportes.getLista_viajes().get(i).getNUMERO_ORDEN_VENTA();
                         stmt = conn.createStatement();
-                        // System.out.println(cadenasql);
-                        stmt.executeUpdate(cadenasql);
+                        // System.out.println(sql);
+                        stmt.executeUpdate(sql);
                         stmt.close();
                     }
                 } else {
-                    cadenasql = "INSERT INTO VIAJES ("
+                    sql = "INSERT INTO VIAJES ("
                             + "ID_PAIS, "
                             + "ID_COMPANIA, "
                             + "ID_PLANTA, "
@@ -377,8 +377,8 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                             + ESTADO + "',"
                             + FECHA_HORA_TERMINADO + ")";
                     stmt = conn.createStatement();
-                    // System.out.println(cadenasql);
-                    stmt.executeUpdate(cadenasql);
+                    // System.out.println(sql);
+                    stmt.executeUpdate(sql);
                     stmt.close();
                 }
             }
@@ -388,12 +388,134 @@ public class Ctrl_Sfc_Transportes implements Serializable {
             
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
             
-            String cadenasql = "UPDATE VIAJES "
+            // CIERRA VIAJES CON CON ANTIGUEDAD MAYOR A 3 DIAS CON EL 82-TERMINADO MANUALMENTE.
+            String sql = "UPDATE VIAJES "
                     + "SET ID_ESTADO_VIAJE=10, ESTADO='TER', FECHA_HORA_TERMINADO=CURRENT_TIMESTAMP "
                     + "WHERE ID_ESTADO_VIAJE NOT IN (2, 5, 10) AND FECHA_VIAJE < '" + dateFormat1.format(fecha_cierre.getTime()) + "'";
             Statement stmt = conn.createStatement();
-            // System.out.println(cadenasql);
-            stmt.executeUpdate(cadenasql);
+            // System.out.println(sql);
+            stmt.executeUpdate(sql);
+            stmt.close();
+
+            // ELIMINA GEOPOSICIONES DE SMS-OPEN CON ANTIGUEDAD MAYOR A 3 DIAS.
+            SimpleDateFormat dateFormat_SMS_OPEN = new SimpleDateFormat("dd-MM-yyyy");
+            sql = "DELETE FROM SMS_OPEN_DETALLE WHERE STR_TO_DATE(DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s') <= '" + dateFormat_SMS_OPEN.format(fecha_cierre.getTime()) + " 23:59:59'";
+            stmt = conn.createStatement();
+            // System.out.println("SQL: " + sql);
+            stmt.executeUpdate(sql);
+            stmt.close();
+
+            // ELIMINA GEOPOSICIONES DE GEOTAB-CR CON ANTIGUEDAD MAYOR A 3 DIAS.
+            SimpleDateFormat dateFormat_GEOTAB_CR = new SimpleDateFormat("yyyy-MM-dd");
+            sql = "DELETE FROM GEOTAB_DETALLE_CR WHERE STR_TO_DATE(DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') <= '" + dateFormat_GEOTAB_CR.format(fecha_cierre.getTime()) + " 23:59:59'";
+            stmt = conn.createStatement();
+            // System.out.println("SQL: " + sql);
+            stmt.executeUpdate(sql);
+            stmt.close();
+
+            // ELIMINA GEOPOSICIONES DE GEOTAB-GT CON ANTIGUEDAD MAYOR A 3 DIAS.
+            SimpleDateFormat dateFormat_GEOTAB_GT = new SimpleDateFormat("yyyy-MM-dd");
+            sql = "DELETE FROM GEOTAB_DETALLE_GT WHERE STR_TO_DATE(DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') <= '" + dateFormat_GEOTAB_GT.format(fecha_cierre.getTime()) + " 23:59:59'";
+            stmt = conn.createStatement();
+            // System.out.println("SQL: " + sql);
+            stmt.executeUpdate(sql);
+            stmt.close();
+
+            // ELIMINA GEOPOSICIONES DE DISATEL CON ANTIGUEDAD MAYOR A 3 DIAS.
+            SimpleDateFormat dateFormat_DISATEL = new SimpleDateFormat("yyyy/MM/dd");
+            sql = "DELETE FROM DISATEL_DETALLE WHERE STR_TO_DATE(DATETIME_UBICACION, '%Y/%m/%d %H:%i:%s') <= '" + dateFormat_DISATEL.format(fecha_cierre.getTime()) + " 23:59:59'";
+            stmt = conn.createStatement();
+            // System.out.println("SQL: " + sql);
+            stmt.executeUpdate(sql);
+            stmt.close();
+
+            sql = "SELECT " 
+                    + "V.ID_PAIS, "
+                    + "V.ID_COMPANIA, "
+                    + "V.ID_PLANTA, "
+                    + "V.NUMERO_VIAJE, "
+                    + "V.TIPO_ORDEN_VENTA, "
+                    + "V.NUMERO_ORDEN_VENTA, "
+                    + "V.ID_CLIENTE_DESTINO, "
+                    + "VU.LATITUDE, "
+                    + "VU.LONGITUDE, "
+                    + "VU.FECHA_HORA "
+                    + "FROM "
+                    + "VIAJES V "
+                    + "LEFT JOIN VIEW_VIAJE_UBICACIONES VU ON (V.ID_PAIS=VU.ID_PAIS AND V.ID_COMPANIA=VU.ID_COMPANIA AND V.ID_PLANTA=VU.ID_PLANTA AND V.NUMERO_VIAJE=VU.NUMERO_VIAJE AND V.TIPO_ORDEN_VENTA=VU.TIPO_ORDEN_VENTA AND V.NUMERO_ORDEN_VENTA=VU.NUMERO_ORDEN_VENTA) "
+                    + "WHERE "
+                    + "(V.ID_ESTADO_VIAJE NOT IN (2, 5, 10)) AND "
+                    + "(VU.LATITUDE IS NOT NULL) AND "
+                    + "(VU.LONGITUDE IS NOT NULL) AND "
+                    + "(VU.FECHA_HORA IS NOT NULL)";
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                Long ID_PAIS = rs.getLong(1);
+                Long ID_COMPANIA = rs.getLong(2);
+                Long ID_PLANTA = rs.getLong(3);
+                Long NUMERO_VIAJE = rs.getLong(4);
+                String TIPO_ORDEN_VENTA = rs.getString(5);
+                Long NUMERO_ORDEN_VENTA = rs.getLong(6);
+                Long ID_CLIENTE_DESTINO = rs.getLong(7);
+                Double LATITUDE = rs.getDouble(8);
+                Double LONGITUDE = rs.getDouble(9);
+                String FECHA_HORA = rs.getString(10);
+
+                if (ID_CLIENTE_DESTINO != null) {
+                    Double ZONA_LATITUD_1 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LATITUD_1,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                    Double ZONA_LONGITUD_1 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LONGITUD_1,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                    Double ZONA_LATITUD_2 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LATITUD_2,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                    Double ZONA_LONGITUD_2 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LONGITUD_2,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                    Double ZONA_LATITUD_3 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LATITUD_3,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                    Double ZONA_LONGITUD_3 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LONGITUD_3,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                    Double ZONA_LATITUD_4 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LATITUD_4,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                    Double ZONA_LONGITUD_4 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LONGITUD_4,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                    Double ZONA_LATITUD_5 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LATITUD_5,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+                    Double ZONA_LONGITUD_5 = control_base_datos.ObtenerDouble("SELECT IFNULL(CD.ZONA_LONGITUD_5,0.00) UBU FROM CLIENTE_DESTINO CD WHERE CD.ID_CLIENTE_DESTINO=" + ID_CLIENTE_DESTINO, conn);
+
+                    Point geozona[] = {
+                        new Point(ZONA_LATITUD_1, ZONA_LONGITUD_1),
+                        new Point(ZONA_LATITUD_2, ZONA_LONGITUD_2),
+                        new Point(ZONA_LATITUD_3, ZONA_LONGITUD_3),
+                        new Point(ZONA_LATITUD_4, ZONA_LONGITUD_4),
+                        new Point(ZONA_LATITUD_5, ZONA_LONGITUD_5)
+                    };
+
+                    Point ubicacion_actual = new Point(LATITUDE, LONGITUDE);
+
+                    Poligono poligono = new Poligono();
+                    if (poligono.isInside(geozona, 5, ubicacion_actual)) {
+                        // System.out.println("GEO-ZONA: {"
+                                // + "(" + ZONA_LATITUD_1 + "," + ZONA_LONGITUD_1 + ");"
+                                // + "(" + ZONA_LATITUD_2 + "," + ZONA_LONGITUD_2 + ");"
+                                // + "(" + ZONA_LATITUD_3 + "," + ZONA_LONGITUD_3 + ");"
+                                // + "(" + ZONA_LATITUD_4 + "," + ZONA_LONGITUD_4 + ");"
+                                // + "(" + ZONA_LATITUD_5 + "," + ZONA_LONGITUD_5 + ")"
+                                // + "}"); 
+                        // System.out.println("UBICACIÓN-ACTUAL: {(" + LATITUDE + "," + LONGITUDE + ")}");
+
+                        sql = "UPDATE "
+                                + "VIAJES "
+                                + "SET "
+                                + "ID_ESTADO_VIAJE=5, "
+                                + "ESTADO='TER', "
+                                + "FECHA_HORA_TERMINADO='" + FECHA_HORA + "' "
+                                + "WHERE "
+                                + "ID_PAIS=" + ID_PAIS + " AND "
+                                + "ID_COMPANIA=" + ID_COMPANIA + " AND "
+                                + "ID_PLANTA=" + ID_PLANTA + " AND "
+                                + "NUMERO_VIAJE=" + NUMERO_VIAJE + " AND "
+                                + "TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
+                                + "NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA;
+                        Statement stmt1 = conn.createStatement();
+                        // System.out.println("SQL: " + sql);
+                        stmt1.executeUpdate(sql);
+                        stmt1.close();
+                    }
+                }
+            }
+            rs.close();
             stmt.close();
 
             conn.commit();
