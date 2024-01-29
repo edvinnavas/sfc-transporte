@@ -505,7 +505,7 @@ public class Ctrl_Sfc_Transportes implements Serializable {
                                 + "TIPO_ORDEN_VENTA='" + TIPO_ORDEN_VENTA + "' AND "
                                 + "NUMERO_ORDEN_VENTA=" + NUMERO_ORDEN_VENTA;
                         Statement stmt1 = conn.createStatement();
-                        System.out.println("SQL: " + sql);
+                        // System.out.println("SQL: " + sql);
                         stmt1.executeUpdate(sql);
                         stmt1.close();
                     }
