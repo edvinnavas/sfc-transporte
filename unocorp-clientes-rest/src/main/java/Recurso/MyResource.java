@@ -105,9 +105,9 @@ public class MyResource implements Serializable {
     }
     
     @GET
-    @Path("ws-sec-movil")
+    @Path("ws-client-sec-movil")
     @Produces(MediaType.APPLICATION_JSON)
-    public String ws_sec_movil() {
+    public String ws_client_sec_movil() {
 
         String resultado;
 
@@ -115,8 +115,8 @@ public class MyResource implements Serializable {
             Control.Ctrl_SEC_MOVIL ctrl_sec_movil = new Control.Ctrl_SEC_MOVIL("421_5fadff295f483", "roberto");
             resultado = ctrl_sec_movil.fleet_status();
         } catch (Exception ex) {
-            resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_sec_movil()|ERROR:" + ex.toString();
-            System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_sec_movil()|ERROR:" + ex.toString());
+            resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_sec_movil()|ERROR:" + ex.toString();
+            System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_sec_movil()|ERROR:" + ex.toString());
         }
 
         return resultado;
