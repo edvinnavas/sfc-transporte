@@ -151,4 +151,24 @@ public class Control_Base_Datos implements Serializable {
         return resultado;
     }
 
+    public List<Long> ObtenerVectorLong(String cadenasql, Connection conn) {
+        List<Long> resultado = new ArrayList<>();
+
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(cadenasql);
+            while (rs.next()) {
+                resultado.add(rs.getLong(1));
+            }
+            rs.close();
+            stmt.close();
+        } catch (Exception ex) {
+            resultado = new ArrayList<>();
+            resultado.add(Long.valueOf("-1"));
+            System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ObtenerVectorLong()|ERROR:" + ex.toString());
+        }
+
+        return resultado;
+    }
+
 }
