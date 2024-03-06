@@ -115,7 +115,7 @@ public class Ctrl_SEC_MOVIL implements Serializable {
             stmt.close();
 
             sql = "SELECT " 
-                    + "STR_TO_DATE(A.DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') FECHA_HORA_UBICACION, " 
+                    + "STR_TO_DATE(A.DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s') FECHA_HORA_UBICACION, " 
                     + "A.IMEI IMEI, " 
                     + "A.LATITUDE LATITUD_UBICACION, " 
                     + "A.LONGITUDE LONGITUD_UBICACION, " 
@@ -203,7 +203,7 @@ public class Ctrl_SEC_MOVIL implements Serializable {
                     // this.validar_viajes_cerrados(ID_PAIS, ID_COMPANIA, ID_PLANTA, NUMERO_VIAJE, TIPO_ORDEN_VENTA, NUMERO_ORDEN_VENTA, ID_CLIENTE_DESTINO, conn);
 
                     sql = "DELETE FROM SEC_MOVIL_DETALLE WHERE "
-                            + "STR_TO_DATE(DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s')='" + GPS_FECHA_HORA_UBICACION + "' AND " 
+                            + "STR_TO_DATE(DATETIME_UBICACION, '%d-%m-%Y %H:%i:%s')='" + GPS_FECHA_HORA_UBICACION + "' AND " 
                             + "IMEI='" + GPS_IMEI + "' AND " 
                             + "LATITUDE='" + GPS_LATITUD_UBICACION + "' AND " 
                             + "LONGITUDE='" + GPS_LONGITUD_UBICACION + "'";
