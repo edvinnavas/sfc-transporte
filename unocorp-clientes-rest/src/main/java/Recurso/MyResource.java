@@ -123,6 +123,23 @@ public class MyResource implements Serializable {
     }
 
     @GET
+    @Path("ws-client-detektor")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String ws_client_detektor() {
+        String resultado;
+
+        try {
+            Control.Ctrl_DETEKTOR ctrl_detektor = new Control.Ctrl_DETEKTOR();
+            resultado = ctrl_detektor.Replica();
+        } catch (Exception ex) {
+            resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_detektor()|ERROR:" + ex.toString();
+            System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_detektor()|ERROR:" + ex.toString());
+        }
+
+        return resultado;
+    }
+
+    @GET
     @Path("GoogleDistanceMatrix/{departure_time}/{origins}/{destinations}/{key}")
     @Produces(MediaType.APPLICATION_JSON)
     public String distancematrix(

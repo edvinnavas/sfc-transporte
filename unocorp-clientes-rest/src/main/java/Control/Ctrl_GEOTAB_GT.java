@@ -105,7 +105,21 @@ public class Ctrl_GEOTAB_GT implements Serializable {
                     lst_data_temp.add(data);
                 }
             }
-            get_feed_response.getResult().setData(lst_data_temp);
+
+            List<Entidad.GEOTAB.Data> lst_data_temp_2 = new ArrayList<>();
+            for (Integer i = 0; i < lst_data_temp.size(); i++) {
+                Boolean existe = false;
+                for(Integer j = 0; j > lst_data_temp_2.size(); j++) {
+                    if(lst_data_temp.get(i).getId().equals(lst_data_temp_2.get(j).getId()) && lst_data_temp.get(i).getDateTime().equals(lst_data_temp_2.get(j).getDateTime()) && lst_data_temp.get(i).getLatitude().equals(lst_data_temp_2.get(j).getLatitude()) && lst_data_temp.get(i).getLongitude().equals(lst_data_temp_2.get(j).getLongitude())) {
+                        existe = true;
+                    }
+                }
+                if(!existe) {
+                    lst_data_temp_2.add(lst_data_temp.get(i));
+                }
+            }
+
+            get_feed_response.getResult().setData(lst_data_temp_2);
             
             Control_Base_Datos control_base_datos = new Control_Base_Datos();
             conn = control_base_datos.obtener_conexion_mysql();
