@@ -15,12 +15,12 @@ public class Ubicaciones implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String fecha_hora;
-    private Double latitud_actual;
-    private Double longitud_actual;
-
+    private Double latitud;
+    private Double longitud;
+    
     @Override
     public String toString() {
-        return "Ubicaciones [fecha_hora=" + fecha_hora + ", latitud_actual=" + latitud_actual + ", longitud_actual=" + longitud_actual + "]";
+        return "Ubicaciones [fecha_hora=" + fecha_hora + ", latitud=" + latitud + ", longitud=" + longitud + "]";
     }
     
 }
