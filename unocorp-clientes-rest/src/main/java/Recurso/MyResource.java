@@ -140,6 +140,23 @@ public class MyResource implements Serializable {
     }
 
     @GET
+    @Path("ws-client-techno-web")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String ws_client_techno_web() {
+        String resultado;
+
+        try {
+            Control.Ctrl_TECHNO_WEB ctrl_techno_web = new Control.Ctrl_TECHNO_WEB();
+            resultado = ctrl_techno_web.svc();
+        } catch (Exception ex) {
+            resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_techno_web()|ERROR:" + ex.toString();
+            System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_techno_web()|ERROR:" + ex.toString());
+        }
+
+        return resultado;
+    }
+
+    @GET
     @Path("GoogleDistanceMatrix/{departure_time}/{origins}/{destinations}/{key}")
     @Produces(MediaType.APPLICATION_JSON)
     public String distancematrix(
