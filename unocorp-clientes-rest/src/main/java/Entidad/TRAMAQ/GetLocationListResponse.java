@@ -1,4 +1,4 @@
-package Entidad.DISATEL;
+package Entidad.TRAMAQ;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,14 +16,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@XmlRootElement(name = "ListaVehiculosResponse", namespace = "http://srv.disatelavl.net/ws/")
+@XmlRootElement(name = "GetLocationListResponse")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ListaVehiculosResponse implements Serializable {
+public class GetLocationListResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @XmlElementWrapper(name = "vinfo")
-    @XmlElement(name = "item")
-    private List<Item> items;
+    @XmlElementWrapper(name = "GetLocationListReturn")
+    @XmlElement(name = "Location")
+    private List<Location> locations;
     
 }
