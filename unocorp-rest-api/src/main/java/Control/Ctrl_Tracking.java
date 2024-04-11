@@ -34,16 +34,10 @@ public class Ctrl_Tracking implements Serializable {
             planta_origen.setCodigo(ctrl_base_datos.ObtenerString("SELECT P.CODIGO FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn));
             planta_origen.setPlanta(ctrl_base_datos.ObtenerString("SELECT P.NOMBRE FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn));
             planta_origen.setPais(ctrl_base_datos.ObtenerString("SELECT P.NOMBRE FROM PAIS P WHERE P.ID_PAIS=" + id_pais, conn));
-            planta_origen.setPt1(ctrl_base_datos.ObtenerDouble("SELECT P.ZONA_LATITUD_1 FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn));
-            planta_origen.setPt2(ctrl_base_datos.ObtenerDouble("SELECT P.ZONA_LONGITUD_1 FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn));
-            planta_origen.setPt3(ctrl_base_datos.ObtenerDouble("SELECT P.ZONA_LATITUD_2 FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn));
-            planta_origen.setPt4(ctrl_base_datos.ObtenerDouble("SELECT P.ZONA_LONGITUD_2 FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn));
-            planta_origen.setPt5(ctrl_base_datos.ObtenerDouble("SELECT P.ZONA_LATITUD_3 FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn));
-            planta_origen.setPt6(ctrl_base_datos.ObtenerDouble("SELECT P.ZONA_LONGITUD_3 FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn));
-            planta_origen.setPt7(ctrl_base_datos.ObtenerDouble("SELECT P.ZONA_LATITUD_4 FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn));
-            planta_origen.setPt8(ctrl_base_datos.ObtenerDouble("SELECT P.ZONA_LONGITUD_4 FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn));
-            planta_origen.setPt9(ctrl_base_datos.ObtenerDouble("SELECT P.ZONA_LATITUD_5 FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn));
-            planta_origen.setPt10(ctrl_base_datos.ObtenerDouble("SELECT P.ZONA_LONGITUD_5 FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn));
+            planta_origen.setPt1(ctrl_base_datos.ObtenerDouble("SELECT P.ZONA_LATITUD_1 FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn) + ", " + ctrl_base_datos.ObtenerDouble("SELECT P.ZONA_LONGITUD_1 FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn));
+            planta_origen.setPt2(ctrl_base_datos.ObtenerDouble("SELECT P.ZONA_LATITUD_2 FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn) + ", " + ctrl_base_datos.ObtenerDouble("SELECT P.ZONA_LONGITUD_2 FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn));
+            planta_origen.setPt3(ctrl_base_datos.ObtenerDouble("SELECT P.ZONA_LATITUD_3 FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn) + ", " + ctrl_base_datos.ObtenerDouble("SELECT P.ZONA_LONGITUD_3 FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn));
+            planta_origen.setPt4(ctrl_base_datos.ObtenerDouble("SELECT P.ZONA_LATITUD_4 FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn) + ", " + ctrl_base_datos.ObtenerDouble("SELECT P.ZONA_LONGITUD_4 FROM PLANTA P WHERE P.ID_PLANTA=" + id_planta, conn));
             tracking.setPlanta_origen(planta_origen);
 
             Entidad.Pduno.Cliente_Destino cliente_destino = new Entidad.Pduno.Cliente_Destino();
@@ -51,23 +45,15 @@ public class Ctrl_Tracking implements Serializable {
             cliente_destino.setCliente(ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
             cliente_destino.setNombre(ctrl_base_datos.ObtenerString("SELECT C.NOMBRE FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
             cliente_destino.setPais(ctrl_base_datos.ObtenerString("SELECT P.NOMBRE FROM PAIS P WHERE P.ID_PAIS=" + id_pais, conn));
-            cliente_destino.setPt1(ctrl_base_datos.ObtenerDouble("SELECT C.ZONA_LATITUD_1 FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
-            cliente_destino.setPt2(ctrl_base_datos.ObtenerDouble("SELECT C.ZONA_LONGITUD_1 FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
-            cliente_destino.setPt3(ctrl_base_datos.ObtenerDouble("SELECT C.ZONA_LATITUD_2 FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
-            cliente_destino.setPt4(ctrl_base_datos.ObtenerDouble("SELECT C.ZONA_LONGITUD_2 FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
-            cliente_destino.setPt5(ctrl_base_datos.ObtenerDouble("SELECT C.ZONA_LATITUD_3 FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
-            cliente_destino.setPt6(ctrl_base_datos.ObtenerDouble("SELECT C.ZONA_LONGITUD_3 FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
-            cliente_destino.setPt7(ctrl_base_datos.ObtenerDouble("SELECT C.ZONA_LATITUD_4 FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
-            cliente_destino.setPt8(ctrl_base_datos.ObtenerDouble("SELECT C.ZONA_LONGITUD_4 FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
-            cliente_destino.setPt9(ctrl_base_datos.ObtenerDouble("SELECT C.ZONA_LATITUD_4 FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
-            cliente_destino.setPt10(ctrl_base_datos.ObtenerDouble("SELECT C.ZONA_LONGITUD_4 FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
+            cliente_destino.setPt1(ctrl_base_datos.ObtenerDouble("SELECT C.ZONA_LATITUD_1 FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn) + "," + ctrl_base_datos.ObtenerDouble("SELECT C.ZONA_LONGITUD_1 FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
+            cliente_destino.setPt2(ctrl_base_datos.ObtenerDouble("SELECT C.ZONA_LATITUD_2 FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn) + "," + ctrl_base_datos.ObtenerDouble("SELECT C.ZONA_LONGITUD_2 FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
+            cliente_destino.setPt3(ctrl_base_datos.ObtenerDouble("SELECT C.ZONA_LATITUD_3 FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn) + "," + ctrl_base_datos.ObtenerDouble("SELECT C.ZONA_LONGITUD_3 FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
+            cliente_destino.setPt4(ctrl_base_datos.ObtenerDouble("SELECT C.ZONA_LATITUD_4 FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn) + "," + ctrl_base_datos.ObtenerDouble("SELECT C.ZONA_LONGITUD_4 FROM CLIENTE_DESTINO C WHERE C.ID_CLIENTE_DESTINO=" + id_cliente_destino, conn));
             tracking.setCliente_destino(cliente_destino);
 
             tracking.setNumero_viaje(numero_viaje);
             tracking.setStatusTiempo(estado_viaje);
             tracking.setFechahora(fecha_viaje);
-            tracking.setTipo_orden(tipo_orden);
-            tracking.setPedido(numero_orden);
             
             List<Entidad.Pduno.Ubicaciones> lst_ubicaciones = new ArrayList<>();
             String sql = "SELECT V.FECHA_HORA, V.LATITUDE, V.LONGITUDE "
@@ -77,13 +63,13 @@ public class Ctrl_Tracking implements Serializable {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next()) {
-                Entidad.Pduno.Ubicaciones ubicaciones = new Entidad.Pduno.Ubicaciones(rs.getString(1), rs.getDouble(2), rs.getDouble(3));
+                Entidad.Pduno.Ubicaciones ubicaciones = new Entidad.Pduno.Ubicaciones(tipo_orden + "-" + numero_orden,rs.getString(1), rs.getDouble(2), rs.getDouble(3));
                 lst_ubicaciones.add(ubicaciones);
             }
             rs.close();
             stmt.close();
 
-            tracking.setLst_ubicaciones(lst_ubicaciones);
+            tracking.setDetalle(lst_ubicaciones);
 
             tracking.setTiempo_estimado_llegada("240 minutos");
             tracking.setDistancia_estimado_llegada("102 kilometros");
