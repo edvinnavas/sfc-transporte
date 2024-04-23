@@ -25,5 +25,10 @@ public class ListaVehiculosResponse implements Serializable {
     @XmlElementWrapper(name = "vinfo")
     @XmlElement(name = "item")
     private List<Item> items;
+
+    @Override
+    public String toString() {
+        return "ListaVehiculosResponse [items=" + items + "]";
+    }
     
 }

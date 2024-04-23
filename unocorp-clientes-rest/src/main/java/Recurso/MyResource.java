@@ -193,6 +193,25 @@ public class MyResource implements Serializable {
     }
 
     @GET
+    @Path("ws-client-cymsagt")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String ws_client_cymsagt() {
+        String resultado;
+
+        try {
+            System.out.println("[" + new Date() + "] INICIA-CLIENTE: WS-CLIENT-CYMSAGT.");
+            Control.Ctrl_CYMSAGT ctrl_cymsagt = new Control.Ctrl_CYMSAGT();
+            resultado = ctrl_cymsagt.GetLocationList();
+            System.out.println("[" + new Date() + "] FINALIZA-CLIENTE: WS-CLIENT-CYMSAGT.");
+        } catch (Exception ex) {
+            resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_cymsagt()|ERROR:" + ex.toString();
+            System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_cymsagt()|ERROR:" + ex.toString());
+        }
+
+        return resultado;
+    }
+
+    @GET
     @Path("GoogleDistanceMatrix/{departure_time}/{origins}/{destinations}/{key}")
     @Produces(MediaType.APPLICATION_JSON)
     public String distancematrix(

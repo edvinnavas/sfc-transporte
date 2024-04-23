@@ -1,4 +1,4 @@
-package Entidad.TRAMAQ;
+package Entidad.CYMSAGT;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,19 +16,19 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@XmlRootElement(name = "GetLocationListResponse")
+@XmlRootElement(name = "GetLocationListResponse", namespace = "urn:service_simiex")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class GetLocationListResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @XmlElementWrapper(name = "GetLocationListReturn")
-    @XmlElement(name = "Location")
-    private List<Location> locations;
+    @XmlElementWrapper(name = "return")
+    @XmlElement(name = "item")
+    private List<Item> items;
 
     @Override
     public String toString() {
-        return "GetLocationListResponse [locations=" + locations + "]";
+        return "GetLocationListResponse [items=" + items + "]";
     }
     
 }

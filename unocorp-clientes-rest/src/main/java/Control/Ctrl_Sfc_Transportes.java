@@ -432,6 +432,34 @@ public class Ctrl_Sfc_Transportes implements Serializable {
             stmt.executeUpdate(sql);
             stmt.close();
 
+            // ELIMINA GEOPOSICIONES DE DETEKTOR CON ANTIGUEDAD MAYOR A 3 DIAS.
+            sql = "DELETE FROM DETEKTOR_DETALLE WHERE STR_TO_DATE(SUBSTRING(DATETIME_UBICACION, 1, LENGTH(DATETIME_UBICACION) - 3), '%Y-%m-%d %H:%i:%s') <= '" + dateFormat1.format(fecha_cierre.getTime()) + " 23:59:59'";
+            stmt = conn.createStatement();
+            // System.out.println("SQL: " + sql);
+            stmt.executeUpdate(sql);
+            stmt.close();
+
+            // ELIMINA GEOPOSICIONES DE TECHNO_WEB CON ANTIGUEDAD MAYOR A 3 DIAS.
+            sql = "DELETE FROM TECHNO_WEB_DETALLE WHERE STR_TO_DATE(DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') <= '" + dateFormat1.format(fecha_cierre.getTime()) + " 23:59:59'";
+            stmt = conn.createStatement();
+            // System.out.println("SQL: " + sql);
+            stmt.executeUpdate(sql);
+            stmt.close();
+
+            // ELIMINA GEOPOSICIONES DE TRAMAQ CON ANTIGUEDAD MAYOR A 3 DIAS.
+            sql = "DELETE FROM TRAMAQ_DETALLE WHERE STR_TO_DATE(DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') <= '" + dateFormat1.format(fecha_cierre.getTime()) + " 23:59:59'";
+            stmt = conn.createStatement();
+            // System.out.println("SQL: " + sql);
+            stmt.executeUpdate(sql);
+            stmt.close();
+
+            // ELIMINA GEOPOSICIONES DE CYMSAGT CON ANTIGUEDAD MAYOR A 3 DIAS.
+            sql = "DELETE FROM CYMSAGT_DETALLE WHERE STR_TO_DATE(DATETIME_UBICACION, '%Y-%m-%d %H:%i:%s') <= '" + dateFormat1.format(fecha_cierre.getTime()) + " 23:59:59'";
+            stmt = conn.createStatement();
+            // System.out.println("SQL: " + sql);
+            stmt.executeUpdate(sql);
+            stmt.close();
+
             sql = "SELECT " 
                     + "V.ID_PAIS, "
                     + "V.ID_COMPANIA, "
