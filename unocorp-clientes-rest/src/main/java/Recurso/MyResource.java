@@ -212,6 +212,25 @@ public class MyResource implements Serializable {
     }
 
     @GET
+    @Path("ws-client-share-service")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String ws_client_share_service() {
+        String resultado;
+
+        try {
+            System.out.println("[" + new Date() + "] INICIA-CLIENTE: WS-CLIENT-SHARE-SERVICE.");
+            Control.Ctrl_SHARE_SERVICE ctrl_share_service = new Control.Ctrl_SHARE_SERVICE();
+            resultado = ctrl_share_service.HistoyDataLastLocationByUser();
+            System.out.println("[" + new Date() + "] FINALIZA-CLIENTE: WS-CLIENT-SHARE-SERVICE.");
+        } catch (Exception ex) {
+            resultado = "PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_share_service()|ERROR:" + ex.toString();
+            System.out.println("PROYECTO:unocorp-clientes-rest|CLASE:" + this.getClass().getName() + "|METODO:ws_client_share_service()|ERROR:" + ex.toString());
+        }
+
+        return resultado;
+    }
+
+    @GET
     @Path("GoogleDistanceMatrix/{departure_time}/{origins}/{destinations}/{key}")
     @Produces(MediaType.APPLICATION_JSON)
     public String distancematrix(
